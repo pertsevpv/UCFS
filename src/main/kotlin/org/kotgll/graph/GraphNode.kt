@@ -16,7 +16,7 @@ class GraphNode(val id : Int, var isStart : Boolean = false, var isFinal : Boole
     }
 
     val hashCode : Int = id
-    override fun hashCode() = id
+    override fun hashCode() = hashCode
 
     fun addEdge(label : String, head : GraphNode)
     {

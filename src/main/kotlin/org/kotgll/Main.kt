@@ -5,6 +5,7 @@ import kotlinx.cli.ArgType
 import kotlinx.cli.required
 import org.kotgll.graph.readGraphFromCSV
 import org.kotgll.rsm.grammar.readRSMFromTXT
+import org.kotgll.rsm.graphinput.GLL
 import java.io.File
 
 enum class InputMode {
@@ -40,14 +41,14 @@ fun main(args: Array<String>) {
     if (inputMode == InputMode.STRING) {
         val input = File(pathToInput).readText()
         val grammar = readRSMFromTXT(pathToGrammar)
-        val result = org.kotgll.rsm.stringinput.withsppf.GLL(grammar, input).parse()
+        val result = org.kotgll.rsm.stringinput.GLL(grammar, input).parse()
 
         File(pathToOutput).printWriter().use { out -> out.println(result != null) }
 
     } else if (inputMode == InputMode.GRAPH) {
         val graph = readGraphFromCSV(pathToInput)
         val grammar = readRSMFromTXT(pathToGrammar)
-        val result = org.kotgll.rsm.graphinput.withsppf.GLL(grammar, graph).parse()
+        val result = GLL(grammar, graph).parse()
 
         File(pathToOutput).printWriter().use { out ->
             result.keys.forEach { tail ->

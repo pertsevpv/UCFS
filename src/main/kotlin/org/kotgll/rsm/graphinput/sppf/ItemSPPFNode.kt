@@ -1,24 +1,31 @@
-package org.kotgll.rsm.graphinput.withsppf.sppf
+package org.kotgll.rsm.graphinput.sppf
 
 import org.kotgll.graph.GraphNode
 import org.kotgll.rsm.grammar.RSMState
 import java.util.*
 
-class ItemSPPFNode(leftExtent: GraphNode, rightExtent: GraphNode, val rsmState: RSMState) :
-    ParentSPPFNode(leftExtent, rightExtent) {
-  override fun toString() =
-      "ItemSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent, rsmState=$rsmState)"
+class ItemSPPFNode
+(
+    leftExtent   : GraphNode,
+    rightExtent  : GraphNode,
+    val rsmState : RSMState,
+)
+    : ParentSPPFNode(leftExtent, rightExtent)
+{
+    override fun toString() =
+        "ItemSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent, rsmState=$rsmState)"
 
-  override fun equals(other: Any?): Boolean {
-    if (this === other) return true
-    if (other !is ItemSPPFNode) return false
-    if (!super.equals(other)) return false
+    override fun equals(other : Any?) : Boolean
+    {
+        if (other !is ItemSPPFNode) return false
 
-    if (rsmState != other.rsmState) return false
+        if (this === other)         return true
 
-    return true
-  }
+        if (!super.equals(other))   return false
 
-  override val hashCode: Int = Objects.hash(leftExtent, rightExtent, rsmState)
-  override fun hashCode() = hashCode
+        return rsmState == other.rsmState
+    }
+
+    override val hashCode : Int = Objects.hash(leftExtent, rightExtent, rsmState)
+    override fun hashCode() = hashCode
 }

@@ -7,6 +7,8 @@ import kotlinx.cli.required
 import org.kotgll.cfg.grammar.readCFGFromTXT
 import org.kotgll.graph.readGraphFromCSV
 import org.kotgll.rsm.grammar.readRSMFromTXT
+import org.kotgll.rsm.graphinput.GLL
+import org.kotgll.rsm.graphinput.sppf.SPPFNode
 import java.io.File
 import kotlin.system.measureNanoTime
 
@@ -253,9 +255,9 @@ fun runRSMWithSPPF(
         File(resultPath).writeText("")
 
         for (warmUp in 1..warmUpRounds) {
-          var result: HashMap<Int, HashMap<Int, org.kotgll.rsm.graphinput.withsppf.sppf.SPPFNode>>
+          var result: HashMap<Int, HashMap<Int, SPPFNode>>
           val elapsed = measureNanoTime {
-            result = org.kotgll.rsm.graphinput.withsppf.GLL(rsm, graph).parse()
+            result = GLL(rsm, graph).parse()
           }
           val elapsedSeconds = elapsed.toDouble() / 1_000_000_000.0
 
@@ -266,9 +268,9 @@ fun runRSMWithSPPF(
         }
 
         for (benchmarkAttempt in 1..benchmarkRounds) {
-          var result: HashMap<Int, HashMap<Int, org.kotgll.rsm.graphinput.withsppf.sppf.SPPFNode>>
+          var result: HashMap<Int, HashMap<Int, SPPFNode>>
           val elapsed = measureNanoTime {
-            result = org.kotgll.rsm.graphinput.withsppf.GLL(rsm, graph).parse()
+            result = GLL(rsm, graph).parse()
           }
           val elapsedSeconds = elapsed.toDouble() / 1_000_000_000.0
 
