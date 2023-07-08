@@ -8,7 +8,7 @@ import org.kotgll.rsm.grammar.RSMState
 import org.kotgll.rsm.grammar.RSMTerminalEdge
 import org.kotgll.rsm.grammar.symbol.Nonterminal
 import org.kotgll.rsm.grammar.symbol.Terminal
-import org.kotgll.rsm.stringinput.withsppf.GLL
+import org.kotgll.rsm.stringinput.GLL
 import kotlin.test.assertNotNull
 
 class TestRSMStringInputWithSPPFSuccess {

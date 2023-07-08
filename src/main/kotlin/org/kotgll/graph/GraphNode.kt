@@ -1,6 +1,11 @@
 package org.kotgll.graph
 
-class GraphNode(val id : Int, var isStart : Boolean = false, var isFinal : Boolean = false)
+class GraphNode
+(
+    val id      : Int,
+    var isStart : Boolean = false,
+    var isFinal : Boolean = false,
+)
 {
     var outgoingEdges : HashMap<String, ArrayList<GraphNode>> = HashMap()
 
@@ -8,11 +13,13 @@ class GraphNode(val id : Int, var isStart : Boolean = false, var isFinal : Boole
 
     override fun equals(other : Any?) : Boolean
     {
-        if (other !is GraphNode) return false
-
         if (this === other)      return true
 
-        return id == other.id
+        if (other !is GraphNode) return false
+
+        if (id != other.id)      return false
+
+        return true
     }
 
     val hashCode : Int = id
@@ -21,6 +28,7 @@ class GraphNode(val id : Int, var isStart : Boolean = false, var isFinal : Boole
     fun addEdge(label : String, head : GraphNode)
     {
         if (!outgoingEdges.containsKey(label)) outgoingEdges[label] = ArrayList()
+        
         outgoingEdges[label]!!.add(head)
     }
 }

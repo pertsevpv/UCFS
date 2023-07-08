@@ -2,19 +2,28 @@ package org.kotgll.rsm.stringinput.sppf
 
 import java.util.*
 
-open class ParentSPPFNode(leftExtent : Int, rightExtent : Int) : SPPFNode(leftExtent, rightExtent)
+open class ParentSPPFNode
+(
+    leftExtent  : Int,
+    rightExtent : Int,
+)
+    : SPPFNode(leftExtent, rightExtent)
 {
-  val kids : HashSet<PackedSPPFNode> = HashSet()
+    val kids : HashSet<PackedSPPFNode> = HashSet()
 
-  override fun toString() = "ParentSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent)"
+    override fun toString() = "ParentSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent)"
 
-  override fun equals(other : Any?) : Boolean
-  {
-    if (other !is ParentSPPFNode) return false
+    override fun equals(other : Any?) : Boolean
+    {
+        if (this === other)           return true
 
-    return super.equals(other)
-  }
+        if (other !is ParentSPPFNode) return false
 
-  override val hashCode : Int = Objects.hash(leftExtent, rightExtent)
-  override fun hashCode() = hashCode
+        if (!super.equals(other))     return false
+
+        return true
+    }
+
+    override val hashCode : Int = Objects.hash(leftExtent, rightExtent)
+    override fun hashCode() = hashCode
 }

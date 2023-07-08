@@ -16,11 +16,15 @@ class TerminalSPPFNode
 
     override fun equals(other : Any?) : Boolean
     {
+        if (this === other)             return true
+     
         if (other !is TerminalSPPFNode) return false
-
+     
         if (!super.equals(other))       return false
 
-        return terminal == other.terminal
+        if (terminal != other.terminal) return false
+
+        return true
     }
 
     override val hashCode : Int = Objects.hash(leftExtent, rightExtent, terminal)

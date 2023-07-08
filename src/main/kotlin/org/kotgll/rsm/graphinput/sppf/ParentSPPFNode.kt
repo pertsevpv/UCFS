@@ -16,9 +16,13 @@ open class ParentSPPFNode
 
     override fun equals(other : Any?) : Boolean
     {
+        if (this === other)           return true
+
         if (other !is ParentSPPFNode) return false
 
-        return super.equals(other)
+        if (!super.equals(other))     return false
+
+        return true
     }
 
     override val hashCode : Int = Objects.hash(leftExtent, rightExtent)

@@ -7,7 +7,11 @@ import org.kotgll.rsm.stringinput.DescriptorsQueue
 import org.kotgll.rsm.stringinput.GSSNode
 import org.kotgll.rsm.stringinput.sppf.*
 
-class GLL(val startState : RSMState, val input : String)
+class GLL
+(
+    val startState : RSMState,
+    val input      : String,
+)
 {
     val queue            : DescriptorsQueue                     = DescriptorsQueue(input.length + 1)
     val poppedGSSNodes   : HashMap<GSSNode, HashSet<SPPFNode?>> = HashMap()
@@ -160,6 +164,7 @@ class GLL(val startState : RSMState, val input : String)
             rightExtent == input.length
         )
             parseResult = result
+        
         return result
     }
 }

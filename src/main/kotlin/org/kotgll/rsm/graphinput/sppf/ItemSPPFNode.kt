@@ -17,13 +17,15 @@ class ItemSPPFNode
 
     override fun equals(other : Any?) : Boolean
     {
-        if (other !is ItemSPPFNode) return false
+        if (this === other)             return true
 
-        if (this === other)         return true
+        if (other !is ItemSPPFNode)     return false
 
-        if (!super.equals(other))   return false
+        if (!super.equals(other))       return false
 
-        return rsmState == other.rsmState
+        if (rsmState != other.rsmState) return false
+
+        return true
     }
 
     override val hashCode : Int = Objects.hash(leftExtent, rightExtent, rsmState)

@@ -13,6 +13,8 @@ enum class InputMode {
     GRAPH,
 }
 
+// TODO : Return original overriden equals methods for ALL files, improve only readability
+
 fun main(args: Array<String>) {
     val parser = ArgParser("kotgll")
 

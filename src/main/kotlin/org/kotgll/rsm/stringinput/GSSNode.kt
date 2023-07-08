@@ -5,7 +5,11 @@ import org.kotgll.rsm.grammar.symbol.Nonterminal
 import org.kotgll.rsm.stringinput.sppf.SPPFNode
 import java.util.*
 
-class GSSNode(val nonterminal : Nonterminal, val pos : Int)
+class GSSNode
+(
+    val nonterminal : Nonterminal,
+    val pos         : Int,
+)
 {
     val edges : HashMap<Pair<RSMState, SPPFNode?>, HashSet<GSSNode>> = HashMap()
 

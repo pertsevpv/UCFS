@@ -37,13 +37,17 @@ class DescriptorsQueue
 
         override fun equals(other : Any?) : Boolean
         {
+            if (this === other)             return true
+
             if (other !is Descriptor)       return false
 
             if (rsmState != other.rsmState) return false
 
             if (gssNode != other.gssNode)   return false
 
-            return sppfNode != other.sppfNode
+            if (sppfNode != other.sppfNode) return false
+
+            return true
         }
 
         val hashCode: Int = Objects.hash(rsmState, gssNode, sppfNode)

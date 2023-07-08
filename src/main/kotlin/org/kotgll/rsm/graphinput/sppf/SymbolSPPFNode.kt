@@ -18,11 +18,15 @@ class SymbolSPPFNode
 
     override fun equals(other : Any?) : Boolean
     {
+        if (this === other)           return true
+
         if (other !is SymbolSPPFNode) return false
 
         if (!super.equals(other))     return false
 
-        return symbol == other.symbol
+        if (symbol != other.symbol)   return false
+
+        return true
     }
 
     override val hashCode : Int = Objects.hash(leftExtent, rightExtent, symbol)

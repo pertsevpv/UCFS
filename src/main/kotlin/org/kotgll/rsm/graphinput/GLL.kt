@@ -6,7 +6,11 @@ import org.kotgll.rsm.grammar.symbol.Nonterminal
 import org.kotgll.rsm.grammar.symbol.Terminal
 import org.kotgll.rsm.graphinput.sppf.*
 
-class GLL(val startState : RSMState, val startGraphNodes : ArrayList<GraphNode>)
+class GLL
+(
+    val startState      : RSMState,
+    val startGraphNodes : ArrayList<GraphNode>,
+)
 {
     constructor(
         startState      : RSMState,
@@ -133,7 +137,7 @@ class GLL(val startState : RSMState, val startGraphNodes : ArrayList<GraphNode>)
     (
         terminal    : Terminal,
         leftExtent  : GraphNode,
-        rightExtent : GraphNode
+        rightExtent : GraphNode,
     )
         : SPPFNode
     {
@@ -148,7 +152,7 @@ class GLL(val startState : RSMState, val startGraphNodes : ArrayList<GraphNode>)
     (
         state       : RSMState,
         leftExtent  : GraphNode,
-        rightExtent : GraphNode
+        rightExtent : GraphNode,
     )
         : ParentSPPFNode
     {
@@ -163,7 +167,7 @@ class GLL(val startState : RSMState, val startGraphNodes : ArrayList<GraphNode>)
     (
         nonterminal : Nonterminal,
         leftExtent  : GraphNode,
-        rightExtent : GraphNode
+        rightExtent : GraphNode,
     )
         : SymbolSPPFNode
     {

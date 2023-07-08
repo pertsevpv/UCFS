@@ -18,11 +18,13 @@ class RSMState
 
     override fun equals(other : Any?) : Boolean
     {
-        if (other !is RSMState) return false
-
         if (this === other)     return true
 
-        return id == other.id
+        if (other !is RSMState) return false
+
+        if (id != other.id)     return false
+
+        return true
     }
 
     val hashCode: Int = id

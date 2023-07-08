@@ -1,6 +1,10 @@
 package org.kotgll.rsm.grammar.symbol
 
-class Terminal(val value : String) : Symbol
+class Terminal
+(
+    val value : String
+)
+    : Symbol
 {
     val size : Int = value.length
     fun match(pos : Int, input : String) = input.startsWith(value, pos)
@@ -9,11 +13,13 @@ class Terminal(val value : String) : Symbol
 
     override fun equals(other : Any?) : Boolean
     {
-        if (other !is Terminal) return false
+        if (this === other)       return true
 
-        if (this === other)     return true
+        if (other !is Terminal)   return false
 
-        return value == other.value
+        if (value != other.value) return false
+
+        return true
     }
 
     val hashCode: Int = value.hashCode()

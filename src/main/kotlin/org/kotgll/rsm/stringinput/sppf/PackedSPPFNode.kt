@@ -16,15 +16,19 @@ open class PackedSPPFNode
 
     override fun equals(other : Any?) : Boolean
     {
+        if (this === other)                       return true
+
         if (other !is PackedSPPFNode)             return false
 
         if (pivot != other.pivot)                 return false
+
+        if (rsmState != other.rsmState)           return false
 
         if (leftSPPFNode != other.leftSPPFNode)   return false
 
         if (rightSPPFNode != other.rightSPPFNode) return false
 
-        return rsmState == other.rsmState
+        return true
     }
 
     val hashCode : Int = Objects.hash(pivot, rsmState, leftSPPFNode, rightSPPFNode)
