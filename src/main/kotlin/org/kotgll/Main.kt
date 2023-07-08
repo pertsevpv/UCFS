@@ -8,14 +8,15 @@ import org.kotgll.rsm.grammar.readRSMFromTXT
 import org.kotgll.rsm.graphinput.GLL
 import java.io.File
 
-enum class InputMode {
+enum class InputMode
+{
     STRING,
     GRAPH,
 }
 
-// TODO : Return original overriden equals methods for ALL files, improve only readability
 
-fun main(args: Array<String>) {
+fun main(args : Array<String>)
+{
     val parser = ArgParser("kotgll")
 
     val inputMode by
@@ -41,16 +42,16 @@ fun main(args: Array<String>) {
     parser.parse(args)
 
     if (inputMode == InputMode.STRING) {
-        val input = File(pathToInput).readText()
+        val input   = File(pathToInput).readText()
         val grammar = readRSMFromTXT(pathToGrammar)
-        val result = org.kotgll.rsm.stringinput.GLL(grammar, input).parse()
+        val result  = org.kotgll.rsm.stringinput.GLL(grammar, input).parse()
 
         File(pathToOutput).printWriter().use { out -> out.println(result != null) }
 
     } else if (inputMode == InputMode.GRAPH) {
-        val graph = readGraphFromCSV(pathToInput)
+        val graph   = readGraphFromCSV(pathToInput)
         val grammar = readRSMFromTXT(pathToGrammar)
-        val result = GLL(grammar, graph).parse()
+        val result  = GLL(grammar, graph).parse()
 
         File(pathToOutput).printWriter().use { out ->
             result.keys.forEach { tail ->
