@@ -4,9 +4,9 @@ plugins {
   `maven-publish`
 }
 
-group = "vadyushkins"
+group = "hollowcoder"
 
-version = "1.0.8"
+version = "1.0.0"
 
 repositories { mavenCentral() }
 
@@ -20,7 +20,7 @@ tasks.test { useJUnitPlatform() }
 
 kotlin { jvmToolchain(11) }
 
-application { mainClass.set("org.kotgll.MainKt") }
+application { mainClass.set("org.srcgll.MainKt") }
 
 tasks.withType<Jar> {
   dependsOn.addAll(listOf("compileJava", "compileKotlin", "processResources"))
@@ -44,19 +44,13 @@ publishing {
       }
 
       pom {
-        name.set("kotgll")
-        url.set("https://github.com/vadyushkins/kotgll")
-        licenses {
-          license {
-            name.set("MIT License")
-            url.set("https://github.com/vadyushkins/kotgll/blob/main/LICENSE")
-          }
-        }
+        name.set("srcgll")
+        url.set("https://github.com/cyb3r-b4stard/srcgll")
         developers {
           developer {
-            id.set("vadyushkins")
-            name.set("Vadim Abzalov")
-            email.set("vadim.i.abzalov@gmail.com")
+            id.set("hollowcoder")
+            name.set("Ivan Lomikovskiy")
+            email.set("hollowcoder@yandex.ru")
           }
         }
       }
@@ -65,7 +59,7 @@ publishing {
   repositories {
     maven {
       name = "GitHubPackages"
-      url = uri("https://maven.pkg.github.com/vadyushkins/kotgll")
+      url = uri("https://maven.pkg.github.com/cyb3r-b4stard/srcgll")
       credentials {
         username = System.getenv("GITHUB_ACTOR")
         password = System.getenv("GITHUB_TOKEN")
