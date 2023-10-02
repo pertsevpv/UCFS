@@ -7,8 +7,8 @@ import java.util.*
 class ItemSPPFNode
 (
     val rsmState : RSMState,
-    leftExtent   : GraphNode,
-    rightExtent  : GraphNode,
+    leftExtent   : Int,
+    rightExtent  : Int,
 )
     : ParentSPPFNode(leftExtent, rightExtent)
 {

@@ -6,7 +6,7 @@ import java.util.*
 
 open class PackedSPPFNode
 (
-    val pivot         : GraphNode, // right extent of the left child
+    val pivot         : Int, // right extent of the left child
     val rsmState      : RSMState,
     val leftSPPFNode  : SPPFNode? = null,
     val rightSPPFNode : SPPFNode? = null,
@@ -15,7 +15,7 @@ open class PackedSPPFNode
 {
     // Backwards reference to parent SPPF Node
     override val parents : HashSet<ISPPFNode> = HashSet()
-    override var weight : Int = (leftSPPFNode?.weight ?: 0) + (rightSPPFNode?.weight ?: 0)
+    override var weight  : Int = (leftSPPFNode?.weight ?: 0) + (rightSPPFNode?.weight ?: 0)
     
     override fun toString() =
         "PackedSPPFNode(pivot=$pivot, rsmState=$rsmState, leftSPPFNode=$leftSPPFNode, rightSPPFNode=$rightSPPFNode)"

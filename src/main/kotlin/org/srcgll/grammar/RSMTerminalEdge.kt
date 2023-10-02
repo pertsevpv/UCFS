@@ -8,7 +8,7 @@ class RSMTerminalEdge
     val head     : RSMState,
 )
     : RSMEdge
-    {
+{
     override fun toString() = "RSMTerminalEdge(terminal=$terminal, head=$head)"
 
     override fun equals(other : Any?) : Boolean

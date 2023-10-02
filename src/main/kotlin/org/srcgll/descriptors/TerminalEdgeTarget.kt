@@ -1,9 +1,9 @@
-package org.srcgll.graph
+package org.srcgll.descriptors
 
 class TerminalEdgeTarget
 (
-    val targetNode : GraphNode,
-    val weight     : Int = 0,
+    val targetPosition : Int,
+    val weight         : Int = 0,
 )
 
 class GraphNode

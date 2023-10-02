@@ -8,8 +8,8 @@ import java.util.*
 class SymbolSPPFNode
 (
     val symbol  : Nonterminal,
-    leftExtent  : GraphNode,
-    rightExtent : GraphNode,
+    leftExtent  : Int,
+    rightExtent : Int,
 )
     : ParentSPPFNode(leftExtent, rightExtent)
 {

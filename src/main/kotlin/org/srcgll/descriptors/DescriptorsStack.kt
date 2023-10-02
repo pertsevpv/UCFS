@@ -1,7 +1,6 @@
 package org.srcgll.descriptors
 
 import org.srcgll.grammar.RSMState
-import org.srcgll.graph.GraphNode
 import org.srcgll.gss.GSSNode
 import org.srcgll.sppf.SPPFNode
 
@@ -10,7 +9,7 @@ class Descriptor
     val rsmState      : RSMState,
     val gssNode       : GSSNode,
     val sppfNode      : SPPFNode?,
-    val inputPosition : GraphNode,
+    val inputPosition : Int,
 )
 {
     val hashCode =
@@ -40,17 +39,22 @@ interface IDescriptorsStack
     fun next() : Descriptor
 }
 
-class ErrorRecoveringDescriptorsStack : IDescriptorsStack
+class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
 {
-    private var defaultDescriptorsStack          = ArrayDeque<Descriptor>()
+    private var createdDescriptorStacks          = Array<HashSet<Descriptor>>(size) { HashSet() }
     private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor>>()
-    
+    private var defaultDescriptorsStack          = ArrayDeque<Descriptor>()
+
     override fun isNotEmpty() = defaultDescriptorsStack.isNotEmpty()
-    
+
     override fun add(descriptor : Descriptor)
     {
         val pathWeight = descriptor.weight
-        
+
+        // TODO: Think about abandoning duplicate descriptors
+//        if (createdDescriptorStacks[descriptor.inputPosition].add(descriptor)) {
+//        }
+
         if (pathWeight == 0) {
             defaultDescriptorsStack.addLast(descriptor)
         } else {
@@ -59,6 +63,7 @@ class ErrorRecoveringDescriptorsStack : IDescriptorsStack
             }
             errorRecoveringDescriptorsStacks.getValue(pathWeight).addLast(descriptor)
         }
+
     }
     
     

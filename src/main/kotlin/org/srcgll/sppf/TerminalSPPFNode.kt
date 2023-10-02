@@ -7,8 +7,8 @@ import java.util.*
 class TerminalSPPFNode
 (
     val terminal : Terminal?,
-    leftExtent   : GraphNode,
-    rightExtent  : GraphNode,
+    leftExtent   : Int,
+    rightExtent  : Int,
     weight       : Int,
 )
     : SPPFNode(leftExtent, rightExtent, weight)

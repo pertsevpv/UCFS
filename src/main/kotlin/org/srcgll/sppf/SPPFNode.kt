@@ -1,14 +1,12 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.symbol.Symbol
-import org.srcgll.graph.GraphNode
 import java.util.*
-import kotlin.collections.ArrayList
 
 open class SPPFNode
 (
-    val leftExtent      : GraphNode,
-    val rightExtent     : GraphNode,
+    val leftExtent      : Int,
+    val rightExtent     : Int,
     override var weight : Int,
 )
     : ISPPFNode

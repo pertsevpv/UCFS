@@ -6,6 +6,7 @@ class Terminal
 )
     : Symbol
 {
+    val size : Int = value.length
     fun match(pos : Int, input : String) = input.startsWith(value, pos)
 
     override fun toString() = "Literal($value)"

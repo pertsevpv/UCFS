@@ -3,14 +3,13 @@ package org.srcgll.gss
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.grammar.RSMState
 import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.graph.GraphNode
 import org.srcgll.sppf.SPPFNode
 import java.util.*
 
 class GSSNode
 (
     val nonterminal         : Nonterminal,
-    val inputPosition       : GraphNode,
+    val inputPosition       : Int,
     var minWeightOfLeftPart : Int,
 )
 {

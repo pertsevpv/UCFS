@@ -5,8 +5,8 @@ import java.util.*
 
 open class ParentSPPFNode
 (
-    leftExtent  : GraphNode,
-    rightExtent : GraphNode,
+    leftExtent  : Int,
+    rightExtent : Int,
 )
     : SPPFNode(leftExtent, rightExtent, Int.MAX_VALUE)
 {
