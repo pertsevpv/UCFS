@@ -1,7 +1,6 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.symbol.Terminal
-import org.srcgll.graph.GraphNode
 import java.util.*
 
 class TerminalSPPFNode

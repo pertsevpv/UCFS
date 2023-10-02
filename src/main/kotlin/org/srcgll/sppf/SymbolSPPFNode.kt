@@ -2,7 +2,6 @@ package org.srcgll.sppf
 
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Symbol
-import org.srcgll.graph.GraphNode
 import java.util.*
 
 class SymbolSPPFNode

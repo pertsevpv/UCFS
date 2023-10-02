@@ -63,7 +63,7 @@ class GLL
         val weight      = curDescriptor.weight
         val gssNode     = curDescriptor.gssNode
         
-        addDescriptorHandled(curDescriptor)
+        addDescriptorToHandled(curDescriptor)
         
         if (state.isStart && state.isFinal)
             curSPPFNode = getNodeP(state, curSPPFNode, getOrCreateItemSPPFNode(state, pos, pos))
@@ -163,7 +163,7 @@ class GLL
                             terminal,
                             curDescriptor.inputPosition,
                             targetEdge.targetPosition,
-                            curDescriptor.weight + targetEdge.weight
+                            targetEdge.weight
                         )
                     ),
                     targetEdge.targetPosition
@@ -280,7 +280,6 @@ class GLL
         return createdSPPFNodes[node]!! as ParentSPPFNode
     }
 
-    // TODO: Implement weights
     fun getOrCreateSymbolSPPFNode
     (
         nonterminal : Nonterminal,
@@ -298,7 +297,7 @@ class GLL
         if (nonterminal == startState.nonterminal && leftExtent == 0 && rightExtent == input.length) {
             parseResult = result
         }
-        0
+
         return result
     }
     
@@ -316,7 +315,7 @@ class GLL
         return handledDescriptor != null && handledDescriptor.weight <= descriptor.weight
     }
     
-    fun addDescriptorHandled(descriptor : Descriptor)
+    fun addDescriptorToHandled(descriptor : Descriptor)
     {
         descriptor.gssNode.handledDescriptors.add(descriptor)
     }
@@ -324,28 +323,67 @@ class GLL
     fun updateWeights(sppfNode : ISPPFNode)
     {
         var curNode : ISPPFNode
-        
-        val visited = HashSet<ISPPFNode>()
-        val stack   = ArrayDeque(listOf(sppfNode))
-        
-        
+        val cycle = HashSet<ISPPFNode>()
+        val deque = ArrayDeque(listOf(sppfNode))
+
         while (stack.isNotEmpty()) {
-            curNode   = stack.removeLast()
-            
-            for (parent in curNode.parents) {
-                when (parent) {
-                    is PackedSPPFNode ->
-                        parent.weight += curNode.weight
-                    is ParentSPPFNode ->
-                        parent.kids.forEach { parent.weight = minOf(parent.weight, it.weight) }
+            curNode = deque.removeLast()
+
+            when (curNode) {
+                is ItemSPPFNode -> {
+                    if (!cycle.contains(curNode)) {
+                        val added = cycle.add(curNode)
+                        assert(added)
+
+                        val oldWeight = curNode.weight
+                        var newWeight = Int.MAX_VALUE
+
+                        curNode.kids.forEach {newWeight = minOf(newWeight, it.weight)}
+
+                        if (oldWeight > newWeight) {
+                            curNode.kids.removeIf { it.weight > newWeight }
+                            curNode.weight = newWeight
+
+                            for (parent in curNode.parents) {
+                                deque.addLast(parent)
+                            }
+                        }
+                        if (deque.last() == curNode) {
+                            val removed = cycle.remove(curNode)
+                            assert(removed)
+                        }
+                    }
                 }
-                
-                if (!visited.contains(parent)) {
-                    stack.addLast(parent)
+                is PackedSPPFNode -> {
+                    val oldWeight = curNode.weight
+                    val newWeight = (curNode.leftSPPFNode?.weight ?: 0) + (curNode.rightSPPFNode?.weight ?: 0)
+
+                    if (oldWeight > newWeight) {
+                        curNode.weight = newWeight
+
+                        for (parent in curNode.parents) {
+                            deque.addLast(parent)
+                        }
+                    }
+                }
+                is SymbolSPPFNode -> {
+                    val oldWeight = curNode.weight
+                    var newWeight = Int.MAX_VALUE
+
+                    curNode.kids.forEach {newWeight = minOf(newWeight, it.weight)}
+
+                    if (oldWeight > newWeight) {
+                        curNode.weight = newWeight
+
+                        for (parent in curNode.parents) {
+                            deque.addLast(parent)
+                        }
+                    }
+                }
+                else -> {
+                    throw  Error("Terminal node can not be parent")
                 }
             }
-            
-            visited.add(curNode)
         }
     }
 }

@@ -1,6 +1,5 @@
 package org.srcgll.sppf
 
-import org.srcgll.graph.GraphNode
 import java.util.*
 
 open class ParentSPPFNode

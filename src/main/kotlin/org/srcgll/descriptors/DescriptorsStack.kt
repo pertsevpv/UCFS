@@ -15,11 +15,7 @@ class Descriptor
     val hashCode =
             23 * (23 * (23 * 17 + rsmState.hashCode()) + inputPosition.hashCode()) + gssNode.hashCode()
     
-    val weight : Int =
-            when (sppfNode) {
-                null -> 0
-                else -> sppfNode.weight
-            } + gssNode.minWeightOfLeftPart
+    val weight : Int = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
     
     override fun hashCode() = hashCode
     
@@ -41,7 +37,7 @@ interface IDescriptorsStack
 
 class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
 {
-    private var createdDescriptorStacks          = Array<HashSet<Descriptor>>(size) { HashSet() }
+    private var createdDescriptors               = Array<HashSet<Descriptor>>(size) { HashSet() }
     private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor>>()
     private var defaultDescriptorsStack          = ArrayDeque<Descriptor>()
 
@@ -51,12 +47,11 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
     {
         val pathWeight = descriptor.weight
 
-        // TODO: Think about abandoning duplicate descriptors
-//        if (createdDescriptorStacks[descriptor.inputPosition].add(descriptor)) {
-//        }
-
+        // TODO: Think about abandoning duplicate descriptors, some kind of avoiding duplicate descriptors is implemented in GSSNode class
         if (pathWeight == 0) {
-            defaultDescriptorsStack.addLast(descriptor)
+            if (createdDescriptors[descriptor.inputPosition].add(descriptor)) {
+                defaultDescriptorsStack.addLast(descriptor)
+            }
         } else {
             if (!errorRecoveringDescriptorsStacks.containsKey(pathWeight)) {
                 errorRecoveringDescriptorsStacks[pathWeight] = ArrayDeque()

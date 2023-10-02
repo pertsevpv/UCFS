@@ -1,12 +1,11 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.RSMState
-import org.srcgll.graph.GraphNode
 import java.util.*
 
 open class PackedSPPFNode
 (
-    val pivot         : Int, // right extent of the left child
+    val pivot         : Int, //  left extent of the right child
     val rsmState      : RSMState,
     val leftSPPFNode  : SPPFNode? = null,
     val rightSPPFNode : SPPFNode? = null,
