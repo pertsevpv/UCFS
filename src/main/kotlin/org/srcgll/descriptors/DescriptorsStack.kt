@@ -30,7 +30,7 @@ class Descriptor
 
 interface IDescriptorsStack
 {
-    fun isNotEmpty() : Boolean
+    fun defaultDescriptorsStackIsNotEmpty() : Boolean
     fun add(descriptor : Descriptor)
     fun next() : Descriptor
 }
@@ -41,7 +41,10 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
     private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor>>()
     private var defaultDescriptorsStack          = ArrayDeque<Descriptor>()
 
-    override fun isNotEmpty() = defaultDescriptorsStack.isNotEmpty()
+    /* TODO: Check, maybe we also need to check whether errorRecovery stacks are not empty
+             Could use counter variable to track every pushed/removed stack in errorRecovering stacks
+     */
+    override fun defaultDescriptorsStackIsNotEmpty() = defaultDescriptorsStack.isNotEmpty()
 
     override fun add(descriptor : Descriptor)
     {
@@ -49,23 +52,22 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
 
         // TODO: Think about abandoning duplicate descriptors, some kind of avoiding duplicate descriptors is implemented in GSSNode class
         if (pathWeight == 0) {
-            if (createdDescriptors[descriptor.inputPosition].add(descriptor)) {
-                defaultDescriptorsStack.addLast(descriptor)
-            }
+//            if (createdDescriptors[descriptor.inputPosition].add(descriptor)) {
+//            }
+            defaultDescriptorsStack.addLast(descriptor)
         } else {
             if (!errorRecoveringDescriptorsStacks.containsKey(pathWeight)) {
                 errorRecoveringDescriptorsStacks[pathWeight] = ArrayDeque()
             }
             errorRecoveringDescriptorsStacks.getValue(pathWeight).addLast(descriptor)
         }
-
     }
     
     
     
     override fun next() : Descriptor
     {
-        if (!defaultDescriptorsStack.isEmpty()) {
+        if (defaultDescriptorsStackIsNotEmpty()) {
             return defaultDescriptorsStack.removeLast()
         } else {
             val iterator = errorRecoveringDescriptorsStacks.keys.iterator()

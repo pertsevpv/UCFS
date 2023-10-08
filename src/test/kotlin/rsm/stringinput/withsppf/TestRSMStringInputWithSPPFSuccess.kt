@@ -3,12 +3,12 @@ package rsm.stringinput.withsppf
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.ValueSource
-import org.kotgll.rsm.grammar.RSMNonterminalEdge
-import org.kotgll.rsm.grammar.RSMState
-import org.kotgll.rsm.grammar.RSMTerminalEdge
-import org.kotgll.rsm.grammar.symbol.Nonterminal
-import org.kotgll.rsm.grammar.symbol.Terminal
-import org.kotgll.rsm.stringinput.GLL
+import org.srcgll.grammar.RSMNonterminalEdge
+import org.srcgll.grammar.RSMState
+import org.srcgll.grammar.RSMTerminalEdge
+import org.srcgll.grammar.symbol.Nonterminal
+import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.GLL
 import kotlin.test.assertNotNull
 
 class TestRSMStringInputWithSPPFSuccess {

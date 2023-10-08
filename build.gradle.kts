@@ -35,7 +35,7 @@ tasks.withType<Jar> {
 
 publishing {
   publications {
-    create<MavenPublication>("kotgll") {
+    create<MavenPublication>("srcgll") {
       from(components["java"])
 
       versionMapping {

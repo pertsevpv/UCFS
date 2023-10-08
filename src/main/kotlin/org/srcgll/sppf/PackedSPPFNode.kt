@@ -14,6 +14,7 @@ open class PackedSPPFNode
 {
     // Backwards reference to parent SPPF Node
     override val parents : HashSet<ISPPFNode> = HashSet()
+    // TODO: Resolve integer overflow when both subtrees have Int.MAX_VALUE
     override var weight  : Int = (leftSPPFNode?.weight ?: 0) + (rightSPPFNode?.weight ?: 0)
     
     override fun toString() =
