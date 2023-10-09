@@ -12,6 +12,7 @@ class GLL
 (
     val startState : RSMState,
     val input      : String,
+    val recovery   : Boolean = true,
 )
 {
 
@@ -57,7 +58,7 @@ class GLL
         // TODO: Check if there is a need to check emptiness of errorRecovery descriptors stack
         // If string was not parsed - process recovery descriptors until first valid parse tree is found
         // Due to the Error Recovery algorithm used it will be parse tree of the string with min editing cost
-        while (parseResult == null) {
+        while (recovery && parseResult == null) {
             val curRecoveryDescriptor = stack.next()
             parse(curRecoveryDescriptor)
         }
@@ -130,12 +131,23 @@ class GLL
 
 
         // TODO: Check
-        if (pos < input.length) {
+        if (recovery && pos < input.length) {
 
             // null represents Epsilon "Terminal"
             val errorRecoveryEdges = HashMap<Terminal?, TerminalEdgeTarget>()
 
+            // TODO: What should we do if terminals are strings?
             val currentTerminal = Terminal(input[pos].toString())
+
+//            var currentTerminal : Terminal
+//            var coveredByCurrentTerminal : HashSet<RSMState> = HashSet()
+//
+//            for (kvp in state.outgoingTerminalEdges) {
+//                if (kvp.key.match(pos, input)) {
+//                    currentTerminal = kvp.key
+//                    coveredByCurrentTerminal = state.outgoingTerminalEdges.getValue(currentTerminal)
+//                }
+//            }
 
             val coveredByCurrentTerminal : HashSet<RSMState> =
                 if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
@@ -153,7 +165,9 @@ class GLL
                     errorRecoveryEdges[terminal] = TerminalEdgeTarget(pos, 1)
                 }
             }
-            errorRecoveryEdges[null] = TerminalEdgeTarget(pos + 1, 1)
+
+            // TODO: What should we do if terminals are strings?
+            errorRecoveryEdges[null] = TerminalEdgeTarget(pos + currentTerminal.size, 1)
 
             for (kvp in errorRecoveryEdges) {
                 if (kvp.key == null) {

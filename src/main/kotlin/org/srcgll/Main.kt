@@ -28,9 +28,9 @@ fun main(args : Array<String>)
 
     parser.parse(args)
 
-    val input = File(pathToInput).readText()
+    val input = File(pathToInput).readText().replace("\n", "").trim()
     val grammar = readRSMFromTXT(pathToGrammar)
-    val result  = GLL(grammar, input.replace("\n", "").trim()).parse()
+    val result  = GLL(grammar, input).parse()
 
     File(pathToOutput).printWriter().use {
         out -> out.println(result != null)
