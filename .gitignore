@@ -4,6 +4,9 @@
 # Output file
 output.txt
 
+# Benchmarks
+*.csv
+
 # Log file
 *.log
 
