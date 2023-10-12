@@ -9,6 +9,7 @@ open class PackedSPPFNode
     val rsmState      : RSMState,
     val leftSPPFNode  : SPPFNode? = null,
     val rightSPPFNode : SPPFNode? = null,
+    override var Id   : Int = SPPFNodeId.getFirstFreeSPPFNodeId()
 )
     : ISPPFNode
 {

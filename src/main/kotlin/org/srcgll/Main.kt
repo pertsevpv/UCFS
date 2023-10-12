@@ -4,7 +4,7 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.required
 import org.srcgll.grammar.readRSMFromTXT
-import org.srcgll.sppf.ParentSPPFNode
+import org.srcgll.sppf.toDot
 import java.io.File
 
 fun main(args : Array<String>)
@@ -37,9 +37,6 @@ fun main(args : Array<String>)
                out.println(result?.weight)
     }
 
-//    File(pathToOutput).printWriter().use { out ->
-//        result.kids.forEach { tail ->
-//            result[tail]!!.keys.forEach { head -> out.println("$tail $head") }
-//        }
-//    }
+    toDot(result!!, "./result_sppf.dot")
+//    Runtime.getRuntime().exec("dot -Tpdf ./result_sppf.dot > ./result_sppf.pdf")
 }

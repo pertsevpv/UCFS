@@ -3,16 +3,6 @@ package org.srcgll.grammar
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 
-
-//class RSMStateId private constructor()
-//{
-//    companion object {
-//        private var curRsmStateId : Int = 0
-//
-//        fun getFirstFreeRsmStateId() = curRsmStateId++
-//    }
-//}
-
 class RSMState
 (
     val id          : Int,

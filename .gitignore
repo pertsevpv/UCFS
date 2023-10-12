@@ -1,8 +1,18 @@
 # Compiled class file
 *.class
 
-# Output file
+# input files
+input.txt
+
+# Output files
 output.txt
+
+# Graphs
+*.dot
+*.pdf
+
+# Profiling
+/visualvm_217
 
 # Benchmarks
 *.csv

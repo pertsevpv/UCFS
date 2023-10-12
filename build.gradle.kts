@@ -8,7 +8,9 @@ group = "hollowcoder"
 
 version = "1.0.0"
 
-repositories { mavenCentral() }
+repositories {
+  mavenCentral()
+}
 
 dependencies {
   testImplementation(kotlin("test"))

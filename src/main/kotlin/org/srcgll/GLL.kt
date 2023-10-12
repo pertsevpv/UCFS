@@ -71,7 +71,6 @@ class GLL
         var curSPPFNode = curDescriptor.sppfNode
         val state       = curDescriptor.rsmState
         val pos         = curDescriptor.inputPosition
-        val weight      = curDescriptor.weight
         val gssNode     = curDescriptor.gssNode
         
         addDescriptorToHandled(curDescriptor)
@@ -105,8 +104,8 @@ class GLL
                                     getOrCreateTerminalSPPFNode(
                                         rsmEdge.terminal,
                                         pos,
-                                        rsmEdge.terminal.size,
-                                        curSPPFNode?.weight ?: 0
+                                        pos + rsmEdge.terminal.size,
+                                        0
                                     )
                                 ),
                                 pos + rsmEdge.terminal.size
@@ -136,18 +135,7 @@ class GLL
             // null represents Epsilon "Terminal"
             val errorRecoveryEdges = HashMap<Terminal?, TerminalEdgeTarget>()
 
-            // TODO: What should we do if terminals are strings?
             val currentTerminal = Terminal(input[pos].toString())
-
-//            var currentTerminal : Terminal
-//            var coveredByCurrentTerminal : HashSet<RSMState> = HashSet()
-//
-//            for (kvp in state.outgoingTerminalEdges) {
-//                if (kvp.key.match(pos, input)) {
-//                    currentTerminal = kvp.key
-//                    coveredByCurrentTerminal = state.outgoingTerminalEdges.getValue(currentTerminal)
-//                }
-//            }
 
             val coveredByCurrentTerminal : HashSet<RSMState> =
                 if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
@@ -166,7 +154,6 @@ class GLL
                 }
             }
 
-            // TODO: What should we do if terminals are strings?
             errorRecoveryEdges[null] = TerminalEdgeTarget(pos + currentTerminal.size, 1)
 
             for (kvp in errorRecoveryEdges) {
@@ -208,7 +195,7 @@ class GLL
                             terminal,
                             curDescriptor.inputPosition,
                             targetEdge.targetPosition,
-                            (curDescriptor.sppfNode?.weight ?: 0) + targetEdge.weight
+                            targetEdge.weight
                         )
                     ),
                     targetEdge.targetPosition
@@ -298,7 +285,7 @@ class GLL
     )
         : SPPFNode
     {
-        val node = TerminalSPPFNode(terminal, leftExtent, leftExtent + rightExtent, weight)
+        val node = TerminalSPPFNode(terminal, leftExtent, rightExtent, weight)
 
         if (!createdSPPFNodes.containsKey(node)) {
             createdSPPFNodes[node] = node
@@ -386,11 +373,13 @@ class GLL
                         val oldWeight = curNode.weight
                         var newWeight = Int.MAX_VALUE
 
-                        curNode.kids.forEach {newWeight = minOf(newWeight, it.weight)}
+                        curNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
 
                         if (oldWeight > newWeight) {
-                            curNode.kids.removeIf { it.weight > newWeight }
                             curNode.weight = newWeight
+
+                            curNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curNode) }
+                            curNode.kids.removeIf { it.weight > newWeight }
 
                             curNode.parents.forEach { deque.addLast(it) }
                         }
@@ -414,10 +403,13 @@ class GLL
                     val oldWeight = curNode.weight
                     var newWeight = Int.MAX_VALUE
 
-                    curNode.kids.forEach {newWeight = minOf(newWeight, it.weight)}
+                    curNode.kids.forEach { newWeight = minOf(newWeight, it.weight) }
 
                     if (oldWeight > newWeight) {
                         curNode.weight = newWeight
+
+                        curNode.kids.forEach { if (it.weight > newWeight) it.parents.remove(curNode) }
+                        curNode.kids.removeIf { it.weight > newWeight }
 
                         curNode.parents.forEach { deque.addLast(it) }
                     }
