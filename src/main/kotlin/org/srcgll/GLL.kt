@@ -92,7 +92,7 @@ class GLL
 
         if (curSPPFNode is SymbolSPPFNode && (parseResult == null || parseResult!!.weight > curSPPFNode.weight) && state.nonterminal == startState.nonterminal && curSPPFNode.leftExtent == 0 && curSPPFNode.rightExtent == input.length) {
             parseResult = curSPPFNode
-            return
+//            return
         }
 
         for (kvp in state.outgoingTerminalEdges) {
