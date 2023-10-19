@@ -35,6 +35,8 @@ open class PackedSPPFNode
 
         if (rightSPPFNode != other.rightSPPFNode) return false
 
+//        if (weight != other.weight)               return false
+
         return true
     }
 

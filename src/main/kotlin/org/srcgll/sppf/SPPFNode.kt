@@ -37,6 +37,8 @@ open class SPPFNode
 
         if (rightExtent != other.rightExtent) return false
 
+        if (weight != other.weight)           return false
+
         return true
     }
 

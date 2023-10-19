@@ -37,9 +37,9 @@ class RSMState
     {
         if (!coveredTargetStates.contains(edge.head)) {
             var added = errorRecoveryLabels.add(edge.terminal)
-            assert(added)
+//            assert(added)
             added = coveredTargetStates.add(edge.head)
-            assert(added)
+//            assert(added)
         }
         
         if (outgoingTerminalEdges.containsKey(edge.terminal)) {

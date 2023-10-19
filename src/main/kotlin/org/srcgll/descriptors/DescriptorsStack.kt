@@ -14,8 +14,8 @@ class Descriptor
 {
     val hashCode =
             23 * (23 * (23 * 17 + rsmState.hashCode()) + inputPosition.hashCode()) + gssNode.hashCode()
-    
-    val weight : Int = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
+
+    fun weight() : Int = (sppfNode?.weight ?: 0) + gssNode.minWeightOfLeftPart
     
     override fun hashCode() = hashCode
     
@@ -48,7 +48,7 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
 
     override fun add(descriptor : Descriptor)
     {
-        val pathWeight = descriptor.weight
+        val pathWeight = descriptor.weight()
 
         // TODO: Think about abandoning duplicate descriptors, some kind of avoiding duplicate descriptors is implemented in GSSNode class
         if (pathWeight == 0) {
@@ -68,7 +68,10 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
     override fun next() : Descriptor
     {
         if (defaultDescriptorsStackIsNotEmpty()) {
-            return defaultDescriptorsStack.removeLast()
+            val result = defaultDescriptorsStack.removeFirst()
+            assert(result.weight() == 0)
+
+            return result
         } else {
             val iterator = errorRecoveringDescriptorsStacks.keys.iterator()
             val moved    = iterator.hasNext()
@@ -77,7 +80,7 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
             val currentMin = iterator.next()
             val result = errorRecoveringDescriptorsStacks.getValue(currentMin).removeLast()
             
-            if (result.weight > currentMin) {
+            if (result.weight() > currentMin) {
                 throw Error("!!!")
             }
             if (errorRecoveringDescriptorsStacks.getValue(currentMin).isEmpty()) {

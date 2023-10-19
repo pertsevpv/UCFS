@@ -22,7 +22,7 @@ class GSSNode
         
         if (!edges.containsKey(label)) edges[label] = HashSet()
         
-        return edges[label]!!.add(gssNode)
+        return edges.getValue(label).add(gssNode)
     }
     
     override fun toString() = "GSSNode(nonterminal=$nonterminal, inputPosition=$inputPosition)"

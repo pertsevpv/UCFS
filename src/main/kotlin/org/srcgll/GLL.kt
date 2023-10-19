@@ -5,6 +5,7 @@ import org.srcgll.grammar.RSMTerminalEdge
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.descriptors.*
+import org.srcgll.grammar.RSMNonterminalEdge
 import org.srcgll.gss.*
 import org.srcgll.sppf.*
 
@@ -13,6 +14,7 @@ class GLL
     val startState : RSMState,
     val input      : String,
     val recovery   : Boolean = true,
+    val debug      : Boolean = false,
 )
 {
 
@@ -34,7 +36,7 @@ class GLL
             createdGSSNodes[gssNode] = gssNode
         }
 
-        return createdGSSNodes[gssNode]!!
+        return createdGSSNodes.getValue(gssNode)
     }
 
     fun parse() : SPPFNode?
@@ -72,9 +74,10 @@ class GLL
         val state       = curDescriptor.rsmState
         val pos         = curDescriptor.inputPosition
         val gssNode     = curDescriptor.gssNode
-        
+
         addDescriptorToHandled(curDescriptor)
-        
+
+
         if (state.isStart && state.isFinal)
             curSPPFNode = getNodeP(
                               state,
@@ -83,9 +86,14 @@ class GLL
                                   state,
                                   pos,
                                   pos,
-                                  curSPPFNode?.weight ?: 0
+                                  0
                                   )
                               )
+
+        if (curSPPFNode is SymbolSPPFNode && (parseResult == null || parseResult!!.weight > curSPPFNode.weight) && state.nonterminal == startState.nonterminal && curSPPFNode.leftExtent == 0 && curSPPFNode.rightExtent == input.length) {
+            parseResult = curSPPFNode
+            return
+        }
 
         for (kvp in state.outgoingTerminalEdges) {
             if (pos >= input.length) break
@@ -114,12 +122,14 @@ class GLL
                 }
             }
         }
+
         for (kvp in state.outgoingNonterminalEdges) {
             for (target in kvp.value) {
+                val rsmEdge = RSMNonterminalEdge(kvp.key, target)
                 val descriptor =
                         Descriptor(
-                            kvp.key.startState,
-                            createGSSNode(kvp.key, target, gssNode, curSPPFNode, pos),
+                            rsmEdge.nonterminal.startState,
+                            createGSSNode(rsmEdge.nonterminal, rsmEdge.head, gssNode, curSPPFNode, pos),
                             null,
                             pos
                         )
@@ -127,18 +137,18 @@ class GLL
             }
         }
 
-
-
-        // TODO: Check
-        if (recovery && pos < input.length) {
-
+        if (recovery) {
             // null represents Epsilon "Terminal"
             val errorRecoveryEdges = HashMap<Terminal?, TerminalEdgeTarget>()
 
-            val currentTerminal = Terminal(input[pos].toString())
+            var currentTerminal : Terminal? = null
+
+            if (pos < input.length) {
+                currentTerminal = Terminal(input[pos].toString())
+            }
 
             val coveredByCurrentTerminal : HashSet<RSMState> =
-                if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
+                if (currentTerminal != null && state.outgoingTerminalEdges.containsKey(currentTerminal)) {
                     state.outgoingTerminalEdges.getValue(currentTerminal)
                 } else {
                     HashSet()
@@ -154,23 +164,24 @@ class GLL
                 }
             }
 
-            errorRecoveryEdges[null] = TerminalEdgeTarget(pos + currentTerminal.size, 1)
+            if (currentTerminal != null) {
+                errorRecoveryEdges[null] = TerminalEdgeTarget(pos + currentTerminal.size, 1)
+            }
 
             for (kvp in errorRecoveryEdges) {
                 if (kvp.key == null) {
-                    handleTerminalOrEpsilonEdge(curDescriptor, kvp.key, kvp.value, curDescriptor.rsmState)
+                    handleTerminalOrEpsilonEdge(curDescriptor, curSPPFNode, kvp.key, kvp.value, curDescriptor.rsmState)
                 } else {
                     // No need for emptiness check, since for empty set
                     // the iteration will not fire
                     if (state.outgoingTerminalEdges.containsKey(kvp.key)) {
                         for (targetState in state.outgoingTerminalEdges[kvp.key]!!) {
-                            handleTerminalOrEpsilonEdge(curDescriptor, kvp.key,  kvp.value, targetState)
+                            handleTerminalOrEpsilonEdge(curDescriptor, curSPPFNode, kvp.key,  kvp.value, targetState)
                         }
                     }
                 }
             }
         }
-
 
         if (state.isFinal) pop(gssNode, curSPPFNode, pos)
     }
@@ -179,6 +190,7 @@ class GLL
     fun handleTerminalOrEpsilonEdge
     (
         curDescriptor : Descriptor,
+        sppfNode      : SPPFNode?,
         terminal      : Terminal?,
         targetEdge    : TerminalEdgeTarget,
         targetState   : RSMState
@@ -190,7 +202,7 @@ class GLL
                     curDescriptor.gssNode,
                     getNodeP(
                         targetState,
-                        curDescriptor.sppfNode,
+                        sppfNode,
                         getOrCreateTerminalSPPFNode(
                             terminal,
                             curDescriptor.inputPosition,
@@ -258,12 +270,13 @@ class GLL
         val leftExtent  = sppfNode?.leftExtent ?: nextSPPFNode.leftExtent
         val rightExtent = nextSPPFNode.rightExtent
 
-        val parent : ParentSPPFNode =
-            if (state.isFinal) getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent)
-            else               getOrCreateItemSPPFNode(state, leftExtent, rightExtent)
-
         val packedNode = PackedSPPFNode(nextSPPFNode.leftExtent, state, sppfNode, nextSPPFNode)
-        
+
+        val parent : ParentSPPFNode =
+            if (state.isFinal) getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent, packedNode.weight)
+            else               getOrCreateItemSPPFNode(state, leftExtent, rightExtent, packedNode.weight)
+
+
         sppfNode?.parents?.add(packedNode)
         nextSPPFNode.parents.add(packedNode)
         packedNode.parents.add(parent)
@@ -272,7 +285,15 @@ class GLL
 
         // Define weight of parent node as minimum of kids' weights
         updateWeights(parent)
-        
+
+//        if (parent is SymbolSPPFNode && (parseResult == null || parseResult!!.weight > parent.weight) && state.nonterminal == startState.nonterminal && leftExtent == 0 && rightExtent == input.length) {
+//            parseResult = parent
+//        }
+
+        if (debug) {
+            toDot(parent, "./debug_sppf.dot")
+        }
+
         return parent
     }
 
@@ -299,7 +320,7 @@ class GLL
         state       : RSMState,
         leftExtent  : Int,
         rightExtent : Int,
-        weight      : Int = Int.MAX_VALUE
+        weight      : Int
     )
         : ParentSPPFNode
     {
@@ -318,7 +339,7 @@ class GLL
         nonterminal : Nonterminal,
         leftExtent  : Int,
         rightExtent : Int,
-        weight      : Int = Int.MAX_VALUE
+        weight      : Int
     )
         : SymbolSPPFNode
     {
@@ -327,13 +348,8 @@ class GLL
 
         if (!createdSPPFNodes.containsKey(node)) createdSPPFNodes[node] = node
 
-        val result = createdSPPFNodes[node]!! as SymbolSPPFNode
 
-        if (parseResult == null && nonterminal == startState.nonterminal && leftExtent == 0 && rightExtent == input.length) {
-            parseResult = result
-        }
-
-        return result
+        return createdSPPFNodes[node]!! as SymbolSPPFNode
     }
     
     fun addDescriptor(descriptor : Descriptor)
@@ -347,7 +363,7 @@ class GLL
     {
         val handledDescriptor = descriptor.gssNode.handledDescriptors.find { descriptor.hashCode() == it.hashCode() }
         
-        return handledDescriptor != null && handledDescriptor.weight <= descriptor.weight
+        return handledDescriptor != null && handledDescriptor.weight() <= descriptor.weight()
     }
     
     fun addDescriptorToHandled(descriptor : Descriptor)
