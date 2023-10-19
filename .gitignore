@@ -7,6 +7,8 @@ input.txt
 # Output files
 output.txt
 
+*.attach*
+
 # Graphs
 *.dot
 *.pdf
