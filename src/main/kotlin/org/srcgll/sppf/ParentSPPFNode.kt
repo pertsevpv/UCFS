@@ -1,11 +1,12 @@
 package org.srcgll.sppf
 
+import org.srcgll.grammar.TokenSequence
 import java.util.*
 
 open class ParentSPPFNode
 (
-    leftExtent  : Int,
-    rightExtent : Int,
+    leftExtent  : TokenSequence,
+    rightExtent : TokenSequence,
 )
     : SPPFNode(leftExtent, rightExtent, Int.MAX_VALUE)
 {

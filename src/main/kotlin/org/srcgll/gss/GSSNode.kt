@@ -2,6 +2,7 @@ package org.srcgll.gss
 
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.grammar.RSMState
+import org.srcgll.grammar.TokenSequence
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.sppf.SPPFNode
 import java.util.*
@@ -9,7 +10,7 @@ import java.util.*
 class GSSNode
 (
     val nonterminal         : Nonterminal,
-    val inputPosition       : Int,
+    val inputPosition       : TokenSequence,
     var minWeightOfLeftPart : Int,
 )
 {

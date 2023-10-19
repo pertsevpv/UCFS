@@ -42,16 +42,16 @@ fun toDot(sppfNode : ISPPFNode, filePath : String)
 
             while (queue.isNotEmpty()) {
                 node = queue.removeFirst()
-                if (!visited.add(node.Id)) continue
+                if (!visited.add(node.id)) continue
 
-                out.println(printNode(node.Id, node))
+                out.println(printNode(node.id, node))
 
                 (node as? ParentSPPFNode)?.kids?.forEach {
                     queue.addLast(it)
-                    if (!edges.containsKey(node.Id)) {
-                        edges[node.Id] = HashSet()
+                    if (!edges.containsKey(node.id)) {
+                        edges[node.id] = HashSet()
                     }
-                    edges.getValue(node.Id).add(it.Id)
+                    edges.getValue(node.id).add(it.id)
                 }
 
                 val leftChild  = (node as? PackedSPPFNode)?.leftSPPFNode
@@ -59,17 +59,17 @@ fun toDot(sppfNode : ISPPFNode, filePath : String)
 
                 if (leftChild != null) {
                     queue.addLast(leftChild)
-                    if (!edges.containsKey(node.Id)) {
-                        edges[node.Id] = HashSet()
+                    if (!edges.containsKey(node.id)) {
+                        edges[node.id] = HashSet()
                     }
-                    edges.getValue(node.Id).add(leftChild.Id)
+                    edges.getValue(node.id).add(leftChild.id)
                 }
                 if (rightChild != null) {
                     queue.addLast(rightChild)
-                    if (!edges.containsKey(node.Id)) {
-                        edges[node.Id] = HashSet()
+                    if (!edges.containsKey(node.id)) {
+                        edges[node.id] = HashSet()
                     }
-                    edges.getValue(node.Id).add(rightChild.Id)
+                    edges.getValue(node.id).add(rightChild.id)
                 }
             }
             for (kvp in edges) {

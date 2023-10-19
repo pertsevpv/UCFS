@@ -4,7 +4,9 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
+import org.srcgll.grammar.LinearInput
 import org.srcgll.grammar.readRSMFromTXT
+import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.sppf.toDot
 import java.io.File
 
@@ -45,12 +47,18 @@ fun main(args : Array<String>)
     parser.parse(args)
 
     val input   = File(pathToInput).readText().replace("\n", "").trim()
-    val grammar = readRSMFromTXT(pathToGrammar)
-    val result  = GLL(grammar, input, recovery = (recovery == RecoveryMode.ON)).parse()
+    val new_input = LinearInput(isStart = true)
 
-    File(pathToOutputString).printWriter().use {
-        out -> out.println(buildStringFromSPPF(result!!))
-    }
+    new_input.nextToken[Terminal("(")] = LinearInput()
+    new_input.nextToken[Terminal("(")]!!.nextToken[Terminal(")")] = LinearInput(isFinal = true)
+
+    val grammar = readRSMFromTXT(pathToGrammar)
+//    val result  = GLL(grammar, input, recovery = (recovery == RecoveryMode.ON)).parse()
+    val result  = GLL(grammar, new_input, recovery = (recovery == RecoveryMode.ON)).parse()
+
+//    File(pathToOutputString).printWriter().use {
+//        out -> out.println(buildStringFromSPPF(result!!))
+//    }
 
     toDot(result!!, pathToOutputSPPF)
 }

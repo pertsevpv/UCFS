@@ -1,5 +1,6 @@
 package org.srcgll.sppf
 
+import org.srcgll.grammar.TokenSequence
 import org.srcgll.grammar.symbol.Symbol
 import java.util.*
 class SPPFNodeId private constructor()
@@ -11,18 +12,15 @@ class SPPFNodeId private constructor()
     }
 }
 
-
-
 open class SPPFNode
 (
-    val leftExtent      : Int,
-    val rightExtent     : Int,
+    val leftExtent      : TokenSequence,
+    val rightExtent     : TokenSequence,
     override var weight : Int,
-    override var Id     : Int = SPPFNodeId.getFirstFreeSPPFNodeId(),
+    override var id     : Int = SPPFNodeId.getFirstFreeSPPFNodeId(),
 )
     : ISPPFNode
 {
-    // Backwards reference to parent SPPF Node
     override val parents : HashSet<ISPPFNode> = HashSet()
     
     override fun toString() = "SPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent)"

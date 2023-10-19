@@ -1,21 +1,21 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.RSMState
+import org.srcgll.grammar.TokenSequence
 import java.util.*
 
 open class PackedSPPFNode
 (
-    val pivot         : Int, //  left extent of the right child
+    val pivot         : TokenSequence,
     val rsmState      : RSMState,
     val leftSPPFNode  : SPPFNode? = null,
     val rightSPPFNode : SPPFNode? = null,
-    override var Id   : Int = SPPFNodeId.getFirstFreeSPPFNodeId()
+    override var id   : Int = SPPFNodeId.getFirstFreeSPPFNodeId()
 )
     : ISPPFNode
 {
-    // Backwards reference to parent SPPF Node
     override val parents : HashSet<ISPPFNode> = HashSet()
-    // TODO: Resolve integer overflow when both subtrees have Int.MAX_VALUE
+
     override var weight  : Int = (leftSPPFNode?.weight ?: 0) + (rightSPPFNode?.weight ?: 0)
     
     override fun toString() =

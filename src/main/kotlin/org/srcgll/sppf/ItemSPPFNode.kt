@@ -1,13 +1,14 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.RSMState
+import org.srcgll.grammar.TokenSequence
 import java.util.*
 
 class ItemSPPFNode
 (
     val rsmState : RSMState,
-    leftExtent   : Int,
-    rightExtent  : Int,
+    leftExtent   : TokenSequence,
+    rightExtent  : TokenSequence,
 )
     : ParentSPPFNode(leftExtent, rightExtent)
 {

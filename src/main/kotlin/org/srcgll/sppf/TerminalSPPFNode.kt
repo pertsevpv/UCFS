@@ -1,13 +1,14 @@
 package org.srcgll.sppf
 
+import org.srcgll.grammar.TokenSequence
 import org.srcgll.grammar.symbol.Terminal
 import java.util.*
 
 class TerminalSPPFNode
 (
     val terminal : Terminal?,
-    leftExtent   : Int,
-    rightExtent  : Int,
+    leftExtent   : TokenSequence,
+    rightExtent  : TokenSequence,
     weight       : Int,
 )
     : SPPFNode(leftExtent, rightExtent, weight)

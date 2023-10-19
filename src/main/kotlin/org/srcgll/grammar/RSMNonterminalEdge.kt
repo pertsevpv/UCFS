@@ -7,7 +7,6 @@ class RSMNonterminalEdge
     val nonterminal : Nonterminal,
     val head        : RSMState,
 )
-    : RSMEdge
 {
     override fun toString() = "RSMNonterminalEdge(nonterminal=$nonterminal, head=$head)"
 

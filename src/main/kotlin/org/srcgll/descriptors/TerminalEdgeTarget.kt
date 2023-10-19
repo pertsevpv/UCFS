@@ -1,7 +1,9 @@
 package org.srcgll.descriptors
 
+import org.srcgll.grammar.TokenSequence
+
 class TerminalEdgeTarget
 (
-    val targetPosition : Int,
+    val targetPosition : TokenSequence,
     val weight         : Int = 0,
 )

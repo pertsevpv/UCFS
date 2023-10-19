@@ -1,5 +1,6 @@
 package org.srcgll.sppf
 
+import org.srcgll.grammar.TokenSequence
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Symbol
 import java.util.*
@@ -7,8 +8,8 @@ import java.util.*
 class SymbolSPPFNode
 (
     val symbol  : Nonterminal,
-    leftExtent  : Int,
-    rightExtent : Int,
+    leftExtent  : TokenSequence,
+    rightExtent : TokenSequence,
 )
     : ParentSPPFNode(leftExtent, rightExtent)
 {

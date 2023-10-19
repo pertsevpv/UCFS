@@ -1,6 +1,7 @@
 package org.srcgll.descriptors
 
 import org.srcgll.grammar.RSMState
+import org.srcgll.grammar.TokenSequence
 import org.srcgll.gss.GSSNode
 import org.srcgll.sppf.SPPFNode
 
@@ -9,7 +10,7 @@ class Descriptor
     val rsmState      : RSMState,
     val gssNode       : GSSNode,
     val sppfNode      : SPPFNode?,
-    val inputPosition : Int,
+    val inputPosition : TokenSequence,
 )
 {
     val hashCode =
@@ -35,9 +36,8 @@ interface IDescriptorsStack
     fun next() : Descriptor
 }
 
-class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
+class ErrorRecoveringDescriptorsStack : IDescriptorsStack
 {
-    private var createdDescriptors               = Array<HashSet<Descriptor>>(size) { HashSet() }
     private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor>>()
     private var defaultDescriptorsStack          = ArrayDeque<Descriptor>()
 
@@ -52,8 +52,6 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
 
         // TODO: Think about abandoning duplicate descriptors, some kind of avoiding duplicate descriptors is implemented in GSSNode class
         if (pathWeight == 0) {
-//            if (createdDescriptors[descriptor.inputPosition].add(descriptor)) {
-//            }
             defaultDescriptorsStack.addLast(descriptor)
         } else {
             if (!errorRecoveringDescriptorsStacks.containsKey(pathWeight)) {
@@ -68,7 +66,7 @@ class ErrorRecoveringDescriptorsStack(size : Int) : IDescriptorsStack
     override fun next() : Descriptor
     {
         if (defaultDescriptorsStackIsNotEmpty()) {
-            val result = defaultDescriptorsStack.removeFirst()
+            val result = defaultDescriptorsStack.removeLast()
             assert(result.weight() == 0)
 
             return result
