@@ -52,7 +52,7 @@ Text  = \'\"\'[^\r\n\"\\]*\'\"\'
 "="     { return token(SymbolCode.EQ); }
 {Bool}  { return token(SymbolCode.BOOL); }
 {Int}   { return token(SymbolCode.INT); }
-{Lit}    { return token(SymbolCode.LIT); }
+{Lit}   { return token(SymbolCode.LIT); }
 {Text}  { return token(SymbolCode.TEXT); }
 {Space} {}
 <<EOF>> { return token(SymbolCode.EOF); }
