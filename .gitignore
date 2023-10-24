@@ -7,6 +7,16 @@ input.txt
 # Output files
 output.txt
 
+# Benchmarks
+/src/main/kotlin/org/srcgll/benchmarks/inputFiles
+/src/main/kotlin/org/srcgll/benchmarks/outputFiles
+/src/main/kotlin/org/srcgll/benchmarks/test.kt
+*.csv
+
+# Lexer
+/src/main/kotlin/org/srcgll/lexer/*.x
+/src/main/kotlin/org/srcgll/lexer/*.jflex
+/src/main/kotlin/org/srcgll/lexer/*.java
 
 # No idea wtf is this
 *.attach*
@@ -17,9 +27,6 @@ output.txt
 
 # Profiling
 /visualvm_217
-
-# Benchmarks
-*.csv
 
 # Log file
 *.log
