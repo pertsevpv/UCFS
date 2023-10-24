@@ -9,8 +9,8 @@ output.txt
 
 # Benchmarks
 /src/main/kotlin/org/srcgll/benchmarks/inputFiles
-/src/main/kotlin/org/srcgll/benchmarks/outputFiles
 /src/main/kotlin/org/srcgll/benchmarks/test.kt
+/src/main/kotlin/org/srcgll/benchmarks/generatedStrings
 *.csv
 
 # Lexer

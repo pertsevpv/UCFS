@@ -1,8 +1,6 @@
 package org.srcgll.grammar
 
 import org.srcgll.grammar.symbol.Terminal
-import org.srcgll.lexer.SymbolCode
-import org.srcgll.lexer.Token
 
 class RSMTerminalEdge
 (

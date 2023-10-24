@@ -1,7 +1,5 @@
 package org.srcgll.lexer
 
-import org.srcgll.grammar.symbol.Terminal
-
 class Token<TokenType>
 (
     val type  : TokenType,

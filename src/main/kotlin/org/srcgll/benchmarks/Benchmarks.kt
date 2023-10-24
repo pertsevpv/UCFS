@@ -10,7 +10,9 @@ import org.srcgll.input.Graph
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.lexer.Token
+import org.srcgll.sppf.ISPPFNode
 import org.srcgll.sppf.SPPFNode
+import org.srcgll.sppf.toDot
 import java.io.File
 import java.io.StringReader
 import kotlin.system.measureNanoTime
@@ -105,6 +107,9 @@ fun runRSMWithSPPF
             }
 
             inputGraph.finalVertex = vertexId - 1
+
+            var result : ISPPFNode? = GLL(rsm, inputGraph, recovery = true).parse()
+            toDot(result!!, "./outputFiles/${inputName}_sppf.dot")
 
             for (warmUp in 1 .. warmUpRounds)
             {
