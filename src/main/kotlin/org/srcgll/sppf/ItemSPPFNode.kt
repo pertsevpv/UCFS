@@ -1,16 +1,15 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.TokenSequence
 import java.util.*
 
-class ItemSPPFNode
+class ItemSPPFNode <VertexType>
 (
     val rsmState : RSMState,
-    leftExtent   : TokenSequence,
-    rightExtent  : TokenSequence,
+    leftExtent   : VertexType,
+    rightExtent  : VertexType,
 )
-    : ParentSPPFNode(leftExtent, rightExtent)
+    : ParentSPPFNode<VertexType>(leftExtent, rightExtent)
 {
     override fun toString() =
         "ItemSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent, rsmState=$rsmState)"
@@ -18,11 +17,8 @@ class ItemSPPFNode
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)             return true
-
-        if (other !is ItemSPPFNode)     return false
-
+        if (other !is ItemSPPFNode<*>)  return false
         if (!super.equals(other))       return false
-
         if (rsmState != other.rsmState) return false
 
         return true

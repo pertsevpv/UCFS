@@ -1,8 +1,7 @@
 package org.srcgll.sppf
 
-import org.srcgll.grammar.TokenSequence
-import org.srcgll.grammar.symbol.Symbol
 import java.util.*
+
 class SPPFNodeId private constructor()
 {
     companion object {
@@ -12,10 +11,10 @@ class SPPFNodeId private constructor()
     }
 }
 
-open class SPPFNode
+open class SPPFNode <VertexType>
 (
-    val leftExtent      : TokenSequence,
-    val rightExtent     : TokenSequence,
+    val leftExtent      : VertexType,
+    val rightExtent     : VertexType,
     override var weight : Int,
     override var id     : Int = SPPFNodeId.getFirstFreeSPPFNodeId(),
 )
@@ -29,7 +28,7 @@ open class SPPFNode
     {
         if (this === other)                   return true
 
-        if (other !is SPPFNode)               return false
+        if (other !is SPPFNode<*>)               return false
 
         if (leftExtent != other.leftExtent)   return false
 
@@ -43,6 +42,4 @@ open class SPPFNode
     // TODO: Think about redefining hash := (Prime * leftHash + rightHash)
     open val hashCode : Int = Objects.hash(leftExtent, rightExtent)
     override fun hashCode() = hashCode
-
-    open fun hasSymbol(symbol : Symbol) = false
 }

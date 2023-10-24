@@ -1,15 +1,14 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.TokenSequence
 import java.util.*
 
-open class PackedSPPFNode
+open class PackedSPPFNode <VertexType>
 (
-    val pivot         : TokenSequence,
+    val pivot         : VertexType,
     val rsmState      : RSMState,
-    val leftSPPFNode  : SPPFNode? = null,
-    val rightSPPFNode : SPPFNode? = null,
+    val leftSPPFNode  : SPPFNode<VertexType>? = null,
+    val rightSPPFNode : SPPFNode<VertexType>? = null,
     override var id   : Int = SPPFNodeId.getFirstFreeSPPFNodeId()
 )
     : ISPPFNode
@@ -24,18 +23,11 @@ open class PackedSPPFNode
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                       return true
-
-        if (other !is PackedSPPFNode)             return false
-
+        if (other !is PackedSPPFNode<*>)          return false
         if (pivot != other.pivot)                 return false
-
         if (rsmState != other.rsmState)           return false
-
         if (leftSPPFNode != other.leftSPPFNode)   return false
-
         if (rightSPPFNode != other.rightSPPFNode) return false
-
-//        if (weight != other.weight)               return false
 
         return true
     }

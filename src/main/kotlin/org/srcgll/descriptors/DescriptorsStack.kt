@@ -1,16 +1,15 @@
 package org.srcgll.descriptors
 
 import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.TokenSequence
 import org.srcgll.gss.GSSNode
 import org.srcgll.sppf.SPPFNode
 
-class Descriptor
+class Descriptor <VertexType>
 (
     val rsmState      : RSMState,
-    val gssNode       : GSSNode,
-    val sppfNode      : SPPFNode?,
-    val inputPosition : TokenSequence,
+    val gssNode       : GSSNode<VertexType>,
+    val sppfNode      : SPPFNode<VertexType>?,
+    val inputPosition : VertexType,
 )
 {
     val hashCode =
@@ -22,70 +21,73 @@ class Descriptor
     
     override fun equals(other : Any?) : Boolean
     {
-        return other is Descriptor                  &&
+        return other is Descriptor<*>               &&
                other.rsmState == rsmState           &&
                other.inputPosition == inputPosition &&
                other.gssNode == gssNode
     }
 }
 
-interface IDescriptorsStack
+interface IDescriptorsStack <VertexType>
 {
     fun defaultDescriptorsStackIsNotEmpty() : Boolean
-    fun add(descriptor : Descriptor)
-    fun next() : Descriptor
+    fun add(descriptor : Descriptor<VertexType>)
+    fun next() : Descriptor<VertexType>
+    fun isAlreadyHandled(descriptor : Descriptor<VertexType>) : Boolean
+    fun addToHandled(descriptor : Descriptor<VertexType>)
 }
 
-class ErrorRecoveringDescriptorsStack : IDescriptorsStack
+class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack <VertexType>
 {
-    private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor>>()
-    private var defaultDescriptorsStack          = ArrayDeque<Descriptor>()
+    private var defaultDescriptorsStack          = ArrayDeque<Descriptor<VertexType>>()
+    private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor<VertexType>>>()
 
-    /* TODO: Check, maybe we also need to check whether errorRecovery stacks are not empty
+    /* TODO: Maybe we also need to check whether errorRecovery stacks are not empty
              Could use counter variable to track every pushed/removed stack in errorRecovering stacks
      */
     override fun defaultDescriptorsStackIsNotEmpty() = defaultDescriptorsStack.isNotEmpty()
 
-    override fun add(descriptor : Descriptor)
+    override fun add(descriptor : Descriptor<VertexType>)
     {
-        val pathWeight = descriptor.weight()
+        if (!isAlreadyHandled(descriptor)) {
+            val pathWeight = descriptor.weight()
 
-        // TODO: Think about abandoning duplicate descriptors, some kind of avoiding duplicate descriptors is implemented in GSSNode class
-        if (pathWeight == 0) {
-            defaultDescriptorsStack.addLast(descriptor)
-        } else {
-            if (!errorRecoveringDescriptorsStacks.containsKey(pathWeight)) {
-                errorRecoveringDescriptorsStacks[pathWeight] = ArrayDeque()
+            if (pathWeight == 0) {
+                defaultDescriptorsStack.addLast(descriptor)
+            } else {
+                if (!errorRecoveringDescriptorsStacks.containsKey(pathWeight))
+                    errorRecoveringDescriptorsStacks[pathWeight] = ArrayDeque()
+
+                errorRecoveringDescriptorsStacks.getValue(pathWeight).addLast(descriptor)
             }
-            errorRecoveringDescriptorsStacks.getValue(pathWeight).addLast(descriptor)
         }
     }
-    
-    
-    
-    override fun next() : Descriptor
+    override fun next() : Descriptor <VertexType>
     {
         if (defaultDescriptorsStackIsNotEmpty()) {
-            val result = defaultDescriptorsStack.removeLast()
-            assert(result.weight() == 0)
-
-            return result
+            return defaultDescriptorsStack.removeLast()
         } else {
-            val iterator = errorRecoveringDescriptorsStacks.keys.iterator()
-            val moved    = iterator.hasNext()
-            assert(moved)
-            
+            val iterator   = errorRecoveringDescriptorsStacks.keys.iterator()
             val currentMin = iterator.next()
-            val result = errorRecoveringDescriptorsStacks.getValue(currentMin).removeLast()
-            
-            if (result.weight() > currentMin) {
-                throw Error("!!!")
-            }
-            if (errorRecoveringDescriptorsStacks.getValue(currentMin).isEmpty()) {
+            val result     = errorRecoveringDescriptorsStacks.getValue(currentMin).removeLast()
+
+            if (errorRecoveringDescriptorsStacks.getValue(currentMin).isEmpty())
                 errorRecoveringDescriptorsStacks.remove(currentMin)
-            }
-            
+
             return result
         }
     }
+
+    override fun isAlreadyHandled(descriptor : Descriptor<VertexType>) : Boolean
+    {
+        val handledDescriptor = descriptor.gssNode.handledDescriptors.find { descriptor.hashCode() == it.hashCode() }
+
+        return handledDescriptor != null && handledDescriptor.weight() <= descriptor.weight()
+    }
+
+    override fun addToHandled(descriptor : Descriptor<VertexType>)
+    {
+        descriptor.gssNode.handledDescriptors.add(descriptor)
+    }
 }
+

@@ -118,7 +118,7 @@ TerminalEdge(tail=35,head=39,terminal=Terminal("not"))
 
 NonterminalEdge(tail=40,head=41,nonterminal=Nonterminal("BoolVar"))
 NonterminalEdge(tail=40,head=42,nonterminal=Nonterminal("BoolTerm"))
-NonterminalEdge(tail=43,head=41,nonterminal=Nonterminal("BoolVar"))
+NonterminalEdge(tail=43,head=41,nonterminal=Nonterminal("BoolExpression"))
 NonterminalEdge(tail=44,head=45,nonterminal=Nonterminal("BoolExpression"))
 NonterminalEdge(tail=40,head=46,nonterminal=Nonterminal("NumExpression"))
 NonterminalEdge(tail=47,head=41,nonterminal=Nonterminal("NumExpression"))

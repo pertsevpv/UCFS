@@ -2,22 +2,21 @@ package org.srcgll.gss
 
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.TokenSequence
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.sppf.SPPFNode
 import java.util.*
 
-class GSSNode
+class GSSNode <VertexType>
 (
     val nonterminal         : Nonterminal,
-    val inputPosition       : TokenSequence,
+    val inputPosition       : VertexType,
     var minWeightOfLeftPart : Int,
 )
 {
-    val edges : HashMap<Pair<RSMState, SPPFNode?>, HashSet<GSSNode>> = HashMap()
-    val handledDescriptors = HashSet<Descriptor>()
+    val edges : HashMap<Pair<RSMState, SPPFNode<VertexType>?>, HashSet<GSSNode<VertexType>>> = HashMap()
+    val handledDescriptors = HashSet<Descriptor<VertexType>>()
     
-    fun addEdge(rsmState : RSMState, sppfNode : SPPFNode?, gssNode : GSSNode) : Boolean
+    fun addEdge(rsmState : RSMState, sppfNode : SPPFNode<VertexType>?, gssNode : GSSNode<VertexType>) : Boolean
     {
         val label = Pair(rsmState, sppfNode)
         
@@ -31,13 +30,10 @@ class GSSNode
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                       return true
-        
-        if (other !is GSSNode)                    return false
-        
+        if (other !is GSSNode<*>)                 return false
         if (nonterminal != other.nonterminal)     return false
-        
         if (inputPosition != other.inputPosition) return false
-        
+
         return true
     }
     

@@ -1,5 +1,6 @@
 plugins {
   kotlin("jvm") version "1.8.0"
+  `java-library`
   application
   `maven-publish`
 }
@@ -33,6 +34,14 @@ tasks.withType<Jar> {
       configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) } +
           sourcesMain.output
   from(contents)
+}
+
+sourceSets {
+  main {
+    java {
+      setSrcDirs(listOf("src"))
+    }
+  }
 }
 
 publishing {

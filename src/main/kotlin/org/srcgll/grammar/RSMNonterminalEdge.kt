@@ -13,11 +13,8 @@ class RSMNonterminalEdge
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                   return true
-
         if (other !is RSMNonterminalEdge)     return false
-
         if (nonterminal != other.nonterminal) return false
-
         if (head != other.head)               return false
 
         return true

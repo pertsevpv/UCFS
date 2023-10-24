@@ -22,9 +22,7 @@ class RSMState
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)     return true
-
         if (other !is RSMState) return false
-
         if (id != other.id)     return false
 
         return true
@@ -36,14 +34,13 @@ class RSMState
     fun addTerminalEdge(edge : RSMTerminalEdge)
     {
         if (!coveredTargetStates.contains(edge.head)) {
-            var added = errorRecoveryLabels.add(edge.terminal)
-//            assert(added)
-            added = coveredTargetStates.add(edge.head)
-//            assert(added)
+            errorRecoveryLabels.add(edge.terminal)
+            coveredTargetStates.add(edge.head)
         }
         
         if (outgoingTerminalEdges.containsKey(edge.terminal)) {
             val targetStates = outgoingTerminalEdges.getValue(edge.terminal)
+
             targetStates.add(edge.head)
         } else {
             outgoingTerminalEdges[edge.terminal] = hashSetOf(edge.head)
@@ -54,6 +51,7 @@ class RSMState
     {
         if (outgoingNonterminalEdges.containsKey(edge.nonterminal)) {
             val targetStates = outgoingNonterminalEdges.getValue(edge.nonterminal)
+
             targetStates.add(edge.head)
         } else {
             outgoingNonterminalEdges[edge.nonterminal] = hashSetOf(edge.head)

@@ -4,11 +4,13 @@ import kotlinx.cli.ArgParser
 import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
-import org.srcgll.grammar.LinearInput
 import org.srcgll.grammar.readRSMFromTXT
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.input.Graph
 import org.srcgll.sppf.toDot
-import java.io.File
+import java.io.*
+import org.srcgll.lexer.GeneratedLexer
+import org.srcgll.lexer.SymbolCode
+import org.srcgll.lexer.Token
 
 enum class RecoveryMode {
     ON,
@@ -46,19 +48,31 @@ fun main(args : Array<String>)
 
     parser.parse(args)
 
-    val input   = File(pathToInput).readText().replace("\n", "").trim()
-    val new_input = LinearInput(isStart = true)
+    val inputGraph : Graph<Int, Token<SymbolCode>> = Graph()
+    var token      : Token<SymbolCode>
 
-    new_input.nextToken[Terminal("(")] = LinearInput()
-    new_input.nextToken[Terminal("(")]!!.nextToken[Terminal(")")] = LinearInput(isFinal = true)
+    val input    = File(pathToInput).readText()
+    val grammar  = readRSMFromTXT(pathToGrammar)
+    var lexer    = GeneratedLexer(StringReader(input))
+    var vertexId = 1
 
-    val grammar = readRSMFromTXT(pathToGrammar)
-//    val result  = GLL(grammar, input, recovery = (recovery == RecoveryMode.ON)).parse()
-    val result  = GLL(grammar, new_input, recovery = (recovery == RecoveryMode.ON)).parse()
+    inputGraph.addVertex(vertexId)
+    inputGraph.startVertex = vertexId
 
-//    File(pathToOutputString).printWriter().use {
-//        out -> out.println(buildStringFromSPPF(result!!))
-//    }
+    while (!lexer.yyatEOF()) {
+        token = lexer.yylex() as Token<SymbolCode>
+//        println("(" + token.value + ")")
+        inputGraph.addEdge(vertexId, token, ++vertexId)
+        inputGraph.addVertex(vertexId)
+    }
+
+    inputGraph.finalVertex = vertexId - 1
+
+    val result  = GLL(grammar, inputGraph, recovery = (recovery == RecoveryMode.ON)).parse()
+
+    File(pathToOutputString).printWriter().use {
+        out -> out.println(buildStringFromSPPF(result!!))
+    }
 
     toDot(result!!, pathToOutputSPPF)
 }
