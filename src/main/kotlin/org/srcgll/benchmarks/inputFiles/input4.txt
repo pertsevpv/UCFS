@@ -1,0 +1,17 @@
+{{{{{
+
+while do skip
+
+}}}}}
+
+{{{{{
+
+while do print 60
+
+}}}}}
+
+{{{{{
+
+while do print read
+
+}}}}}

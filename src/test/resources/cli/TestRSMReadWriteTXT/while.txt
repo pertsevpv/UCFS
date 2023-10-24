@@ -90,6 +90,9 @@ TerminalEdge(tail=12,head=13,terminal=Terminal("else"))
 TerminalEdge(tail=15,head=13,terminal=Terminal("do"))
 TerminalEdge(tail=18,head=8,terminal=Terminal("}"))
 
+TerminalEdge(tail=33,head=34,terminal=Terminal("false"))
+TerminalEdge(tail=33,head=34,terminal=Terminal("true"))
+
 NonterminalEdge(tail=19,head=20,nonterminal=Nonterminal("NumTerm"))
 NonterminalEdge(tail=19,head=21,nonterminal=Nonterminal("NumExpression"))
 NonterminalEdge(tail=22,head=20,nonterminal=Nonterminal("NumTerm"))
