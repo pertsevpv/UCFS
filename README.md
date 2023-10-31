@@ -188,4 +188,4 @@ In each row, the best mean time in seconds is highlighted in **bold**.
 
 #### More results
 
-More results, but in raw form, can be found in repository [kotgll_benchmarks](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll_benchmarks/)
+More results, but in raw form, can be found in the repository [kotgll_benchmarks](https://github.com/vadyushkins/kotgll_benchmarks/)
