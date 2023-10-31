@@ -1,23 +1,38 @@
-# kotgll
-[![Build](https://github.com/vadyushkins/kotgll/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/vadyushkins/kotgll/actions/workflows/build.yml)
-[![Test](https://github.com/vadyushkins/kotgll/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/vadyushkins/kotgll/actions/workflows/test.yml)
+# UCFS
+[![Build](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/actions/workflows/build.yml/badge.svg?branch=main)](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/actions/workflows/build.yml)
+[![Test](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/actions/workflows/test.yml)
 
-* [About](https://github.com/vadyushkins/kotgll#about)
-* [Usage](https://github.com/vadyushkins/kotgll#usage)
-  * [From sources](https://github.com/vadyushkins/kotgll#from-sources)
-  * [Using JAR](https://github.com/vadyushkins/kotgll#using-jar)
-  * [CFG Format Example](https://github.com/vadyushkins/kotgll#cfg-format-example)
-  * [RSM Format Example](https://github.com/vadyushkins/kotgll#rsm-format-example)
-* [Performance](https://github.com/vadyushkins/kotgll#performance)
-  * [Graphs](https://github.com/vadyushkins/kotgll#graphs)
-  * [Grammars](https://github.com/vadyushkins/kotgll#grammars)
-  * [Results](https://github.com/vadyushkins/kotgll#results)
-  * [More results](https://github.com/vadyushkins/kotgll#more-results)
+* [About](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#about)
+* [Usage](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#usage)
+  * [From sources](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#from-sources)
+  * [Using JAR](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#using-jar)
+  * [CFG Format Example](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#cfg-format-example)
+  * [RSM Format Example](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#rsm-format-example)
+* [Performance](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#performance)
+  * [Graphs](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#graphs)
+  * [Grammars](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#grammars)
+  * [Results](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#results)
+  * [More results](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#more-results)
 
 > Note: project under heavy development!
 
 ## About
-**kotgll** is an open-source project for implementing the GLL algorithm and its modifications in Kotlin
+**UCFS** is an **U**nuversal **C**ontext-**F**ree **S**olver: a tool to solve problems related to context-free and regular language intersection. Examples of such problems:
+- Parsing
+- Context-free path querying (CFPQ)
+- Context-free language reachability (CFL-r)
+
+<!-- Online -- offline modes.
+
+All-pairs, multiple-source. All-paths, reachability. 
+
+Incrementality. Both the graph and RSM
+
+Error recovery.
+
+ GLL-based
+ RSM
+-->
 
 ## Usage
 
@@ -39,15 +54,15 @@ Options:
 
 #### Step 1. Clone repository
 
-`git clone https://github.com/vadyushkins/kotgll.git`
+`git clone https://github.com/FormalLanguageConstrainedPathQuerying/kotgll.git`
 
 or 
 
-`git clone git@github.com:vadyushkins/kotgll.git`
+`git clone git@github.com:FormalLanguageConstrainedPathQuerying/kotgll.git`
 
 or 
 
-`gh repo clone vadyushkins/kotgll`
+`gh repo clone FormalLanguageConstrainedPathQuerying/kotgll`
 
 #### Step 2. Go to the folder
 
@@ -57,7 +72,7 @@ or
 
 `gradle run --args="--help"`
 
-You will see the ["Options list"](https://github.com/vadyushkins/kotgll#command-line-interface) message.
+You will see the ["Options list"](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll#command-line-interface) message.
 
 #### Example
 
@@ -70,7 +85,7 @@ gradle run --args="--input graph --grammar rsm --sppf off --inputPath src/test/r
 #### Step 1. Download the latest JAR
 
 ```text
-curl -L -O https://github.com/vadyushkins/kotgll/releases/download/v1.0.0/kotgll-1.0.0.jar
+curl -L -O https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/releases/download/v1.0.0/kotgll-1.0.0.jar
 ```
 
 #### Step 2. Run JAR with Java
@@ -152,9 +167,9 @@ S -> subClassOf_r S subClassOf | subClassOf_r subClassOf
      | type_r S type | type_r type
 ```
 
-The representation of **G<sub>1</sub>** context-free grammar in the repository can be found [here](https://github.com/vadyushkins/kotgll/blob/main/src/test/resources/cli/TestCFGReadWriteTXT/g1.txt).
+The representation of **G<sub>1</sub>** context-free grammar in the repository can be found [here](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/blob/main/src/test/resources/cli/TestCFGReadWriteTXT/g1.txt).
 
-The representation of **G<sub>1</sub>** context-free grammar as recursive automaton in the repository can be found [here](https://github.com/vadyushkins/kotgll/blob/main/src/test/resources/cli/TestRSMReadWriteTXT/g1.txt).
+The representation of **G<sub>1</sub>** context-free grammar as recursive automaton in the repository can be found [here](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/blob/main/src/test/resources/cli/TestRSMReadWriteTXT/g1.txt).
 
 ### Results
 
@@ -162,7 +177,7 @@ The results of the **all pairs reachability** queries evaluation on graphs relat
 
 In each row, the best mean time in seconds is highlighted in **bold**.
 
-| Graph        	|  [CFG](https://github.com/vadyushkins/kotgll/tree/main/src/main/kotlin/org/kotgll/cfg/graphinput/withoutsppf)  	|    [RSM](https://github.com/vadyushkins/kotgll/tree/main/src/main/kotlin/org/kotgll/rsm/graphinput/withoutsppf)    	| [GLL4Graph](https://github.com/FormalLanguageConstrainedPathQuerying/GLL4Graph) 	|
+| Graph        	|  [CFG](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/tree/main/src/main/kotlin/org/kotgll/cfg/graphinput/withoutsppf)  	|    [RSM](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll/tree/main/src/main/kotlin/org/kotgll/rsm/graphinput/withoutsppf)    	| [GLL4Graph](https://github.com/FormalLanguageConstrainedPathQuerying/GLL4Graph) 	|
 |--------------	|:-----:	|:---------:	|:---------:	|
 | [Enzyme](https://formallanguageconstrainedpathquerying.github.io/CFPQ_Data/graphs/data/enzyme.html#enzyme)       	| 0.107 	| **0.044** 	|      0.22 	|
 | [Eclass](https://formallanguageconstrainedpathquerying.github.io/CFPQ_Data/graphs/data/eclass.html#eclass)       	|  0.94 	|  **0.43** 	|       1.5 	|
@@ -173,4 +188,4 @@ In each row, the best mean time in seconds is highlighted in **bold**.
 
 #### More results
 
-More results, but in raw form, can be found in repository [kotgll_benchmarks](https://github.com/vadyushkins/kotgll_benchmarks/)
+More results, but in raw form, can be found in repository [kotgll_benchmarks](https://github.com/FormalLanguageConstrainedPathQuerying/kotgll_benchmarks/)
