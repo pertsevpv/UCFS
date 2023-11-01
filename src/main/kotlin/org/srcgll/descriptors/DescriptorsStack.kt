@@ -41,10 +41,7 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack <VertexTy
 {
     private var defaultDescriptorsStack          = ArrayDeque<Descriptor<VertexType>>()
     private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor<VertexType>>>()
-
-    /* TODO: Maybe we also need to check whether errorRecovery stacks are not empty
-             Could use counter variable to track every pushed/removed stack in errorRecovering stacks
-     */
+    
     override fun defaultDescriptorsStackIsNotEmpty() = defaultDescriptorsStack.isNotEmpty()
 
     override fun add(descriptor : Descriptor<VertexType>)

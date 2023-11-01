@@ -14,7 +14,7 @@ class GSSNode <VertexType>
 )
 {
     val edges : HashMap<Pair<RSMState, SPPFNode<VertexType>?>, HashSet<GSSNode<VertexType>>> = HashMap()
-    val handledDescriptors = HashSet<Descriptor<VertexType>>()
+    val handledDescriptors : HashSet<Descriptor<VertexType>> = HashSet()
     
     fun addEdge(rsmState : RSMState, sppfNode : SPPFNode<VertexType>?, gssNode : GSSNode<VertexType>) : Boolean
     {

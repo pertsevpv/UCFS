@@ -5,12 +5,14 @@ import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
 import org.srcgll.grammar.readRSMFromTXT
-import org.srcgll.input.Graph
-import org.srcgll.sppf.toDot
+import org.srcgll.input.InputGraph
+import org.srcgll.input.LinearInput
 import java.io.*
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.lexer.Token
+import org.srcgll.sppf.SPPF
+import org.srcgll.sppf.buildStringFromSPPF
 
 enum class RecoveryMode {
     ON,
@@ -48,7 +50,7 @@ fun main(args : Array<String>)
 
     parser.parse(args)
 
-    val inputGraph : Graph<Int, Token<SymbolCode>> = Graph()
+    val inputGraph : InputGraph<Int, Token<SymbolCode>> = LinearInput()
     var token      : Token<SymbolCode>
 
     val input    = File(pathToInput).readText()
@@ -61,7 +63,7 @@ fun main(args : Array<String>)
 
     while (!lexer.yyatEOF()) {
         token = lexer.yylex() as Token<SymbolCode>
-//        println("(" + token.value + ")")
+        println("(" + token.value + ")")
         inputGraph.addEdge(vertexId, token, ++vertexId)
         inputGraph.addVertex(vertexId)
     }
@@ -70,9 +72,9 @@ fun main(args : Array<String>)
 
     val result  = GLL(grammar, inputGraph, recovery = (recovery == RecoveryMode.ON)).parse()
 
+    SPPF.toDot(result!!, "./result_sppf.dot")
+
     File(pathToOutputString).printWriter().use {
         out -> out.println(buildStringFromSPPF(result!!))
     }
-
-    toDot(result!!, pathToOutputSPPF)
 }

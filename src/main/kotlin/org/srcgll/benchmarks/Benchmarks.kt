@@ -6,13 +6,14 @@ import kotlinx.cli.default
 import kotlinx.cli.required
 import org.srcgll.GLL
 import org.srcgll.grammar.readRSMFromTXT
-import org.srcgll.input.Graph
+import org.srcgll.input.InputGraph
+import org.srcgll.input.LinearInput
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.lexer.Token
 import org.srcgll.sppf.ISPPFNode
+import org.srcgll.sppf.SPPF
 import org.srcgll.sppf.SPPFNode
-import org.srcgll.sppf.toDot
 import java.io.File
 import java.io.StringReader
 import kotlin.system.measureNanoTime
@@ -93,8 +94,8 @@ fun runRSMWithSPPF
             val resultPath = getResultPath(pathToOutput, inputName, "rsm", rsmName, "with_sppf")
             File(resultPath).writeText("")
 
-            val inputGraph : Graph<Int, Token<SymbolCode>> = Graph()
-            val lexer : GeneratedLexer = GeneratedLexer(StringReader(input))
+            val inputGraph : InputGraph<Int, Token<SymbolCode>> = LinearInput()
+            val lexer = GeneratedLexer(StringReader(input))
             var token : Token<SymbolCode>
             var vertexId = 1
 
@@ -109,7 +110,7 @@ fun runRSMWithSPPF
             inputGraph.finalVertex = vertexId - 1
 
             var result : ISPPFNode? = GLL(rsm, inputGraph, recovery = true).parse()
-            toDot(result!!, "./outputFiles/${inputName}_sppf.dot")
+            SPPF.toDot(result!!, "./outputFiles/${inputName}_sppf.dot")
 
             for (warmUp in 1 .. warmUpRounds)
             {

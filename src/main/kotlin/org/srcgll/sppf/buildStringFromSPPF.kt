@@ -1,9 +1,4 @@
-package org.srcgll
-
-import org.srcgll.sppf.ISPPFNode
-import org.srcgll.sppf.PackedSPPFNode
-import org.srcgll.sppf.ParentSPPFNode
-import org.srcgll.sppf.TerminalSPPFNode
+package org.srcgll.sppf
 
 fun buildStringFromSPPF(sppfNode : ISPPFNode) : String
 {

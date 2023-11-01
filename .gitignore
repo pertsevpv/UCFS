@@ -7,9 +7,11 @@ input.txt
 # Output files
 output.txt
 
+# Python scripts
+*.py
+
 # Benchmarks
 /src/main/kotlin/org/srcgll/benchmarks/test.kt
-/src/main/kotlin/org/srcgll/benchmarks/generatedStrings
 *.csv
 
 # Lexer

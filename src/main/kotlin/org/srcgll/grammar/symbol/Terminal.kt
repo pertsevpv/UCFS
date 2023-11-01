@@ -4,10 +4,9 @@ class Terminal
 (
     override val value : String
 )
-    : Symbol
+    : ITerminal
 {
-//    val size : Int = value.length
-//    fun match(pos : Int, input : String) = input.startsWith(value, pos)
+    override fun match(pos : Any, str : String) = str.startsWith(value, pos as Int)
     override fun toString() = "Literal($value)"
 
     override fun equals(other : Any?) : Boolean

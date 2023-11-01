@@ -6,47 +6,33 @@ import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.descriptors.*
 import org.srcgll.grammar.RSMNonterminalEdge
+import org.srcgll.grammar.symbol.ITerminal
 import org.srcgll.gss.*
-import org.srcgll.input.Graph
-import org.srcgll.lexer.SymbolCode
-import org.srcgll.lexer.Token
+import org.srcgll.input.InputGraph
 import org.srcgll.sppf.*
 
-class GLL <VertexType>
+class GLL <VertexType, LabelType : ITerminal>
 (
     val startState : RSMState,
-    val input      : Graph<VertexType, Token<SymbolCode>>,
+    val input      : InputGraph<VertexType, LabelType>,
     val recovery   : Boolean,
 )
 {
 
     val stack            : IDescriptorsStack<VertexType>                                = ErrorRecoveringDescriptorsStack()
+    val sppf             : SPPF<VertexType>                                             = SPPF()
     val poppedGSSNodes   : HashMap<GSSNode<VertexType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
     val createdGSSNodes  : HashMap<GSSNode<VertexType>, GSSNode<VertexType>>            = HashMap()
-    val createdSPPFNodes : HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>>          = HashMap()
-    var parseResult      : SPPFNode<VertexType>? = null
-    
-    fun getOrCreateGSSNode(nonterminal : Nonterminal, inputPosition : VertexType, weight : Int) : GSSNode<VertexType>
-    {
-        val gssNode = GSSNode(nonterminal, inputPosition, weight)
-        
-        if (createdGSSNodes.containsKey(gssNode)) {
-            if (createdGSSNodes.getValue(gssNode).minWeightOfLeftPart > weight)
-                createdGSSNodes.getValue(gssNode).minWeightOfLeftPart = weight
-        } else
-            createdGSSNodes[gssNode] = gssNode
-
-        return createdGSSNodes.getValue(gssNode)
-    }
+    var parseResult      : SPPFNode<VertexType>?                                        = null
 
     fun parse() : SPPFNode<VertexType>?
     {
         val descriptor =
                 Descriptor(
                     startState,
-                    getOrCreateGSSNode(startState.nonterminal, input.getVertex()!!, 0),
+                    getOrCreateGSSNode(startState.nonterminal, input.getVertex(null)!!, 0),
                     null,
-                    input.getVertex()!!
+                    input.getVertex(null)!!
                 )
         stack.add(descriptor)
 
@@ -80,10 +66,10 @@ class GLL <VertexType>
         stack.addToHandled(curDescriptor)
 
         if (state.isStart && state.isFinal)
-            curSPPFNode = getNodeP(
+            curSPPFNode = sppf.getNodeP(
                               state,
                               curSPPFNode,
-                              getOrCreateItemSPPFNode(
+                              sppf.getOrCreateItemSPPFNode(
                                   state,
                                   pos,
                                   pos,
@@ -98,7 +84,7 @@ class GLL <VertexType>
 
         for (kvp in state.outgoingTerminalEdges) {
             for (edge in input.getEdges(pos)) {
-                if (edge.first.value == kvp.key.value) {
+                if (edge.label.match(pos as Any, kvp.key.value)) {
                     for (target in kvp.value) {
                         val rsmEdge = RSMTerminalEdge(kvp.key, target)
 
@@ -106,17 +92,17 @@ class GLL <VertexType>
                                 Descriptor(
                                     rsmEdge.head,
                                     gssNode,
-                                    getNodeP(
+                                    sppf.getNodeP(
                                         rsmEdge.head,
                                         curSPPFNode,
-                                        getOrCreateTerminalSPPFNode(
+                                        sppf.getOrCreateTerminalSPPFNode(
                                             rsmEdge.terminal,
                                             pos,
-                                            edge.second,
+                                            edge.head,
                                             0
                                         )
                                     ),
-                                    edge.second
+                                    edge.head
                                 )
                         stack.add(descriptor)
                     }
@@ -140,10 +126,10 @@ class GLL <VertexType>
         }
 
         if (recovery) {
-            val errorRecoveryEdges = HashMap<Terminal?, Pair<VertexType, Int>>()
+            val errorRecoveryEdges = HashMap<Terminal?, TerminalRecoveryEdge<VertexType>>()
 
             for (currentEdge in input.getEdges(pos)) {
-                val currentTerminal = Terminal(currentEdge.first.value)
+                val currentTerminal = Terminal(currentEdge.label.value)
 
                 val coveredByCurrentTerminal : HashSet<RSMState> =
                     if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
@@ -157,19 +143,22 @@ class GLL <VertexType>
                     coveredByCurrentTerminal.forEach { coveredByTerminal.remove(it) }
 
                     if (terminal != currentTerminal && coveredByTerminal.isNotEmpty()) {
-                        errorRecoveryEdges[terminal] = Pair(pos, 1)
+                        errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, 1)
                     }
                 }
-                errorRecoveryEdges[null] = Pair(currentEdge.second, 1)
+                errorRecoveryEdges[null] = TerminalRecoveryEdge(currentEdge.head, 1)
             }
 
             for (kvp in errorRecoveryEdges) {
-                if (kvp.key == null) {
-                    handleTerminalOrEpsilonEdge(curDescriptor,kvp.key, kvp.value, curDescriptor.rsmState)
+                val errorRecoveryEdge = kvp.value
+                val terminal          = kvp.key
+
+                if (terminal == null) {
+                    handleTerminalOrEpsilonEdge(curDescriptor, null, errorRecoveryEdge, curDescriptor.rsmState)
                 } else {
-                    if (state.outgoingTerminalEdges.containsKey(kvp.key)) {
-                        for (targetState in state.outgoingTerminalEdges[kvp.key]!!) {
-                            handleTerminalOrEpsilonEdge(curDescriptor, kvp.key,  kvp.value, targetState)
+                    if (state.outgoingTerminalEdges.containsKey(terminal)) {
+                        for (targetState in state.outgoingTerminalEdges.getValue(terminal)) {
+                            handleTerminalOrEpsilonEdge(curDescriptor, terminal,  errorRecoveryEdge, targetState)
                         }
                     }
                 }
@@ -183,7 +172,7 @@ class GLL <VertexType>
     (
         curDescriptor : Descriptor<VertexType>,
         terminal      : Terminal?,
-        targetEdge    : Pair<VertexType, Int>,
+        targetEdge    : TerminalRecoveryEdge<VertexType>,
         targetState   : RSMState
     )
     {
@@ -191,40 +180,34 @@ class GLL <VertexType>
                 Descriptor(
                     targetState,
                     curDescriptor.gssNode,
-                    getNodeP(
+                    sppf.getNodeP(
                         targetState,
                         curDescriptor.sppfNode,
-                        getOrCreateTerminalSPPFNode(
+                        sppf.getOrCreateTerminalSPPFNode(
                             terminal,
                             curDescriptor.inputPosition,
-                            targetEdge.first,
-                            targetEdge.second
+                            targetEdge.head,
+                            targetEdge.weight
                         )
                     ),
-                    targetEdge.first
+                    targetEdge.head
                 )
         stack.add(descriptor)
     }
 
-    fun pop(gssNode : GSSNode<VertexType>, sppfNode : SPPFNode<VertexType>?, pos : VertexType)
+    fun getOrCreateGSSNode(nonterminal : Nonterminal, inputPosition : VertexType, weight : Int) : GSSNode<VertexType>
     {
-        if (!poppedGSSNodes.containsKey(gssNode)) poppedGSSNodes[gssNode] = HashSet()
+        val gssNode = GSSNode(nonterminal, inputPosition, weight)
 
-        poppedGSSNodes[gssNode]!!.add(sppfNode)
+        if (createdGSSNodes.containsKey(gssNode)) {
+            if (createdGSSNodes.getValue(gssNode).minWeightOfLeftPart > weight)
+                createdGSSNodes.getValue(gssNode).minWeightOfLeftPart = weight
+        } else
+            createdGSSNodes[gssNode] = gssNode
 
-        for (edge in gssNode.edges) {
-            for (node in edge.value) {
-                val descriptor =
-                        Descriptor(
-                            edge.key.first,
-                            node,
-                            getNodeP(edge.key.first, edge.key.second, sppfNode!!),
-                            pos
-                        )
-                stack.add(descriptor)
-            }
-        }
+        return createdGSSNodes.getValue(gssNode)
     }
+
 
     fun createGSSNode
     (
@@ -245,7 +228,7 @@ class GLL <VertexType>
                             Descriptor(
                                 state,
                                 gssNode,
-                                getNodeP(state, sppfNode, popped!!),
+                                sppf.getNodeP(state, sppfNode, popped!!),
                                 popped.rightExtent
                             )
                     stack.add(descriptor)
@@ -256,83 +239,23 @@ class GLL <VertexType>
         return newNode
     }
 
-    fun getNodeP(state : RSMState, sppfNode : SPPFNode<VertexType>?, nextSPPFNode : SPPFNode<VertexType>) : SPPFNode<VertexType>
+    fun pop(gssNode : GSSNode<VertexType>, sppfNode : SPPFNode<VertexType>?, pos : VertexType)
     {
-        val leftExtent  = sppfNode?.leftExtent ?: nextSPPFNode.leftExtent
-        val rightExtent = nextSPPFNode.rightExtent
+        if (!poppedGSSNodes.containsKey(gssNode)) poppedGSSNodes[gssNode] = HashSet()
 
-        val packedNode = PackedSPPFNode(nextSPPFNode.leftExtent, state, sppfNode, nextSPPFNode)
+        poppedGSSNodes.getValue(gssNode).add(sppfNode)
 
-        val parent : ParentSPPFNode<VertexType> =
-            if (state.isFinal) getOrCreateSymbolSPPFNode(state.nonterminal, leftExtent, rightExtent, packedNode.weight)
-            else               getOrCreateItemSPPFNode(state, leftExtent, rightExtent, packedNode.weight)
-
-
-        sppfNode?.parents?.add(packedNode)
-        nextSPPFNode.parents.add(packedNode)
-        packedNode.parents.add(parent)
-
-        parent.kids.add(packedNode)
-
-        parent.updateWeights()
-
-//        toDot(parent,"./debug_sppf.dot")
-
-        return parent
-    }
-
-    fun getOrCreateTerminalSPPFNode
-    (
-        terminal    : Terminal?,
-        leftExtent  : VertexType,
-        rightExtent : VertexType,
-        weight      : Int
-    )
-        : SPPFNode<VertexType>
-    {
-        val node = TerminalSPPFNode(terminal, leftExtent, rightExtent, weight)
-
-        if (!createdSPPFNodes.containsKey(node)) {
-            createdSPPFNodes[node] = node
+        for (edge in gssNode.edges) {
+            for (node in edge.value) {
+                val descriptor =
+                        Descriptor(
+                            edge.key.first,
+                            node,
+                            sppf.getNodeP(edge.key.first, edge.key.second, sppfNode!!),
+                            pos
+                        )
+                stack.add(descriptor)
+            }
         }
-
-        return createdSPPFNodes[node]!!
-    }
-
-    fun getOrCreateItemSPPFNode
-    (
-        state       : RSMState,
-        leftExtent  : VertexType,
-        rightExtent : VertexType,
-        weight      : Int
-    )
-        : ParentSPPFNode<VertexType>
-    {
-        val node = ItemSPPFNode(state, leftExtent, rightExtent)
-        node.weight = weight
-
-        if (!createdSPPFNodes.containsKey(node)) {
-            createdSPPFNodes[node] = node
-        }
-
-        return createdSPPFNodes[node]!! as ItemSPPFNode
-    }
-
-    fun getOrCreateSymbolSPPFNode
-    (
-        nonterminal : Nonterminal,
-        leftExtent  : VertexType,
-        rightExtent : VertexType,
-        weight      : Int
-    )
-        : SymbolSPPFNode<VertexType>
-    {
-        val node = SymbolSPPFNode(nonterminal, leftExtent, rightExtent)
-        node.weight = weight
-
-        if (!createdSPPFNodes.containsKey(node)) createdSPPFNodes[node] = node
-
-
-        return createdSPPFNodes[node]!! as SymbolSPPFNode
     }
 }

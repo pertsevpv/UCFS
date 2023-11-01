@@ -4,9 +4,8 @@ import org.srcgll.grammar.RSMState
 
 class Nonterminal
 (
-    override val value : String
+   val value : String
 )
-    : Symbol
 {
     lateinit var startState : RSMState
     override fun toString() = "Nonterminal($value)"
