@@ -26,15 +26,15 @@ class TestRSMStringInputWithSPPFSuccess {
         nonterminalS.startState = rsmState0
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -63,15 +63,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -111,15 +111,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -156,15 +156,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -200,15 +200,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -245,15 +245,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -338,15 +338,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -374,15 +374,15 @@ class TestRSMStringInputWithSPPFSuccess {
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("cd"), head = rsmState1))
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -410,15 +410,15 @@ class TestRSMStringInputWithSPPFSuccess {
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("a"), head = rsmState1))
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -547,15 +547,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -658,15 +658,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -738,15 +738,15 @@ class TestRSMStringInputWithSPPFSuccess {
         )
 
         val inputGraph : InputGraph<Int, Terminal> = LinearInput()
-        var curVertexId = 1
+        var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
             inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.startVertex = 0
+        inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }

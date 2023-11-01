@@ -28,7 +28,7 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         val result = GLL(startState, inputGraph, recovery = true).parse()
         val recoveredString = buildStringFromSPPF(result!!)
@@ -42,7 +42,7 @@ class TestRSMStringInputWIthSPPFRecovery
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.startVertex = 1
-        recoveredInputGraph.finalVertex = curVertexId - 1
+        recoveredInputGraph.finalVertex = curVertexId
 
         assert(result.weight <= weight)
         assertNotNull(GLL(startState, recoveredInputGraph, recovery = false))
@@ -62,7 +62,7 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         val result = GLL(startState, inputGraph, recovery = true).parse()
         val recoveredString = buildStringFromSPPF(result!!)
@@ -76,7 +76,7 @@ class TestRSMStringInputWIthSPPFRecovery
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.startVertex = 1
-        recoveredInputGraph.finalVertex = curVertexId - 1
+        recoveredInputGraph.finalVertex = curVertexId
 
         assert(result.weight <= weight)
         assertNotNull(GLL(startState, recoveredInputGraph, recovery = false))
@@ -96,7 +96,7 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         val result = GLL(startState, inputGraph, recovery = true).parse()
         val recoveredString = buildStringFromSPPF(result!!)
@@ -110,7 +110,7 @@ class TestRSMStringInputWIthSPPFRecovery
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.startVertex = 1
-        recoveredInputGraph.finalVertex = curVertexId - 1
+        recoveredInputGraph.finalVertex = curVertexId
 
         assert(result.weight <= weight)
         assertNotNull(GLL(startState, recoveredInputGraph, recovery = false))
@@ -130,7 +130,7 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         val result = GLL(startState, inputGraph, recovery = true).parse()
         val recoveredString = buildStringFromSPPF(result!!)
@@ -144,7 +144,7 @@ class TestRSMStringInputWIthSPPFRecovery
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.startVertex = 1
-        recoveredInputGraph.finalVertex = curVertexId - 1
+        recoveredInputGraph.finalVertex = curVertexId
 
         assert(result.weight <= weight)
         assertNotNull(GLL(startState, recoveredInputGraph, recovery = false))
@@ -164,7 +164,7 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         val result = GLL(startState, inputGraph, recovery = true).parse()
         val recoveredString = buildStringFromSPPF(result!!)
@@ -178,7 +178,7 @@ class TestRSMStringInputWIthSPPFRecovery
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.startVertex = 1
-        recoveredInputGraph.finalVertex = curVertexId - 1
+        recoveredInputGraph.finalVertex = curVertexId
 
         assert(result.weight <= weight)
         assertNotNull(GLL(startState, recoveredInputGraph, recovery = false))
@@ -198,7 +198,7 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         val result = GLL(startState, inputGraph, recovery = true).parse()
         val recoveredString = buildStringFromSPPF(result!!)
@@ -212,7 +212,7 @@ class TestRSMStringInputWIthSPPFRecovery
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.startVertex = 1
-        recoveredInputGraph.finalVertex = curVertexId - 1
+        recoveredInputGraph.finalVertex = curVertexId
 
         assert(result.weight <= weight)
         assertNotNull(GLL(startState, recoveredInputGraph, recovery = false))
@@ -232,7 +232,7 @@ class TestRSMStringInputWIthSPPFRecovery
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         val result = GLL(startState, inputGraph, recovery = true).parse()
         val recoveredString = buildStringFromSPPF(result!!)
@@ -246,7 +246,7 @@ class TestRSMStringInputWIthSPPFRecovery
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.startVertex = 1
-        recoveredInputGraph.finalVertex = curVertexId - 1
+        recoveredInputGraph.finalVertex = curVertexId
 
         assert(result.weight <= weight)
         assertNotNull(GLL(startState, recoveredInputGraph, recovery = false))

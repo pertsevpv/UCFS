@@ -34,7 +34,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -71,7 +71,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -119,7 +119,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -164,7 +164,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -208,7 +208,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -273,7 +273,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -374,7 +374,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -433,7 +433,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -469,7 +469,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -606,7 +606,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
@@ -740,7 +740,7 @@ class TestRSMStringInputWithSPPFFail {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 1
-        inputGraph.finalVertex = curVertexId - 1
+        inputGraph.finalVertex = curVertexId
 
         assertNull(GLL(rsmState0, inputGraph, recovery = false).parse())
     }
