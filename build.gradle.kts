@@ -1,6 +1,6 @@
 plugins {
   kotlin("jvm") version "1.9.20"
-//  `java-library`
+  `java-library`
   application
 //  `maven-publish`
 }
@@ -24,7 +24,14 @@ tasks.test { useJUnitPlatform() }
 kotlin { jvmToolchain(11) }
 
 application { mainClass.set("org.srcgll.MainKt") }
-//
+//sourceSets {
+//  main {
+//    java {
+//      setSrcDirs(listOf("src"))
+//    }
+//  }
+//}
+
 //tasks.withType<Jar> {
 //  dependsOn.addAll(listOf("compileJava", "compileKotlin", "processResources"))
 //  duplicatesStrategy = DuplicatesStrategy.EXCLUDE
@@ -35,15 +42,8 @@ application { mainClass.set("org.srcgll.MainKt") }
 //          sourcesMain.output
 //  from(contents)
 //}
-//
-//sourceSets {
-//  main {
-//    java {
-//      setSrcDirs(listOf("src"))
-//    }
-//  }
-//}
-//
+
+
 //publishing {
 //  publications {
 //    create<MavenPublication>("srcgll") {

@@ -9,6 +9,7 @@ import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.GLL
 import org.srcgll.input.InputGraph
 import org.srcgll.input.LinearInput
+import org.srcgll.input.LinearInputLabel
 import kotlin.test.assertNotNull
 
 class TestRSMStringInputWithSPPFSuccess {
@@ -25,12 +26,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         nonterminalS.startState = rsmState0
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -62,12 +63,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -110,12 +111,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -155,12 +156,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -199,12 +200,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -244,12 +245,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -337,12 +338,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -373,12 +374,12 @@ class TestRSMStringInputWithSPPFSuccess {
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("ab"), head = rsmState1))
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("cd"), head = rsmState1))
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -409,12 +410,12 @@ class TestRSMStringInputWithSPPFSuccess {
 
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("a"), head = rsmState1))
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -546,12 +547,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -657,12 +658,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0
@@ -709,6 +710,7 @@ class TestRSMStringInputWithSPPFSuccess {
             RSMState(
                 id = 4,
                 nonterminal = nonterminalA,
+                isFinal = true,
             )
 
         rsmState0.addTerminalEdge(
@@ -717,7 +719,7 @@ class TestRSMStringInputWithSPPFSuccess {
                 head = rsmState1,
             )
         )
-        rsmState0.addNonterminalEdge(
+        rsmState1.addNonterminalEdge(
             RSMNonterminalEdge(
                 nonterminal = nonterminalA,
                 head = rsmState2,
@@ -737,12 +739,12 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, Terminal> = LinearInput()
+        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
         for (x in input) {
-            inputGraph.addEdge(curVertexId, Terminal(x.toString()), ++curVertexId)
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.startVertex = 0

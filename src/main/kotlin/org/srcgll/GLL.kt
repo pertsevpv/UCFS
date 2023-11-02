@@ -8,10 +8,11 @@ import org.srcgll.descriptors.*
 import org.srcgll.grammar.RSMNonterminalEdge
 import org.srcgll.grammar.symbol.ITerminal
 import org.srcgll.gss.*
+import org.srcgll.input.ILabel
 import org.srcgll.input.InputGraph
 import org.srcgll.sppf.*
 
-class GLL <VertexType, LabelType : ITerminal>
+class GLL <VertexType, LabelType : ILabel>
 (
     val startState : RSMState,
     val input      : InputGraph<VertexType, LabelType>,
@@ -54,18 +55,18 @@ class GLL <VertexType, LabelType : ITerminal>
         return parseResult
     }
 
-    fun parse(curDescriptor : Descriptor<VertexType>)
+        fun parse(curDescriptor : Descriptor<VertexType>)
     {
-        var curSPPFNode = curDescriptor.sppfNode
         val state       = curDescriptor.rsmState
         val pos         = curDescriptor.inputPosition
         val gssNode     = curDescriptor.gssNode
-        val leftExtent  = curSPPFNode?.leftExtent
-        val rightExtent = curSPPFNode?.rightExtent
+        var curSPPFNode = curDescriptor.sppfNode
+        var leftExtent  = curSPPFNode?.leftExtent
+        var rightExtent = curSPPFNode?.rightExtent
 
         stack.addToHandled(curDescriptor)
 
-        if (state.isStart && state.isFinal)
+        if (state.isStart && state.isFinal) {
             curSPPFNode = sppf.getNodeP(
                               state,
                               curSPPFNode,
@@ -76,6 +77,9 @@ class GLL <VertexType, LabelType : ITerminal>
                                   0
                                   )
                               )
+            leftExtent = curSPPFNode.leftExtent
+            rightExtent = curSPPFNode.rightExtent
+        }
 
         if (curSPPFNode is SymbolSPPFNode<VertexType> && (parseResult == null || parseResult!!.weight > curSPPFNode.weight)
             && state.nonterminal == startState.nonterminal && input.isStart(leftExtent) && input.isFinal(rightExtent)) {
@@ -83,8 +87,8 @@ class GLL <VertexType, LabelType : ITerminal>
         }
 
         for (kvp in state.outgoingTerminalEdges) {
-            for (edge in input.getEdges(pos)) {
-                if (edge.label.match(pos as Any, kvp.key.value)) {
+            for (inputEdge in input.getEdges(pos)) {
+                if (inputEdge.label.terminal == kvp.key) {
                     for (target in kvp.value) {
                         val rsmEdge = RSMTerminalEdge(kvp.key, target)
 
@@ -98,11 +102,11 @@ class GLL <VertexType, LabelType : ITerminal>
                                         sppf.getOrCreateTerminalSPPFNode(
                                             rsmEdge.terminal,
                                             pos,
-                                            edge.head,
+                                            inputEdge.head,
                                             0
                                         )
                                     ),
-                                    edge.head
+                                    inputEdge.head
                                 )
                         stack.add(descriptor)
                     }
@@ -126,10 +130,10 @@ class GLL <VertexType, LabelType : ITerminal>
         }
 
         if (recovery) {
-            val errorRecoveryEdges = HashMap<Terminal?, TerminalRecoveryEdge<VertexType>>()
+            val errorRecoveryEdges = HashMap<ITerminal?, TerminalRecoveryEdge<VertexType>>()
 
             for (currentEdge in input.getEdges(pos)) {
-                val currentTerminal = Terminal(currentEdge.label.value)
+                val currentTerminal = currentEdge.label.terminal
 
                 val coveredByCurrentTerminal : HashSet<RSMState> =
                     if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
@@ -171,7 +175,7 @@ class GLL <VertexType, LabelType : ITerminal>
     fun handleTerminalOrEpsilonEdge
     (
         curDescriptor : Descriptor<VertexType>,
-        terminal      : Terminal?,
+        terminal      : ITerminal?,
         targetEdge    : TerminalRecoveryEdge<VertexType>,
         targetState   : RSMState
     )

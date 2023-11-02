@@ -1,6 +1,7 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.RSMState
+import org.srcgll.grammar.symbol.ITerminal
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import java.io.File
@@ -29,14 +30,12 @@ class SPPF <VertexType>
 
         parent.updateWeights()
 
-//        toDot(parent,"./debug_sppf.dot")
-
         return parent
     }
 
     fun getOrCreateTerminalSPPFNode
                 (
-        terminal    : Terminal?,
+        terminal    : ITerminal?,
         leftExtent  : VertexType,
         rightExtent : VertexType,
         weight      : Int

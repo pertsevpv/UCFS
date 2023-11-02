@@ -5,8 +5,10 @@ import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
 import org.srcgll.grammar.readRSMFromTXT
+import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.input.InputGraph
 import org.srcgll.input.LinearInput
+import org.srcgll.input.LinearInputLabel
 import java.io.*
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
@@ -50,25 +52,32 @@ fun main(args : Array<String>)
 
     parser.parse(args)
 
-    val inputGraph : InputGraph<Int, Token<SymbolCode>> = LinearInput()
-    var token      : Token<SymbolCode>
+//    val inputGraph : InputGraph<Int, Token<SymbolCode>> = LinearInput()
+//    var token      : Token<SymbolCode>
 
-    val input    = File(pathToInput).readText()
+    val input    = File(pathToInput).readText().replace("\n","").trim()
     val grammar  = readRSMFromTXT(pathToGrammar)
-    var lexer    = GeneratedLexer(StringReader(input))
-    var vertexId = 1
+//    var lexer    = GeneratedLexer(StringReader(input))
+    var vertexId = 0
+
+    val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
 
     inputGraph.addVertex(vertexId)
     inputGraph.startVertex = vertexId
 
-    while (!lexer.yyatEOF()) {
-        token = lexer.yylex() as Token<SymbolCode>
-        println("(" + token.value + ")")
-        inputGraph.addEdge(vertexId, token, ++vertexId)
+//    while (!lexer.yyatEOF()) {
+//        token = lexer.yylex() as Token<SymbolCode>
+//        println("(" + token.value + ")")
+//        inputGraph.addEdge(vertexId, token, ++vertexId)
+//        inputGraph.addVertex(vertexId)
+//    }
+//    inputGraph.finalVertex = vertexId - 1
+
+    for (x in input) {
+        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(x.toString())), ++vertexId)
         inputGraph.addVertex(vertexId)
     }
-
-    inputGraph.finalVertex = vertexId - 1
+    inputGraph.finalVertex = vertexId
 
     val result  = GLL(grammar, inputGraph, recovery = (recovery == RecoveryMode.ON)).parse()
 

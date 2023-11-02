@@ -13,4 +13,12 @@ class Token <TokenType>
         return "Token(${value},${type})"
     }
     override fun match(pos : Any, str : String) = (value == str)
+
+    override fun hashCode() : Int {
+        TODO("Not yet implemented")
+    }
+
+    override fun equals(other : Any?) : Boolean {
+        TODO("Not yet implemented")
+    }
 }

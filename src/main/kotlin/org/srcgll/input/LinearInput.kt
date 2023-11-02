@@ -1,6 +1,6 @@
 package org.srcgll.input
 
-class LinearInput<VertexType, LabelType> : InputGraph<VertexType, LabelType>()
+class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, LabelType>()
 {
     override val vertices : MutableMap<VertexType, VertexType> = HashMap()
     override val edges    : MutableMap<VertexType, MutableList<Edge<LabelType, VertexType>>> = HashMap()
@@ -30,21 +30,20 @@ class LinearInput<VertexType, LabelType> : InputGraph<VertexType, LabelType>()
     {
         return edges.getOrDefault(from, ArrayList())
     }
-    override fun addEdge(from : VertexType, label : LabelType, to : VertexType) : Boolean
+    override fun addEdge(from : VertexType, label : LabelType, to : VertexType)
     {
         val edge = Edge(label, to)
 
         if (!edges.containsKey(from)) edges[from] = ArrayList()
 
-        return edges.getValue(from).add(edge)
+        edges.getValue(from).add(edge)
     }
 
 
-    override fun removeEdge(from : VertexType, label : LabelType, to : VertexType) : Boolean
+    override fun removeEdge(from : VertexType, label : LabelType, to : VertexType)
     {
         val edge = Edge(label, to)
-
-        return edges.getValue(from).remove(edge)
+        edges.getValue(from).remove(edge)
     }
 
     override fun isStart(vertex : VertexType?) = (vertex == startVertex)

@@ -6,7 +6,7 @@ class Terminal
 )
     : ITerminal
 {
-    override fun match(pos : Any, str : String) = str.startsWith(value, pos as Int)
+    override fun match(pos : Any, str : String) = (str == value)
     override fun toString() = "Literal($value)"
 
     override fun equals(other : Any?) : Boolean

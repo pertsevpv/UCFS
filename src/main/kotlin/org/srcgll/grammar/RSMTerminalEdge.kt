@@ -1,10 +1,10 @@
 package org.srcgll.grammar
 
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.grammar.symbol.ITerminal
 
 class RSMTerminalEdge
 (
-    val terminal : Terminal,
+    val terminal : ITerminal,
     val head     : RSMState,
 )
 {

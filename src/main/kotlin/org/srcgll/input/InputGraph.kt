@@ -1,6 +1,6 @@
 package org.srcgll.input
 
-abstract class InputGraph <VertexType,LabelType>
+abstract class InputGraph <VertexType, LabelType : ILabel>
 {
     abstract val vertices : MutableMap<VertexType, VertexType>
     abstract val edges    : MutableMap<VertexType, MutableList<Edge<LabelType, VertexType>>>
@@ -16,10 +16,10 @@ abstract class InputGraph <VertexType,LabelType>
 
     abstract fun getEdges(from : VertexType) : MutableList<Edge<LabelType, VertexType>>
 
-    abstract fun addEdge(from : VertexType, label : LabelType, to : VertexType) : Boolean
+    abstract fun addEdge(from : VertexType, label : LabelType, to : VertexType)
 
 
-    abstract fun removeEdge(from : VertexType, label : LabelType, to : VertexType) : Boolean
+    abstract fun removeEdge(from : VertexType, label : LabelType, to : VertexType)
 
     abstract fun isStart(vertex : VertexType?) : Boolean
     abstract fun isFinal(vertex : VertexType?) : Boolean

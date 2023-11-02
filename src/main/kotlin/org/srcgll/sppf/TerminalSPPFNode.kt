@@ -1,11 +1,12 @@
 package org.srcgll.sppf
 
+import org.srcgll.grammar.symbol.ITerminal
 import org.srcgll.grammar.symbol.Terminal
 import java.util.*
 
 class TerminalSPPFNode <VertexType>
 (
-    val terminal : Terminal?,
+    val terminal : ITerminal?,
     leftExtent   : VertexType,
     rightExtent  : VertexType,
     weight       : Int,

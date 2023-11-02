@@ -31,5 +31,5 @@ fun buildStringFromSPPF(sppfNode : ISPPFNode) : String
         }
 
     }
-    return result.toString().replace(" ", "").replace("\n", "")
+    return result.toString().replace(" ", "").replace("\n", "").trim()
 }
