@@ -13,7 +13,6 @@ import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.lexer.Token
 import org.srcgll.sppf.node.ISPPFNode
-import org.srcgll.sppf.SPPF
 import org.srcgll.sppf.node.SPPFNode
 import org.srcgll.sppf.WriteSPPFToDOT
 import java.io.File
