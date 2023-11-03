@@ -1,4 +1,4 @@
-package org.srcgll
+package org.srcgll.sppf
 
 class TerminalRecoveryEdge <VertexType>
 (

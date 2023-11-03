@@ -3,7 +3,7 @@ package org.srcgll.gss
 import org.srcgll.descriptors.Descriptor
 import org.srcgll.grammar.RSMState
 import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.sppf.SPPFNode
+import org.srcgll.sppf.node.SPPFNode
 import java.util.*
 
 class GSSNode <VertexType>

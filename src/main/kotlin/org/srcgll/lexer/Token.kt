@@ -4,21 +4,25 @@ import org.srcgll.grammar.symbol.ITerminal
 
 class Token <TokenType>
 (
-    val type  : TokenType,
+    val type           : TokenType,
     override val value : String,
 )
     : ITerminal
 {
-    override fun toString() : String {
+    override fun toString() : String
+    {
         return "Token(${value},${type})"
     }
-    override fun match(pos : Any, str : String) = (value == str)
 
-    override fun hashCode() : Int {
-        TODO("Not yet implemented")
-    }
+    val hashCode : Int = type.hashCode()
+    override fun hashCode() = hashCode
 
-    override fun equals(other : Any?) : Boolean {
-        TODO("Not yet implemented")
+    override fun equals(other : Any?) : Boolean
+    {
+        if (this === other)            return true
+        if (other !is Token<*>)        return false
+        if (this.type != other.type)   return false
+
+        return true
     }
 }

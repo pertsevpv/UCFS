@@ -1,4 +1,4 @@
-package org.srcgll.sppf
+package org.srcgll.sppf.node
 
 import java.util.*
 

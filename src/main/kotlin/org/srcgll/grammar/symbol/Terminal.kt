@@ -6,15 +6,12 @@ class Terminal
 )
     : ITerminal
 {
-    override fun match(pos : Any, str : String) = (str == value)
     override fun toString() = "Literal($value)"
 
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)       return true
-
         if (other !is Terminal)   return false
-
         if (value != other.value) return false
 
         return true

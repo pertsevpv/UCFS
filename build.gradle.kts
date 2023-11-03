@@ -1,8 +1,7 @@
 plugins {
-  kotlin("jvm") version "1.9.20"
-  `java-library`
+  java
   application
-//  `maven-publish`
+  kotlin("jvm") version "1.9.20"
 }
 
 group = "hollowcoder"
@@ -22,15 +21,13 @@ dependencies {
 tasks.test { useJUnitPlatform() }
 
 kotlin { jvmToolchain(11) }
-
 application { mainClass.set("org.srcgll.MainKt") }
-//sourceSets {
-//  main {
-//    java {
-//      setSrcDirs(listOf("src"))
-//    }
-//  }
-//}
+
+configure<SourceSetContainer> {
+  named("main") {
+    java.srcDir("src/main/kotlin")
+  }
+}
 
 //tasks.withType<Jar> {
 //  dependsOn.addAll(listOf("compileJava", "compileKotlin", "processResources"))
@@ -41,40 +38,4 @@ application { mainClass.set("org.srcgll.MainKt") }
 //      configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) } +
 //          sourcesMain.output
 //  from(contents)
-//}
-
-
-//publishing {
-//  publications {
-//    create<MavenPublication>("srcgll") {
-//      from(components["java"])
-//
-//      versionMapping {
-//        usage("java-api") { fromResolutionOf("runtimeClasspath") }
-//        usage("java-runtime") { fromResolutionResult() }
-//      }
-//
-//      pom {
-//        name.set("srcgll")
-//        url.set("https://github.com/cyb3r-b4stard/srcgll")
-//        developers {
-//          developer {
-//            id.set("hollowcoder")
-//            name.set("Ivan Lomikovskiy")
-//            email.set("hollowcoder@yandex.ru")
-//          }
-//        }
-//      }
-//    }
-//  }
-//  repositories {
-//    maven {
-//      name = "GitHubPackages"
-//      url = uri("https://maven.pkg.github.com/cyb3r-b4stard/srcgll")
-//      credentials {
-//        username = System.getenv("GITHUB_ACTOR")
-//        password = System.getenv("GITHUB_TOKEN")
-//      }
-//    }
-//  }
 //}

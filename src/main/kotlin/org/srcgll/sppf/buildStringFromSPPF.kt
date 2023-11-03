@@ -1,5 +1,6 @@
 package org.srcgll.sppf
 
+import org.srcgll.sppf.node.*
 fun buildStringFromSPPF(sppfNode : ISPPFNode) : String
 {
     val visited : HashSet<ISPPFNode>    = HashSet()

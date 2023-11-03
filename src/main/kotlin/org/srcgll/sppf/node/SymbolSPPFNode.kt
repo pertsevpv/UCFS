@@ -1,4 +1,4 @@
-package org.srcgll.sppf
+package org.srcgll.sppf.node
 
 import org.srcgll.grammar.symbol.Nonterminal
 import java.util.*
