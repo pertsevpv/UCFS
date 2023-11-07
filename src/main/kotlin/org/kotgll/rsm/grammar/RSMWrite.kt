@@ -3,7 +3,9 @@ package org.kotgll.rsm.grammar
 import java.io.File
 
 fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
-    File(pathToTXT).printWriter().use { out -> toString(startState) }
+    File(pathToTXT).printWriter().use { out ->
+        out.println(toString(startState))
+    }
 }
 
 fun toString(startState: RSMState): String {
