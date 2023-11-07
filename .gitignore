@@ -55,3 +55,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Generated class files ###
+!**/src/test/kotlin/grammar/combinator/dsl/generated/
