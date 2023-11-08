@@ -57,4 +57,4 @@ bin/
 .DS_Store
 
 ### Generated class files ###
-/src/test/kotlin/grammar/combinator/dsl/generated/*
+#/src/test/kotlin/grammar/combinator/dsl/generated/*
