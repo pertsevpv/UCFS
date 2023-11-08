@@ -4,7 +4,7 @@ import java.io.File
 
 fun writeRSMToTXT(startState: RSMState, pathToTXT: String) {
     File(pathToTXT).printWriter().use { out ->
-        out.println(toString(startState))
+        out.print(toString(startState))
     }
 }
 
