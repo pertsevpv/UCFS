@@ -35,3 +35,15 @@ sealed class Regexp {
         }
     }
 }
+
+data object Epsilon : Regexp() {
+    override fun derive(symbol: Symbol): Regexp = Empty
+}
+
+/*
+    Regular expression that does not accept any input string.
+ */
+data object Empty : Regexp() {
+    override fun derive(symbol: Symbol): Regexp = this
+}
+
