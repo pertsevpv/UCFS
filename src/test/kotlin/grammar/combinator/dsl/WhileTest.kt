@@ -20,6 +20,7 @@ class WhileTest : DslTest {
         var Lit by NT()
         var Num by NT()
         var Text by NT()
+        var Op by NT()
 
         init {
             Program = SeqStatement
@@ -39,7 +40,8 @@ class WhileTest : DslTest {
                 BoolVar or Term("(") * BoolExp * Term(")") or Term("not") * BoolExp or BoolTerm * Term("and") * BoolVar
             Id = Lit or Lit * Id
             NumVar = Num or Num * NumVar
-            BoolVar = Term("false") or Term("true")
+            BoolVar = Term("false") or Term("true") or NumExpr * Op * NumExpr
+            Op = makeAlternative(listOf("=", "<", ">", "<=", ">="))
             Lit = makeAlternative(
                 listOf(
                     "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
