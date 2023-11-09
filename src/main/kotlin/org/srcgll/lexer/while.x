@@ -18,11 +18,13 @@ import org.srcgll.lexer.SymbolCode;
     }
 %}
 
-Space = \ | \t | \n | \r | \r\n
-Int   = [0-9]+
-Bool  = "true" | "false"
-Id    = [a-z]+
-TextLimit  = "\'\"\'"
+Space      = \ | \t | \n | \r | \r\n
+Int        = [:digit:]+
+Bool       = "true" | "false"
+Id         = [:letter:]+
+TextLimit  = "\""
+
+Keyword = "if" | "then" | "else" | "skip" | "while" | "print" | "read" | "do"
 
 %%
 
@@ -52,9 +54,9 @@ TextLimit  = "\'\"\'"
 "<="        { return token(SymbolCode.LESSOREQ); }
 ">="        { return token(SymbolCode.GREATOREQ); }
 "="         { return token(SymbolCode.EQ); }
-{Bool}      { return token(SymbolCode.BOOL); }
-{Int}       { return token(SymbolCode.INT); }
 {Id}        { return token(SymbolCode.ID); }
+{Int}       { return token(SymbolCode.INT); }
+{Bool}      { return token(SymbolCode.BOOL); }
 {TextLimit} { return token(SymbolCode.TEXTLIMIT); }
 {Space}     {}
 <<EOF>>     { return token(SymbolCode.EOF); }

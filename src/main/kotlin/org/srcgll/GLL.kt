@@ -14,28 +14,29 @@ import org.srcgll.sppf.*
 
 class GLL <VertexType, LabelType : ILabel>
 (
-    val startState : RSMState,
-    val input      : InputGraph<VertexType, LabelType>,
-    val recovery   : Boolean,
+    private val startState : RSMState,
+    private val input      : InputGraph<VertexType, LabelType>,
+    private val recovery   : Boolean,
 )
 {
-    val stack            : IDescriptorsStack<VertexType>                                = ErrorRecoveringDescriptorsStack()
-    val sppf             : SPPF<VertexType>                                             = SPPF()
-    val poppedGSSNodes   : HashMap<GSSNode<VertexType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
-    val createdGSSNodes  : HashMap<GSSNode<VertexType>, GSSNode<VertexType>>            = HashMap()
-    var parseResult      : SPPFNode<VertexType>?                                        = null
+    private val stack            : IDescriptorsStack<VertexType>                                = ErrorRecoveringDescriptorsStack()
+    private val sppf             : SPPF<VertexType>                                             = SPPF()
+    private val poppedGSSNodes   : HashMap<GSSNode<VertexType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
+    private val createdGSSNodes  : HashMap<GSSNode<VertexType>, GSSNode<VertexType>>            = HashMap()
+    private var parseResult      : SPPFNode<VertexType>?                                        = null
 
     fun parse() : SPPFNode<VertexType>?
     {
-        val descriptor =
-                Descriptor(
-                    startState,
-                    getOrCreateGSSNode(startState.nonterminal, input.getVertex(null)!!, 0),
-                    null,
-                    input.getVertex(null)!!
-                )
-        stack.add(descriptor)
-
+        for (startVertex in input.getInputStartVertices()) {
+            val descriptor =
+                    Descriptor(
+                        startState,
+                        getOrCreateGSSNode(startState.nonterminal, startVertex, 0),
+                        null,
+                        startVertex
+                    )
+            stack.add(descriptor)
+        }
 
         // Continue parsing until all default descriptors processed
         while (stack.defaultDescriptorsStackIsNotEmpty()) {
@@ -54,7 +55,7 @@ class GLL <VertexType, LabelType : ILabel>
         return parseResult
     }
 
-    fun parse(curDescriptor : Descriptor<VertexType>)
+    private fun parse(curDescriptor : Descriptor<VertexType>)
     {
         val state       = curDescriptor.rsmState
         val pos         = curDescriptor.inputPosition
@@ -63,7 +64,7 @@ class GLL <VertexType, LabelType : ILabel>
         var leftExtent  = curSPPFNode?.leftExtent
         var rightExtent = curSPPFNode?.rightExtent
 
-        stack.addToHandled(curDescriptor)
+//        stack.addToHandled(curDescriptor)
 
         if (state.isStart && state.isFinal) {
             curSPPFNode = sppf.getNodeP(
@@ -182,7 +183,7 @@ class GLL <VertexType, LabelType : ILabel>
         if (state.isFinal) pop(gssNode, curSPPFNode, pos)
     }
 
-    fun handleTerminalOrEpsilonEdge
+    private fun handleTerminalOrEpsilonEdge
     (
         curDescriptor : Descriptor<VertexType>,
         terminal      : ITerminal?,
@@ -209,7 +210,7 @@ class GLL <VertexType, LabelType : ILabel>
         stack.add(descriptor)
     }
 
-    fun getOrCreateGSSNode(nonterminal : Nonterminal, inputPosition : VertexType, weight : Int) : GSSNode<VertexType>
+    private fun getOrCreateGSSNode(nonterminal : Nonterminal, inputPosition : VertexType, weight : Int) : GSSNode<VertexType>
     {
         val gssNode = GSSNode(nonterminal, inputPosition, weight)
 
@@ -223,7 +224,7 @@ class GLL <VertexType, LabelType : ILabel>
     }
 
 
-    fun createGSSNode
+    private fun createGSSNode
     (
         nonterminal  : Nonterminal,
         state        : RSMState,
@@ -253,7 +254,7 @@ class GLL <VertexType, LabelType : ILabel>
         return newNode
     }
 
-    fun pop(gssNode : GSSNode<VertexType>, sppfNode : SPPFNode<VertexType>?, pos : VertexType)
+    private fun pop(gssNode : GSSNode<VertexType>, sppfNode : SPPFNode<VertexType>?, pos : VertexType)
     {
         if (!poppedGSSNodes.containsKey(gssNode)) poppedGSSNodes[gssNode] = HashSet()
 

@@ -57,6 +57,7 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack <VertexTy
 
                 errorRecoveringDescriptorsStacks.getValue(pathWeight).addLast(descriptor)
             }
+            addToHandled(descriptor)
         }
     }
     override fun next() : Descriptor <VertexType>

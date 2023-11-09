@@ -1,13 +1,13 @@
 package org.srcgll.sppf
 
 import org.srcgll.sppf.node.*
-fun buildStringFromSPPF(sppfNode : ISPPFNode) : String
+
+fun buildStringFromSPPF(sppfNode : ISPPFNode) : MutableList<String>
 {
     val visited : HashSet<ISPPFNode>    = HashSet()
     val stack   : ArrayDeque<ISPPFNode> = ArrayDeque(listOf(sppfNode))
-    val result  : StringBuilder         = StringBuilder(" ".repeat(100))
+    val result  : MutableList<String> = ArrayList()
     var curNode : ISPPFNode
-
 
     while (stack.isNotEmpty()) {
         curNode = stack.removeLast()
@@ -15,13 +15,14 @@ fun buildStringFromSPPF(sppfNode : ISPPFNode) : String
 
         when (curNode) {
             is TerminalSPPFNode<*> -> {
-                result.insert(curNode.leftExtent as Int, curNode.terminal?.value ?: "")
+                if (curNode.terminal != null)
+                    result.add(curNode.terminal!!.value)
             }
             is PackedSPPFNode<*> -> {
-                if (curNode.leftSPPFNode != null)
-                    stack.add(curNode.leftSPPFNode!!)
                 if (curNode.rightSPPFNode != null)
                     stack.add(curNode.rightSPPFNode!!)
+                if (curNode.leftSPPFNode != null)
+                    stack.add(curNode.leftSPPFNode!!)
             }
             is ParentSPPFNode<*> -> {
                 if (curNode.kids.isNotEmpty()) {
@@ -32,5 +33,5 @@ fun buildStringFromSPPF(sppfNode : ISPPFNode) : String
         }
 
     }
-    return result.toString().replace(" ", "").replace("\n", "").trim()
+    return result
 }

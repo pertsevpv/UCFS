@@ -34,7 +34,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -71,7 +71,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -119,7 +119,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -164,7 +164,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -208,7 +208,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -253,7 +253,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -346,7 +346,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -382,7 +382,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -418,7 +418,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -555,7 +555,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -666,7 +666,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
@@ -747,7 +747,7 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.startVertex = 0
+        inputGraph.addStartVertex(0)
         inputGraph.finalVertex = curVertexId
 
         assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())

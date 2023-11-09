@@ -5,10 +5,15 @@ abstract class InputGraph <VertexType, LabelType : ILabel>
     abstract val vertices : MutableMap<VertexType, VertexType>
     abstract val edges    : MutableMap<VertexType, MutableList<Edge<LabelType, VertexType>>>
 
-    abstract var startVertex : VertexType?
+    abstract val startVertices : MutableSet<VertexType>
+
     abstract var finalVertex : VertexType?
 
+    abstract fun getInputStartVertices() : MutableSet<VertexType>
+
     abstract fun getVertex(vertex : VertexType?) : VertexType?
+
+    abstract fun addStartVertex(vertex : VertexType)
 
     abstract fun addVertex(vertex : VertexType)
 

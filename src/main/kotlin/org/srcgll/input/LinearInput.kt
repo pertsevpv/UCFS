@@ -5,15 +5,24 @@ class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, Label
     override val vertices : MutableMap<VertexType, VertexType> = HashMap()
     override val edges    : MutableMap<VertexType, MutableList<Edge<LabelType, VertexType>>> = HashMap()
 
-    override var startVertex : VertexType? = null
+    override val startVertices : MutableSet<VertexType> = HashSet()
+
     override var finalVertex : VertexType? = null
+
+    override fun getInputStartVertices() : MutableSet<VertexType>
+    {
+        return startVertices
+    }
 
     override fun getVertex(vertex : VertexType?) : VertexType?
     {
-        if (vertex == null)
-            return startVertex
-
         return vertices.getOrDefault(vertex, null)
+    }
+
+    override fun addStartVertex(vertex : VertexType)
+    {
+        startVertices.add(vertex)
+        vertices[vertex] = vertex
     }
 
     override fun addVertex(vertex : VertexType)
@@ -23,6 +32,7 @@ class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, Label
 
     override fun removeVertex(vertex : VertexType)
     {
+        startVertices.remove(vertex)
         vertices.remove(vertex)
     }
 
@@ -46,6 +56,6 @@ class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, Label
         edges.getValue(from).remove(edge)
     }
 
-    override fun isStart(vertex : VertexType?) = (vertex == startVertex)
+    override fun isStart(vertex : VertexType?) = startVertices.contains(vertex)
     override fun isFinal(vertex : VertexType?) = (vertex == finalVertex)
 }
