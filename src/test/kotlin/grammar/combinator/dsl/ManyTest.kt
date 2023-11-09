@@ -9,14 +9,14 @@ class ManyTest : DslTest {
         var S by NT()
 
         init {
-            S = Many(Term("a")) * Many(Term("a") * Term("b"))
+            S = Many("a") * Many("a" * "b")
             setStart(S)
         }
     }
 
     @Test
     fun someTest() {
-        val rsm = StarTest().toRsm()
+        val rsm = StarTest().buildRsm()
         generateOutput("many.txt", toString(rsm))
     }
 }

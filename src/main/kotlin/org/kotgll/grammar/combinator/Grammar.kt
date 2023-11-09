@@ -9,15 +9,31 @@ object GlobalState {
 
 open class Grammar {
     val nonTerms = ArrayList<NT>()
-    private lateinit var startState: NT
-    fun setStart(state: Regexp) {
-        if (state is NT) {
-            startState = state
-        }
+
+    private var startState: RSMState? = null
+    private lateinit var startNt: NT
+    fun setStart(expr: Regexp) {
+        if (expr is NT) {
+            startNt = expr
+        } else throw IllegalArgumentException("Only NT object can be start state for Grammar")
     }
 
-    fun toRsm(): RSMState {
+    /**
+     * Builds or returns a Rsm built earlier for the grammar
+     */
+    fun getRsm(): RSMState {
+        if (startState == null) {
+            buildRsm()
+        }
+        return startState as RSMState
+    }
+
+    /**
+     * Builds a new Rsm for the grammar
+     */
+    fun buildRsm(): RSMState {
         nonTerms.forEach { it.buildRsmBox() }
-        return startState.nonTerm.startState
+        startState = startNt.getNonterminal()?.startState
+        return startState as RSMState
     }
 }

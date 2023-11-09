@@ -9,7 +9,7 @@ import java.util.*
 import kotlin.reflect.KProperty
 
 open class NT : Symbol() {
-    lateinit var nonTerm: Nonterminal
+    private lateinit var nonTerm: Nonterminal
     private lateinit var rsmDescription: Regexp
 
     private fun getNewState(regex: Regexp): RSMState {
@@ -34,14 +34,16 @@ open class NT : Symbol() {
                     if (!regexpToRsmState.containsKey(newState)) {
                         regexpToProcess.add(newState)
                     }
-                    val toState = if (newState is Epsilon) getNewState(newState)
-                    else regexpToRsmState.getOrPut(newState) { getNewState(newState) }
+                    val toState = regexpToRsmState.getOrPut(newState) { getNewState(newState) }
                     when (symbol) {
                         is Term -> {
                             state?.addTerminalEdge(RSMTerminalEdge(symbol.terminal, toState))
                         }
 
                         is NT -> {
+                            if (!symbol::nonTerm.isInitialized) {
+                                throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.name}\"")
+                            }
                             state?.addNonterminalEdge(RSMNonterminalEdge(symbol.nonTerm, toState))
                         }
                     }

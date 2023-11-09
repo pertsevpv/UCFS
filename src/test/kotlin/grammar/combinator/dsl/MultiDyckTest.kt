@@ -22,7 +22,7 @@ class MultiDyckTest : DslTest {
 
     @Test
     fun someTest() {
-        val rsm = MultiDyckGrammar().toRsm()
+        val rsm = MultiDyckGrammar().buildRsm()
         generateOutput("MultiDyckGenerated.txt", toString(rsm))
     }
 }
