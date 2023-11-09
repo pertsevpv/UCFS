@@ -1,5 +1,7 @@
 package org.kotgll.grammar.combinator
 
+import org.kotgll.grammar.combinator.regexp.NT
+import org.kotgll.grammar.combinator.regexp.Regexp
 import org.kotgll.rsm.grammar.RSMState
 
 object GlobalState {

@@ -3,7 +3,7 @@ package org.kotgll.rsm.stringinput.withsppf.sppf
 import org.kotgll.rsm.grammar.symbol.Terminal
 import java.util.*
 
-class TerminalSPPFNode(leftExtent: Int, rightExtent: Int, val terminal: Terminal) :
+class TerminalSPPFNode(leftExtent: Int, rightExtent: Int, val terminal: Terminal<*>) :
     SPPFNode(leftExtent, rightExtent) {
   override fun toString() =
       "TerminalSPPFNode(leftExtent=$leftExtent, rightExtent=$rightExtent, terminal=$terminal)"

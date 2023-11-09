@@ -1,8 +1,8 @@
 package grammar.combinator.dsl
 
 import org.junit.jupiter.api.Test
-import org.kotgll.grammar.combinator.*
-import org.kotgll.grammar.combinator.Many
+import org.kotgll.grammar.combinator.Grammar
+import org.kotgll.grammar.combinator.regexp.*
 import org.kotgll.rsm.grammar.toString
 
 class WhileTest : DslTest {
@@ -23,27 +23,34 @@ class WhileTest : DslTest {
 
         init {
             Program = SeqStatement
-            SeqStatement = Statement or Statement * ";" * SeqStatement
-            Statement = Id * ":=" * NumExpr or "skip" or (
-                    "print" * Text) or (
-                    "print" * NumExpr) or (
-                    "{" * SeqStatement * "}") or (
-                    "if" * BoolExp * "then" * Statement * "else" * Statement) or (
-                    "while" * BoolExp * "do" * Statement
+            SeqStatement = Statement or Statement * Term(";") * SeqStatement
+            Statement = Id * Term(":=") * NumExpr or Term("skip") or (
+                    Term("print") * Text) or (
+                    Term("print") * NumExpr) or (
+                    Term("{") * SeqStatement * Term("}")) or (
+                    Term("if") * BoolExp * Term("then") * Statement * Term("else") * Statement) or (
+                    Term("while") * BoolExp * Term("do") * Statement
                     )
-            NumExpr = NumTerm or NumExpr * "+" * NumTerm or NumExpr * "-" * NumTerm
-            NumTerm = NumVar or NumTerm * "*" * NumVar or NumTerm * "/" * NumVar or "(" * NumExpr * ")"
-            BoolExp = BoolTerm or BoolExp * "or" * BoolTerm
-            BoolTerm = BoolVar or "(" * BoolExp * ")" or "not" * BoolExp or BoolTerm * "and" * BoolVar
+            NumExpr = NumTerm or NumExpr * Term("+") * NumTerm or NumExpr * Term("-") * NumTerm
+            NumTerm =
+                NumVar or NumTerm * Term("*") * NumVar or NumTerm * Term("/") * NumVar or Term("(") * NumExpr * Term(")")
+            BoolExp = BoolTerm or BoolExp * Term("or") * BoolTerm
+            BoolTerm =
+                BoolVar or Term("(") * BoolExp * Term(")") or Term("not") * BoolExp or BoolTerm * Term("and") * BoolVar
             Id = Lit or Lit * Id
             NumVar = Num or Num * NumVar
-            BoolVar = "false" or "true"
-            Lit =
-                "a" * "b" * "c" * "d" * "e" * "f" * "g" * "h" * "i" * "j" * "k" * "l" * "m" * "n" * "o" * "p" * "q" * "r" * "s" * "t" * "u" * "v" * "w" * "x" * "y" * "z"
-            Num = "1" * "2" * "3" * "4" * "5" * "6" * "7" * "8" * "9" * "0"
+            BoolVar = Term("false") or Term("true")
+            Lit = makeAlternative(
+                listOf(
+                    "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o",
+                    "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"
+                )
+            )
+
+            Num = makeAlternative(listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9"))
             setStart(Program)
             //todo correctly present text
-            Text = "\"" * Many(Lit or Num) * "\""
+            Text = Term("\"") * Many(Lit or Num) * Term("\"")
         }
     }
 

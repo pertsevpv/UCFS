@@ -113,7 +113,7 @@ class GLL(val startState: RSMState, val startGraphNodes: ArrayList<GraphNode>) {
   }
 
   fun getOrCreateTerminalSPPFNode(
-      terminal: Terminal,
+      terminal: Terminal<*>,
       leftExtent: GraphNode,
       rightExtent: GraphNode
   ): SPPFNode {

@@ -2,6 +2,7 @@ package grammar.combinator.dsl
 
 import org.junit.jupiter.api.Test
 import org.kotgll.grammar.combinator.*
+import org.kotgll.grammar.combinator.regexp.*
 import org.kotgll.rsm.grammar.toString
 
 class MultiDyckTest : DslTest {
@@ -13,9 +14,9 @@ class MultiDyckTest : DslTest {
 
         init {
             S = S1 or S2 or S3 or Epsilon
-            S1 = "(" * S * ")" * S
-            S2 = "[" * S * "]" * S
-            S3 = "{" * S * "}" * S
+            S1 = Term("(") * S * Term(")") * S
+            S2 = Term("[") * S * Term("]") * S
+            S3 = Term("{") * S * Term("}") * S
             setStart(S)
         }
     }

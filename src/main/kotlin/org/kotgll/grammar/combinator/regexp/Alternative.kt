@@ -1,7 +1,7 @@
-package org.kotgll.grammar.combinator
+package org.kotgll.grammar.combinator.regexp
 
 
-data class Alternative(internal val left: Regexp, internal val right: Regexp) : Regexp() {
+data class Alternative(internal val left: Regexp, internal val right: Regexp) : Regexp {
     companion object {
         fun makeAlternative(left: Regexp, right: Regexp): Regexp {
             if (left is Empty) return right
@@ -16,7 +16,7 @@ data class Alternative(internal val left: Regexp, internal val right: Regexp) : 
         }
     }
 
-    override fun derive(symbol: Symbol): Regexp {
+    override fun derive(symbol: DerivedSymbol): Regexp {
         return makeAlternative(left.derive(symbol), right.derive(symbol))
     }
 
@@ -24,9 +24,9 @@ data class Alternative(internal val left: Regexp, internal val right: Regexp) : 
 
 infix fun Regexp.or(other: Regexp): Regexp = Alternative.makeAlternative(this, other)
 
-infix fun CharSequence.or(other: Regexp): Regexp = Alternative.makeAlternative(Term(this.toString()), other)
-
-infix fun CharSequence.or(other: CharSequence): Regexp =
-    Alternative.makeAlternative(Term(this.toString()), Term(other.toString()))
-
-infix fun Regexp.or(other: CharSequence): Regexp = Alternative.makeAlternative(this, Term(other.toString()))
+fun makeAlternative(literals: Iterable<String>): Regexp {
+    val terms = literals.map { Term(it) }
+    val initial: Regexp = terms[0] or terms[1]
+    return terms.subList(2, terms.size)
+        .fold(initial) { acc: Regexp, i: Term<String> -> Alternative.makeAlternative(acc, i) }
+}

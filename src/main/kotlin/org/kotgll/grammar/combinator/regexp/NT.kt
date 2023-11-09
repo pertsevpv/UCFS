@@ -1,6 +1,8 @@
-package org.kotgll.grammar.combinator
+package org.kotgll.grammar.combinator.regexp
 
 
+import org.kotgll.grammar.combinator.GlobalState
+import org.kotgll.grammar.combinator.Grammar
 import org.kotgll.rsm.grammar.RSMNonterminalEdge
 import org.kotgll.rsm.grammar.RSMState
 import org.kotgll.rsm.grammar.RSMTerminalEdge
@@ -8,7 +10,7 @@ import org.kotgll.rsm.grammar.symbol.Nonterminal
 import java.util.*
 import kotlin.reflect.KProperty
 
-open class NT : Symbol() {
+open class NT : DerivedSymbol {
     private lateinit var nonTerm: Nonterminal
     private lateinit var rsmDescription: Regexp
 
@@ -36,7 +38,7 @@ open class NT : Symbol() {
                     }
                     val toState = regexpToRsmState.getOrPut(newState) { getNewState(newState) }
                     when (symbol) {
-                        is Term -> {
+                        is Term<*> -> {
                             state?.addTerminalEdge(RSMTerminalEdge(symbol.terminal, toState))
                         }
 

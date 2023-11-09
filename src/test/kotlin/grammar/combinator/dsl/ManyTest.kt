@@ -2,14 +2,19 @@ package grammar.combinator.dsl
 
 import org.junit.jupiter.api.Test
 import org.kotgll.grammar.combinator.*
+import org.kotgll.grammar.combinator.regexp.Many
+import org.kotgll.grammar.combinator.regexp.NT
+import org.kotgll.grammar.combinator.regexp.Term
+import org.kotgll.grammar.combinator.regexp.times
 import org.kotgll.rsm.grammar.toString
 
 class ManyTest : DslTest {
     class StarTest : Grammar() {
         var S by NT()
-
+        val A = Term("a")
+        val B = Term("b")
         init {
-            S = Many("a") * Many("a" * "b")
+            S = Many(A) * Many(A * B)
             setStart(S)
         }
     }

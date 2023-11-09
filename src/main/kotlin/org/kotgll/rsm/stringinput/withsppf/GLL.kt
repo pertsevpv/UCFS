@@ -36,16 +36,22 @@ class GLL(val startState: RSMState, val input: String) {
         curSPPFNode = getNodeP(state, curSPPFNode, getOrCreateItemSPPFNode(state, pos, pos))
 
     for (rsmEdge in state.outgoingTerminalEdges) {
-      if (pos >= input.length) break
-      if (rsmEdge.terminal.match(pos, input)) {
-        val nextSPPFNode: SPPFNode =
-            getOrCreateTerminalSPPFNode(rsmEdge.terminal, pos, rsmEdge.terminal.size)
-        queue.add(
-            rsmEdge.head,
-            gssNode,
-            getNodeP(rsmEdge.head, curSPPFNode, nextSPPFNode),
-            pos + rsmEdge.terminal.size)
-      }
+        val term = rsmEdge.terminal
+        if (term.value !is String) {
+            throw IllegalArgumentException("to support previous GLL version use Terminal with string value")
+        }  else {
+            if (pos >= input.length) break
+            if (input.startsWith(term.value, pos)) {
+                val nextSPPFNode: SPPFNode =
+                    getOrCreateTerminalSPPFNode(term, pos, term.value.length)
+                queue.add(
+                    rsmEdge.head,
+                    gssNode,
+                    getNodeP(rsmEdge.head, curSPPFNode, nextSPPFNode),
+                    pos + term.value.length
+                )
+            }
+        }
     }
 
     for (rsmEdge in state.outgoingNonterminalEdges) {
@@ -102,7 +108,7 @@ class GLL(val startState: RSMState, val input: String) {
     return y
   }
 
-  fun getOrCreateTerminalSPPFNode(terminal: Terminal, leftExtent: Int, rightExtent: Int): SPPFNode {
+  fun getOrCreateTerminalSPPFNode(terminal: Terminal<*>, leftExtent: Int, rightExtent: Int): SPPFNode {
     val y = TerminalSPPFNode(leftExtent, leftExtent + rightExtent, terminal)
     if (!createdSPPFNodes.containsKey(y)) createdSPPFNodes[y] = y
     return createdSPPFNodes[y]!!
