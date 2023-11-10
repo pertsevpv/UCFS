@@ -96,7 +96,7 @@ fun runRSMWithSPPF
             val resultPath = getResultPath(pathToOutput, inputName, "rsm", rsmName, "with_sppf")
             File(resultPath).writeText("")
 
-            val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+            val inputGraph = LinearInput<Int, LinearInputLabel>()
             val lexer = GeneratedLexer(StringReader(input))
             var token : Token<SymbolCode>
             var vertexId = 1

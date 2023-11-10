@@ -5,7 +5,7 @@ import java.util.*
 
 class ItemSPPFNode <VertexType>
 (
-    val rsmState : RSMState<*>,
+    val rsmState : RSMState,
     leftExtent   : VertexType,
     rightExtent  : VertexType,
 )

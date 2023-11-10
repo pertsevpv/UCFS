@@ -2,10 +2,10 @@ package org.srcgll.grammar
 
 import org.srcgll.grammar.symbol.Terminal
 
-class RSMTerminalEdge<TerminalType>
+class RSMTerminalEdge
 (
-    val terminal : Terminal<TerminalType>,
-    val head     : RSMState<TerminalType>,
+    val terminal : Terminal<*>,
+    val head     : RSMState,
 )
 {
     override fun toString() = "RSMTerminalEdge(terminal=$terminal, head=$head)"
@@ -13,7 +13,7 @@ class RSMTerminalEdge<TerminalType>
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)               return true
-        if (other !is RSMTerminalEdge<*>) return false
+        if (other !is RSMTerminalEdge) return false
         if (terminal != other.terminal)   return false
         if (head != other.head)           return false
 

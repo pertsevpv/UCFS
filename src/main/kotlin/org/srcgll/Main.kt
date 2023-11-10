@@ -67,7 +67,7 @@ fun main(args : Array<String>)
     var token : Token<SymbolCode>
     var vertexId = 0
 
-    val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+    val inputGraph = LinearInput<Int, LinearInputLabel>()
 
     inputGraph.addVertex(vertexId)
     inputGraph.addStartVertex(vertexId)

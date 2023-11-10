@@ -10,24 +10,24 @@ object GlobalState
     fun getNextInt() : Int = value++
 }
 
-open class Grammar<TerminalType>
+open class Grammar
 {
-    val nonTerms = ArrayList<NT<TerminalType>>()
+    val nonTerms = ArrayList<NT>()
 
-    private var startState       : RSMState<TerminalType>? = null
-    private lateinit var startNt : NT<TerminalType>
+    private var startState       : RSMState? = null
+    private lateinit var startNt : NT
 
     fun setStart(expr : Regexp)
     {
-        if (expr is NT<*>) {
-            startNt = expr as NT<TerminalType>
+        if (expr is NT) {
+            startNt = expr
         } else throw IllegalArgumentException("Only NT object can be start state for Grammar")
     }
 
     /**
      * Builds or returns a Rsm built earlier for the grammar
      */
-    fun getRsm() : RSMState<TerminalType>
+    fun getRsm() : RSMState
     {
         if (startState == null) {
             buildRsm()
@@ -38,10 +38,10 @@ open class Grammar<TerminalType>
     /**
      * Builds a new Rsm for the grammar
      */
-    fun buildRsm() : RSMState<TerminalType>
+    fun buildRsm() : RSMState
     {
         nonTerms.forEach { it.buildRsmBox() }
         startState = startNt.getNonterminal()?.startState
-        return startState as RSMState<TerminalType>
+        return startState as RSMState
     }
 }

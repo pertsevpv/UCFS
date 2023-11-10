@@ -2,10 +2,10 @@ package org.srcgll.grammar
 
 import org.srcgll.grammar.symbol.Nonterminal
 
-class RSMNonterminalEdge <TerminalType>
+class RSMNonterminalEdge
 (
-    val nonterminal : Nonterminal<TerminalType>,
-    val head        : RSMState<TerminalType>,
+    val nonterminal : Nonterminal,
+    val head        : RSMState,
 )
 {
     override fun toString() = "RSMNonterminalEdge(nonterminal=$nonterminal, head=$head)"
@@ -13,7 +13,7 @@ class RSMNonterminalEdge <TerminalType>
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                   return true
-        if (other !is RSMNonterminalEdge<*>)  return false
+        if (other !is RSMNonterminalEdge)  return false
         if (nonterminal != other.nonterminal) return false
         if (head != other.head)               return false
 

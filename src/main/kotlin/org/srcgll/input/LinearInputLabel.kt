@@ -2,16 +2,16 @@ package org.srcgll.input
 
 import org.srcgll.grammar.symbol.Terminal
 
-class LinearInputLabel <TerminalType>
+class LinearInputLabel
 (
-    override val terminal : Terminal<TerminalType>
+    override val terminal : Terminal<*>
 )
-    : ILabel<TerminalType>
+    : ILabel
 {
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                  return true
-        if (other !is LinearInputLabel<*>)   return false
+        if (other !is LinearInputLabel)   return false
         if (this.terminal != other.terminal) return false
 
         return true

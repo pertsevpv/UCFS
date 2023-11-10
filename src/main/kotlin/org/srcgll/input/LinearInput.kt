@@ -1,10 +1,10 @@
 package org.srcgll.input
 
-class LinearInput<VertexType, TerminalType, LabelType : ILabel<TerminalType>>
-    : IGraph<VertexType, TerminalType, LabelType>
+class LinearInput<VertexType, LabelType : ILabel>
+    : IGraph<VertexType, LabelType>
 {
     override val vertices : MutableMap<VertexType, VertexType> = HashMap()
-    override val edges    : MutableMap<VertexType, MutableList<Edge<VertexType, TerminalType, LabelType>>> = HashMap()
+    override val edges    : MutableMap<VertexType, MutableList<Edge<VertexType, LabelType>>> = HashMap()
 
     override val startVertices : MutableSet<VertexType> = HashSet()
 
@@ -34,7 +34,7 @@ class LinearInput<VertexType, TerminalType, LabelType : ILabel<TerminalType>>
         vertices.remove(vertex)
     }
 
-    override fun getEdges(from : VertexType) : MutableList<Edge<VertexType, TerminalType, LabelType>>
+    override fun getEdges(from : VertexType) : MutableList<Edge<VertexType, LabelType>>
     {
         return edges.getOrDefault(from, ArrayList())
     }

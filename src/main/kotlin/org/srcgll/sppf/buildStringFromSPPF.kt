@@ -14,7 +14,7 @@ fun buildStringFromSPPF(sppfNode : ISPPFNode) : MutableList<String>
         visited.add(curNode)
 
         when (curNode) {
-            is TerminalSPPFNode<*,*> -> {
+            is TerminalSPPFNode<*> -> {
                 if (curNode.terminal != null)
                     result.add(curNode.terminal!!.value.toString())
             }

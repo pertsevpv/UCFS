@@ -10,20 +10,20 @@ import org.srcgll.grammar.symbol.Terminal
 import java.util.*
 import kotlin.reflect.KProperty
 
-open class NT <TerminalType> : DerivedSymbol
+open class NT : DerivedSymbol
 {
-    private lateinit var nonTerm        : Nonterminal<TerminalType>
+    private lateinit var nonTerm        : Nonterminal
     private lateinit var rsmDescription : Regexp
 
-    private fun getNewState(regex : Regexp) : RSMState<TerminalType>
+    private fun getNewState(regex : Regexp) : RSMState
     {
         return RSMState(GlobalState.getNextInt(), nonTerm, isStart = false, regex.acceptEpsilon())
     }
 
-    fun buildRsmBox() : RSMState<TerminalType>
+    fun buildRsmBox() : RSMState
     {
         val regexpToProcess = Stack<Regexp>()
-        val regexpToRsmState = HashMap<Regexp, RSMState<TerminalType>>()
+        val regexpToRsmState = HashMap<Regexp, RSMState>()
         regexpToRsmState[rsmDescription] = nonTerm.startState
 
         val alphabet = rsmDescription.getAlphabet()
@@ -44,14 +44,14 @@ open class NT <TerminalType> : DerivedSymbol
 
                     when (symbol) {
                         is Term<*> -> {
-                            state?.addTerminalEdge(RSMTerminalEdge(symbol.terminal as Terminal<TerminalType>, toState))
+                            state?.addTerminalEdge(RSMTerminalEdge(symbol.terminal as Terminal<*>, toState))
                         }
 
-                        is NT<*> -> {
+                        is NT -> {
                             if (!symbol::nonTerm.isInitialized) {
                                 throw IllegalArgumentException("Not initialized NT used in description of \"${nonTerm.value}\"")
                             }
-                            state?.addNonterminalEdge(RSMNonterminalEdge(symbol.nonTerm as Nonterminal<TerminalType>, toState))
+                            state?.addNonterminalEdge(RSMNonterminalEdge(symbol.nonTerm as Nonterminal, toState))
                         }
                     }
                 }
@@ -60,12 +60,12 @@ open class NT <TerminalType> : DerivedSymbol
         return nonTerm.startState
     }
 
-    override fun getNonterminal() : Nonterminal<TerminalType>?
+    override fun getNonterminal() : Nonterminal?
     {
         return nonTerm
     }
 
-    operator fun setValue(grammar : Grammar<TerminalType>, property : KProperty<*>, lrh : Regexp)
+    operator fun setValue(grammar : Grammar, property : KProperty<*>, lrh : Regexp)
     {
         if (!this::nonTerm.isInitialized) {
             nonTerm = Nonterminal(property.name)
@@ -78,5 +78,5 @@ open class NT <TerminalType> : DerivedSymbol
 
     }
 
-    operator fun getValue(grammar : Grammar<TerminalType>, property : KProperty<*>) : Regexp = this
+    operator fun getValue(grammar : Grammar, property : KProperty<*>) : Regexp = this
 }

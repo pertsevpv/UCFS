@@ -67,7 +67,7 @@ fun printEdge(x : Int, y : Int) : String
 fun printNode(nodeId : Int, node : ISPPFNode) : String
 {
     return when(node) {
-        is TerminalSPPFNode<*,*> -> {
+        is TerminalSPPFNode<*> -> {
             "${nodeId} [label = \"${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${getColor(node.weight)}]"
         }
         is SymbolSPPFNode<*> -> {

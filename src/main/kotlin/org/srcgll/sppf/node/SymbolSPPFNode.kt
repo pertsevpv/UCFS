@@ -5,7 +5,7 @@ import java.util.*
 
 class SymbolSPPFNode <VertexType>
 (
-    val symbol  : Nonterminal<*>,
+    val symbol  : Nonterminal,
     leftExtent  : VertexType,
     rightExtent : VertexType,
 )

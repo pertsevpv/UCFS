@@ -2,9 +2,9 @@ package org.srcgll.input
 
 import org.srcgll.grammar.symbol.Terminal
 
-interface ILabel <TerminalType>
+interface ILabel
 {
-    val terminal : Terminal<TerminalType>
+    val terminal : Terminal<*>
 
     override fun equals(other : Any?) : Boolean
 }

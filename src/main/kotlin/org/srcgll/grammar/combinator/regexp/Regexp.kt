@@ -9,7 +9,7 @@ sealed interface Regexp
     Based on Brzozowski derivative
      */
     fun derive(symbol : DerivedSymbol) : Regexp
-    fun getNonterminal() : Nonterminal<*>? = null
+    fun getNonterminal() : Nonterminal? = null
 
     /*
      Does the expression accept an epsilon

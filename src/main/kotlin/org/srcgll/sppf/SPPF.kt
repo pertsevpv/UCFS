@@ -10,7 +10,7 @@ class SPPF <VertexType>
 {
     private val createdSPPFNodes : HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>> = HashMap()
 
-    fun getNodeP(state : RSMState<*>, sppfNode : SPPFNode<VertexType>?, nextSPPFNode : SPPFNode<VertexType>) : SPPFNode<VertexType>
+    fun getNodeP(state : RSMState, sppfNode : SPPFNode<VertexType>?, nextSPPFNode : SPPFNode<VertexType>) : SPPFNode<VertexType>
     {
         val leftExtent  = sppfNode?.leftExtent ?: nextSPPFNode.leftExtent
         val rightExtent = nextSPPFNode.rightExtent
@@ -33,9 +33,9 @@ class SPPF <VertexType>
         return parent
     }
 
-    fun <TerminalType> getOrCreateTerminalSPPFNode
+    fun getOrCreateTerminalSPPFNode
     (
-        terminal    : Terminal<TerminalType>?,
+        terminal    : Terminal<*>?,
         leftExtent  : VertexType,
         rightExtent : VertexType,
         weight      : Int
@@ -53,7 +53,7 @@ class SPPF <VertexType>
 
     fun getOrCreateItemSPPFNode
     (
-        state       : RSMState<*>,
+        state       : RSMState,
         leftExtent  : VertexType,
         rightExtent : VertexType,
         weight      : Int
@@ -72,7 +72,7 @@ class SPPF <VertexType>
 
     fun getOrCreateSymbolSPPFNode
     (
-        nonterminal : Nonterminal<*>,
+        nonterminal : Nonterminal,
         leftExtent  : VertexType,
         rightExtent : VertexType,
         weight      : Int

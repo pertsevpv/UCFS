@@ -6,12 +6,13 @@ import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.input.Edge
 import org.srcgll.input.ILabel
 import org.srcgll.input.IGraph
+import org.srcgll.sppf.node.SPPFNode
 
 /**
  * Define Class for a^n b^n Language CF-Grammar
  * @param TerminalType = String
  */
-class AnBn : Grammar<String>()
+class AnBn : Grammar()
 {
     // Nonterminals
     var S by NT()
@@ -33,7 +34,7 @@ class SimpleInputLabel
 (
     label : String
 )
-    : ILabel<String>
+    : ILabel
 {
     override val terminal : Terminal<String> = Terminal(label)
 
@@ -52,10 +53,10 @@ class SimpleInputLabel
  * @param TerminalType = String
  * @param LabelType    = SimpleInputLabel
  */
-class SimpleGraph : IGraph<Int, String, SimpleInputLabel>
+class SimpleGraph : IGraph<Int, SimpleInputLabel>
 {
     override val vertices : MutableMap<Int, Int> = HashMap()
-    override val edges : MutableMap<Int, MutableList<Edge<Int, String, SimpleInputLabel>>> = HashMap()
+    override val edges    : MutableMap<Int, MutableList<Edge<Int, SimpleInputLabel>>> = HashMap()
 
     override val startVertices : MutableSet<Int> = HashSet()
 
@@ -79,7 +80,7 @@ class SimpleGraph : IGraph<Int, String, SimpleInputLabel>
         edges.getValue(from).add(edge)
     }
 
-    override fun getEdges(from : Int) : MutableList<Edge<Int, String, SimpleInputLabel>>
+    override fun getEdges(from : Int) : MutableList<Edge<Int, SimpleInputLabel>>
     {
         return edges.getOrDefault(from, ArrayList())
     }
@@ -103,13 +104,13 @@ class SimpleGraph : IGraph<Int, String, SimpleInputLabel>
     {
         return vertices.getOrDefault(vertex, null)
     }
-
 }
 
 fun main()
 {
     val rsmStartState = AnBn().buildRsm()
     val inputGraph    = SimpleGraph()
+    val startVertex   = 0
 
     for (i in 0..3) inputGraph.addVertex(vertex = i)
 
@@ -121,11 +122,12 @@ fun main()
 
     // addStartVertex does not add Vertex to list of Vertices, so for starting vertices there should be both
     // calls to addVertex and addStartVertex
-    inputGraph.addStartVertex(vertex = 0)
+    inputGraph.addStartVertex(startVertex)
 
-    val result = GLL(rsmStartState, inputGraph, recovery = RecoveryMode.OFF).parse()
+    // result = (root of SPPF, set of reachable vertices)
+    val result : Pair<SPPFNode<Int>?, HashSet<Int>> = GLL<Int, SimpleInputLabel>(rsmStartState, inputGraph, recovery = RecoveryMode.OFF).parse()
 
-    println("Reachable vertices: ")
+    println("Reachable vertices from vertex $startVertex : ")
     for (reachable in result.second) {
         println("Vertex: $reachable")
     }

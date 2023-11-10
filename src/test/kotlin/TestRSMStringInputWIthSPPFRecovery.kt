@@ -8,6 +8,7 @@ import org.srcgll.grammar.readRSMFromTXT
 import org.srcgll.grammar.symbol.*
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
+import org.srcgll.sppf.writeSPPFToDOT
 import kotlin.test.assertNotNull
 
 const val pathToGrammars = "/home/hollowcoder/Programming/SRC/srcgll/src/test/resources/cli/TestRSMReadWriteTXT"
@@ -19,7 +20,7 @@ class TestRSMStringInputWIthSPPFRecovery
     fun `test BracketStarX grammar`(input : String, weight : Int)
     {
         val startState = readRSMFromTXT("${pathToGrammars}/bracket_star_x.txt")
-        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -33,7 +34,7 @@ class TestRSMStringInputWIthSPPFRecovery
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
 
-        val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
@@ -52,7 +53,7 @@ class TestRSMStringInputWIthSPPFRecovery
     fun `test CAStarBStar grammar`(input : String, weight : Int)
     {
         val startState = readRSMFromTXT("${pathToGrammars}/c_a_star_b_star.txt")
-        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -66,7 +67,7 @@ class TestRSMStringInputWIthSPPFRecovery
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
 
-        val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
@@ -85,7 +86,7 @@ class TestRSMStringInputWIthSPPFRecovery
     fun `test AB grammar`(input : String, weight : Int)
     {
         val startState = readRSMFromTXT("${pathToGrammars}/ab.txt")
-        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -99,7 +100,7 @@ class TestRSMStringInputWIthSPPFRecovery
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
 
-        val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
@@ -118,7 +119,7 @@ class TestRSMStringInputWIthSPPFRecovery
     fun `test Dyck grammar`(input : String, weight : Int)
     {
         val startState = readRSMFromTXT("${pathToGrammars}/dyck.txt")
-        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -132,7 +133,7 @@ class TestRSMStringInputWIthSPPFRecovery
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
 
-        val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
@@ -151,7 +152,7 @@ class TestRSMStringInputWIthSPPFRecovery
     fun `test Ambiguous grammar`(input : String, weight : Int)
     {
         val startState = readRSMFromTXT("${pathToGrammars}/ambiguous.txt")
-        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -163,9 +164,11 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
+
+        writeSPPFToDOT(result.first!!, "./debug_${input}.dot")
         val recoveredString = buildStringFromSPPF(result.first!!)
 
-        val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
@@ -185,7 +188,7 @@ class TestRSMStringInputWIthSPPFRecovery
     fun `test MultiDyck grammar`(input : String, weight : Int)
     {
         val startState = readRSMFromTXT("${pathToGrammars}/multi_dyck.txt")
-        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -199,7 +202,7 @@ class TestRSMStringInputWIthSPPFRecovery
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
 
-        val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
@@ -218,7 +221,7 @@ class TestRSMStringInputWIthSPPFRecovery
     fun `test SimpleGolang grammar`(input : String, weight : Int)
     {
         val startState = readRSMFromTXT("${pathToGrammars}/simple_golang.txt")
-        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val inputGraph = LinearInput<Int, LinearInputLabel>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -232,7 +235,7 @@ class TestRSMStringInputWIthSPPFRecovery
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
         val recoveredString = buildStringFromSPPF(result.first!!)
 
-        val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
+        val recoveredInputGraph = LinearInput<Int, LinearInputLabel>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
