@@ -7,7 +7,7 @@ import kotlinx.cli.required
 import org.srcgll.grammar.readRSMFromTXT
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.grammar.writeRSMToDOT
-import org.srcgll.input.InputGraph
+import org.srcgll.input.IGraph
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import java.io.*
@@ -86,10 +86,10 @@ fun main(args : Array<String>)
 
     val result  = GLL(grammar, inputGraph, recoveryMode).parse()
 
-    writeSPPFToDOT(result!!, "./result_sppf.dot")
+    writeSPPFToDOT(result.first!!, "./result_sppf.dot")
     writeRSMToDOT(grammar, "./rsm.dot")
 
     File(pathToOutputString).printWriter().use {
-        out -> out.println(buildStringFromSPPF(result!!))
+        out -> out.println(buildStringFromSPPF(result.first!!))
     }
 }

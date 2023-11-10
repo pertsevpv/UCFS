@@ -8,7 +8,6 @@ import org.srcgll.GLL
 import org.srcgll.RecoveryMode
 import org.srcgll.grammar.readRSMFromTXT
 import org.srcgll.grammar.symbol.Terminal
-import org.srcgll.input.InputGraph
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.lexer.GeneratedLexer
@@ -110,12 +109,12 @@ fun runRSMWithSPPF
                 inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token.value)), ++vertexId)
             }
 
-            var result : ISPPFNode? = GLL(rsm, inputGraph, recovery = RecoveryMode.ON).parse()
-            writeSPPFToDOT(result!!, "./outputFiles/${inputName}_sppf.dot")
+            var result = GLL(rsm, inputGraph, recovery = RecoveryMode.ON).parse()
+            writeSPPFToDOT(result.first!!, "./outputFiles/${inputName}_sppf.dot")
 
             for (warmUp in 1 .. warmUpRounds)
             {
-                var result : SPPFNode<Int>?
+                var result : Pair<SPPFNode<Int>?, HashSet<Int>>
                 val elapsedRecovery = measureNanoTime {
                     result = GLL(rsm, inputGraph, recovery = RecoveryMode.ON).parse()
                 }
@@ -129,7 +128,7 @@ fun runRSMWithSPPF
 
             for (benchmarkAttempt in 1 .. benchmarkRounds)
             {
-                var result : SPPFNode<Int>?
+                var result : Pair<SPPFNode<Int>?, HashSet<Int>>
 
                 val elapsedRecovery = measureNanoTime {
                     result = GLL(rsm, inputGraph, recovery = RecoveryMode.ON).parse()

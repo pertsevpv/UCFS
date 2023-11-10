@@ -8,7 +8,7 @@ import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.GLL
 import org.srcgll.RecoveryMode
-import org.srcgll.input.InputGraph
+import org.srcgll.input.IGraph
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import kotlin.test.assertNull
@@ -37,7 +37,7 @@ class TestRSMStringInputWithSPPFFail {
         }
         inputGraph.addStartVertex(0)
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -74,7 +74,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -122,7 +122,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -167,7 +167,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -211,7 +211,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -276,7 +276,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -377,7 +377,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -436,7 +436,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -472,7 +472,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -609,7 +609,7 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be Null for {0}")
@@ -743,6 +743,6 @@ class TestRSMStringInputWithSPPFFail {
         inputGraph.addStartVertex(0)
         
 
-        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 }

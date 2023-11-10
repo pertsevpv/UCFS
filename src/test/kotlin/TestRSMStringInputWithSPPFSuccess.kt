@@ -8,7 +8,6 @@ import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.GLL
 import org.srcgll.RecoveryMode
-import org.srcgll.input.InputGraph
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import kotlin.test.assertNotNull
@@ -37,7 +36,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @Test
@@ -73,7 +72,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @Test
@@ -120,7 +119,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -164,7 +163,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -207,7 +206,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -260,7 +259,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -352,7 +351,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -399,7 +398,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -434,7 +433,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -570,7 +569,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -694,7 +693,7 @@ class TestRSMStringInputWithSPPFSuccess {
 
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -774,7 +773,7 @@ class TestRSMStringInputWithSPPFSuccess {
         }
         inputGraph.addStartVertex(0)
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 }
 

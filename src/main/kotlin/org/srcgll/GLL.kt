@@ -8,24 +8,25 @@ import org.srcgll.grammar.RSMNonterminalEdge
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.gss.*
 import org.srcgll.input.ILabel
-import org.srcgll.input.InputGraph
+import org.srcgll.input.IGraph
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.*
 
 class GLL <VertexType, TerminalType, LabelType : ILabel<TerminalType>>
 (
     private val startState : RSMState<TerminalType>,
-    private val input      : InputGraph<VertexType, TerminalType, LabelType>,
+    private val input      : IGraph<VertexType, TerminalType, LabelType>,
     private val recovery   : RecoveryMode,
 )
 {
-    private val stack            : IDescriptorsStack<VertexType, TerminalType> = ErrorRecoveringDescriptorsStack()
-    private val sppf             : SPPF<VertexType> = SPPF()
-    private val poppedGSSNodes   : HashMap<GSSNode<VertexType, TerminalType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
-    private val createdGSSNodes  : HashMap<GSSNode<VertexType, TerminalType>, GSSNode<VertexType, TerminalType>> = HashMap()
-    private var parseResult      : SPPFNode<VertexType>? = null
+    private val stack             : IDescriptorsStack<VertexType, TerminalType> = ErrorRecoveringDescriptorsStack()
+    private val sppf              : SPPF<VertexType> = SPPF()
+    private val poppedGSSNodes    : HashMap<GSSNode<VertexType, TerminalType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
+    private val createdGSSNodes   : HashMap<GSSNode<VertexType, TerminalType>, GSSNode<VertexType, TerminalType>> = HashMap()
+    private var parseResult       : SPPFNode<VertexType>? = null
+    private val reachableVertices : HashSet<VertexType> = HashSet()
 
-    fun parse() : SPPFNode<VertexType>?
+    fun parse() : Pair<SPPFNode<VertexType>?, HashSet<VertexType>>
     {
         for (startVertex in input.getInputStartVertices()) {
             val descriptor =
@@ -41,6 +42,7 @@ class GLL <VertexType, TerminalType, LabelType : ILabel<TerminalType>>
         // Continue parsing until all default descriptors processed
         while (stack.defaultDescriptorsStackIsNotEmpty()) {
             val curDefaultDescriptor = stack.next()
+
             parse(curDefaultDescriptor)
         }
 
@@ -52,7 +54,7 @@ class GLL <VertexType, TerminalType, LabelType : ILabel<TerminalType>>
             parse(curRecoveryDescriptor)
         }
 
-        return parseResult
+        return Pair(parseResult, reachableVertices)
     }
 
     private fun parse(curDescriptor : Descriptor<VertexType, TerminalType>)
@@ -81,9 +83,13 @@ class GLL <VertexType, TerminalType, LabelType : ILabel<TerminalType>>
             rightExtent = curSPPFNode.rightExtent
         }
 
-        if (curSPPFNode is SymbolSPPFNode<VertexType> && (parseResult == null || parseResult!!.weight > curSPPFNode.weight)
+        if (curSPPFNode is SymbolSPPFNode<VertexType>
             && state.nonterminal == startState.nonterminal && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)) {
-            parseResult = curSPPFNode
+
+            if (parseResult == null || parseResult!!.weight > curSPPFNode.weight) {
+                parseResult = curSPPFNode
+            }
+            reachableVertices.add(rightExtent)
         }
 
         for (inputEdge in input.getEdges(pos)) {

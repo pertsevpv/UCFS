@@ -31,7 +31,7 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result!!)
+        val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
@@ -43,8 +43,8 @@ class TestRSMStringInputWIthSPPFRecovery
         }
         recoveredInputGraph.addStartVertex(0)
 
-        assert(result.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF))
+        assert(result.first!!.weight <= weight)
+        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
@@ -64,7 +64,7 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result!!)
+        val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
@@ -76,8 +76,8 @@ class TestRSMStringInputWIthSPPFRecovery
         }
         recoveredInputGraph.addStartVertex(0)
 
-        assert(result.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF))
+        assert(result.first!!.weight <= weight)
+        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
@@ -97,7 +97,7 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result!!)
+        val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
@@ -109,8 +109,8 @@ class TestRSMStringInputWIthSPPFRecovery
         }
         recoveredInputGraph.addStartVertex(0)
 
-        assert(result.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF))
+        assert(result.first!!.weight <= weight)
+        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
@@ -130,7 +130,7 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result!!)
+        val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
@@ -142,8 +142,8 @@ class TestRSMStringInputWIthSPPFRecovery
         }
         recoveredInputGraph.addStartVertex(0)
 
-        assert(result.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF))
+        assert(result.first!!.weight <= weight)
+        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
@@ -163,20 +163,21 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result!!)
+        val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
         curVertexId = 0
         recoveredInputGraph.addVertex(curVertexId)
+
         for (x in recoveredString) {
             recoveredInputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
             recoveredInputGraph.addVertex(curVertexId)
         }
         recoveredInputGraph.addStartVertex(0)
 
-        assert(result.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF))
+        assert(result.first!!.weight <= weight)
+        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
@@ -196,7 +197,7 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result!!)
+        val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
@@ -208,8 +209,8 @@ class TestRSMStringInputWIthSPPFRecovery
         }
         recoveredInputGraph.addStartVertex(0)
 
-        assert(result.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF))
+        assert(result.first!!.weight <= weight)
+        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     @ParameterizedTest
@@ -229,7 +230,7 @@ class TestRSMStringInputWIthSPPFRecovery
         
 
         val result = GLL(startState, inputGraph, recovery = RecoveryMode.ON).parse()
-        val recoveredString = buildStringFromSPPF(result!!)
+        val recoveredString = buildStringFromSPPF(result.first!!)
 
         val recoveredInputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
@@ -241,8 +242,8 @@ class TestRSMStringInputWIthSPPFRecovery
         }
         recoveredInputGraph.addStartVertex(0)
 
-        assert(result.weight <= weight)
-        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF))
+        assert(result.first!!.weight <= weight)
+        assertNotNull(GLL(startState, recoveredInputGraph, recovery = RecoveryMode.OFF).parse().first)
     }
 
     companion object {

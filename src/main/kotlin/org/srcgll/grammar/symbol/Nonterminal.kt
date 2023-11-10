@@ -6,6 +6,7 @@ class Nonterminal <TerminalType>
 (
    val value : String
 )
+    : Symbol
 {
     lateinit var startState : RSMState<TerminalType>
     override fun toString() = "Nonterminal($value)"

@@ -1,7 +1,7 @@
 package org.srcgll.input
 
 class LinearInput<VertexType, TerminalType, LabelType : ILabel<TerminalType>>
-    : InputGraph<VertexType, TerminalType, LabelType>()
+    : IGraph<VertexType, TerminalType, LabelType>
 {
     override val vertices : MutableMap<VertexType, VertexType> = HashMap()
     override val edges    : MutableMap<VertexType, MutableList<Edge<VertexType, TerminalType, LabelType>>> = HashMap()

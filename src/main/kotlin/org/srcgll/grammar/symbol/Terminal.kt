@@ -4,6 +4,7 @@ class Terminal <TerminalType>
 (
     val value : TerminalType
 )
+    : Symbol
 {
     override fun toString() = "Literal($value)"
 

@@ -6,10 +6,11 @@ import java.io.File
 
 fun writeSPPFToDOT(sppfNode : ISPPFNode, filePath : String)
 {
-    val queue : ArrayDeque<ISPPFNode> = ArrayDeque(listOf(sppfNode))
-    val edges : HashMap<Int, HashSet<Int>> = HashMap()
-    val visited : HashSet<Int> = HashSet()
-    var node : ISPPFNode
+    val queue   : ArrayDeque<ISPPFNode>      = ArrayDeque(listOf(sppfNode))
+    val edges   : HashMap<Int, HashSet<Int>> = HashMap()
+    val visited : HashSet<Int>               = HashSet()
+    var node    : ISPPFNode
+
     val file = File(filePath)
 
     file.printWriter().use {
