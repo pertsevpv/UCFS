@@ -4,10 +4,10 @@ import org.srcgll.grammar.RSMState
 import org.srcgll.gss.GSSNode
 import org.srcgll.sppf.node.SPPFNode
 
-class Descriptor <VertexType>
+class Descriptor <VertexType, TerminalType>
 (
-    val rsmState      : RSMState,
-    val gssNode       : GSSNode<VertexType>,
+    val rsmState      : RSMState<TerminalType>,
+    val gssNode       : GSSNode<VertexType, TerminalType>,
     val sppfNode      : SPPFNode<VertexType>?,
     val inputPosition : VertexType,
 )
@@ -21,30 +21,30 @@ class Descriptor <VertexType>
     
     override fun equals(other : Any?) : Boolean
     {
-        return other is Descriptor<*>               &&
+        return other is Descriptor<*,*>             &&
                other.rsmState == rsmState           &&
                other.inputPosition == inputPosition &&
                other.gssNode == gssNode
     }
 }
 
-interface IDescriptorsStack <VertexType>
+interface IDescriptorsStack <VertexType, TerminalType>
 {
     fun defaultDescriptorsStackIsNotEmpty() : Boolean
-    fun add(descriptor : Descriptor<VertexType>)
-    fun next() : Descriptor<VertexType>
-    fun isAlreadyHandled(descriptor : Descriptor<VertexType>) : Boolean
-    fun addToHandled(descriptor : Descriptor<VertexType>)
+    fun add(descriptor : Descriptor<VertexType, TerminalType>)
+    fun next() : Descriptor<VertexType, TerminalType>
+    fun isAlreadyHandled(descriptor : Descriptor<VertexType, TerminalType>) : Boolean
+    fun addToHandled(descriptor : Descriptor<VertexType, TerminalType>)
 }
 
-class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack <VertexType>
+class ErrorRecoveringDescriptorsStack <VertexType, TerminalType> : IDescriptorsStack<VertexType, TerminalType>
 {
-    private var defaultDescriptorsStack          = ArrayDeque<Descriptor<VertexType>>()
-    private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor<VertexType>>>()
+    private var defaultDescriptorsStack          = ArrayDeque<Descriptor<VertexType, TerminalType>>()
+    private var errorRecoveringDescriptorsStacks = LinkedHashMap<Int, ArrayDeque<Descriptor<VertexType, TerminalType>>>()
     
     override fun defaultDescriptorsStackIsNotEmpty() = defaultDescriptorsStack.isNotEmpty()
 
-    override fun add(descriptor : Descriptor<VertexType>)
+    override fun add(descriptor : Descriptor<VertexType, TerminalType>)
     {
         if (!isAlreadyHandled(descriptor)) {
             val pathWeight = descriptor.weight()
@@ -57,10 +57,9 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack <VertexTy
 
                 errorRecoveringDescriptorsStacks.getValue(pathWeight).addLast(descriptor)
             }
-            addToHandled(descriptor)
         }
     }
-    override fun next() : Descriptor <VertexType>
+    override fun next() : Descriptor <VertexType, TerminalType>
     {
         if (defaultDescriptorsStackIsNotEmpty()) {
             return defaultDescriptorsStack.removeLast()
@@ -76,14 +75,14 @@ class ErrorRecoveringDescriptorsStack <VertexType> : IDescriptorsStack <VertexTy
         }
     }
 
-    override fun isAlreadyHandled(descriptor : Descriptor<VertexType>) : Boolean
+    override fun isAlreadyHandled(descriptor : Descriptor<VertexType, TerminalType>) : Boolean
     {
         val handledDescriptor = descriptor.gssNode.handledDescriptors.find { descriptor.hashCode() == it.hashCode() }
 
         return handledDescriptor != null && handledDescriptor.weight() <= descriptor.weight()
     }
 
-    override fun addToHandled(descriptor : Descriptor<VertexType>)
+    override fun addToHandled(descriptor : Descriptor<VertexType, TerminalType>)
     {
         descriptor.gssNode.handledDescriptors.add(descriptor)
     }

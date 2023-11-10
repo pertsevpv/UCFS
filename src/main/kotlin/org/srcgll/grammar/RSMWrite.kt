@@ -3,9 +3,9 @@ package org.srcgll.grammar
 import org.srcgll.grammar.symbol.Nonterminal
 import java.io.File
 
-fun WriteRSMToTXT(startState: RSMState, pathToTXT: String) {
-    val states : ArrayList<RSMState> = ArrayList()
-    val queue : ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
+fun writeRSMToTXT(startState: RSMState<*>, pathToTXT: String) {
+    val states : ArrayList<RSMState<*>>  = ArrayList()
+    val queue  : ArrayDeque<RSMState<*>> = ArrayDeque(listOf(startState))
 
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
@@ -83,11 +83,11 @@ fun WriteRSMToTXT(startState: RSMState, pathToTXT: String) {
     }
 
 }
-fun WriteRSMToDOT(startState: RSMState, pathToTXT: String) {
-    val states : HashSet<RSMState> = HashSet()
-    val queue : ArrayDeque<RSMState> = ArrayDeque(listOf(startState))
-    var state : RSMState
-    val boxes : HashMap<Nonterminal, HashSet<RSMState>> = HashMap()
+fun writeRSMToDOT(startState: RSMState<*>, pathToTXT: String) {
+    val states : HashSet<RSMState<*>> = HashSet()
+    val queue  : ArrayDeque<RSMState<*>> = ArrayDeque(listOf(startState))
+    var state  : RSMState<*>
+    val boxes  : HashMap<Nonterminal<*>, HashSet<RSMState<*>>> = HashMap()
 
     while (!queue.isEmpty()) {
         val state = queue.removeFirst()
@@ -125,9 +125,9 @@ fun WriteRSMToDOT(startState: RSMState, pathToTXT: String) {
 
         states.forEach { state ->
             if (state.isStart)
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = cds]")
+                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = circle, color = green]")
             else if (state.isFinal)
-                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = doublecircle]")
+                out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = doublecircle, color = red]")
             else
                 out.println("${state.id} [label = \"${state.nonterminal.value},${state.id}\", shape = circle]")
         }

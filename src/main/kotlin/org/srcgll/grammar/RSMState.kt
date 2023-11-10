@@ -1,30 +1,29 @@
 package org.srcgll.grammar
 
-import org.srcgll.grammar.symbol.ITerminal
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 
-class RSMState
+class RSMState <TerminalType>
 (
     val id          : Int,
-    val nonterminal : Nonterminal,
+    val nonterminal : Nonterminal<TerminalType>,
     val isStart     : Boolean = false,
     val isFinal     : Boolean = false,
 )
 {
-    val errorRecoveryLabels      = HashSet<ITerminal>()
-    val coveredTargetStates      = HashSet<RSMState>()
-    val outgoingTerminalEdges    = HashMap<ITerminal, HashSet<RSMState>>()
-    val outgoingNonterminalEdges = HashMap<Nonterminal, HashSet<RSMState>>()
+    val outgoingTerminalEdges    : HashMap<Terminal<TerminalType>, HashSet<RSMState<TerminalType>>>    = HashMap()
+    val outgoingNonterminalEdges : HashMap<Nonterminal<TerminalType>, HashSet<RSMState<TerminalType>>> = HashMap()
+    val coveredTargetStates      : HashSet<RSMState<TerminalType>>                                     = HashSet()
+    val errorRecoveryLabels      : HashSet<Terminal<TerminalType>>                                     = HashSet()
 
     override fun toString() =
         "RSMState(id=$id, nonterminal=$nonterminal, isStart=$isStart, isFinal=$isFinal)"
 
     override fun equals(other : Any?) : Boolean
     {
-        if (this === other)     return true
-        if (other !is RSMState) return false
-        if (id != other.id)     return false
+        if (this === other)        return true
+        if (other !is RSMState<*>) return false
+        if (id != other.id)        return false
 
         return true
     }
@@ -32,7 +31,7 @@ class RSMState
     val hashCode : Int = id
     override fun hashCode() = hashCode
 
-    fun addTerminalEdge(edge : RSMTerminalEdge)
+    fun addTerminalEdge(edge : RSMTerminalEdge<TerminalType>)
     {
         if (!coveredTargetStates.contains(edge.head)) {
             errorRecoveryLabels.add(edge.terminal)
@@ -48,7 +47,7 @@ class RSMState
         }
     }
 
-    fun addNonterminalEdge(edge : RSMNonterminalEdge)
+    fun addNonterminalEdge(edge : RSMNonterminalEdge<TerminalType>)
     {
         if (outgoingNonterminalEdges.containsKey(edge.nonterminal)) {
             val targetStates = outgoingNonterminalEdges.getValue(edge.nonterminal)

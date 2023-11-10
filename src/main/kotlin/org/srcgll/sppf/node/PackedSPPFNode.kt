@@ -6,7 +6,7 @@ import java.util.*
 open class PackedSPPFNode <VertexType>
 (
     val pivot         : VertexType,
-    val rsmState      : RSMState,
+    val rsmState      : RSMState<*>,
     val leftSPPFNode  : SPPFNode<VertexType>? = null,
     val rightSPPFNode : SPPFNode<VertexType>? = null,
     override var id   : Int = SPPFNodeId.getFirstFreeSPPFNodeId()

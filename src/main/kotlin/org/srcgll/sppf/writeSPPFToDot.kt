@@ -4,7 +4,7 @@ import org.srcgll.sppf.node.*
 import java.io.File
 
 
-fun WriteSPPFToDOT(sppfNode : ISPPFNode, filePath : String)
+fun writeSPPFToDOT(sppfNode : ISPPFNode, filePath : String)
 {
     val queue : ArrayDeque<ISPPFNode> = ArrayDeque(listOf(sppfNode))
     val edges : HashMap<Int, HashSet<Int>> = HashMap()
@@ -66,7 +66,7 @@ fun printEdge(x : Int, y : Int) : String
 fun printNode(nodeId : Int, node : ISPPFNode) : String
 {
     return when(node) {
-        is TerminalSPPFNode<*> -> {
+        is TerminalSPPFNode<*,*> -> {
             "${nodeId} [label = \"${nodeId} ; ${node.terminal ?: "eps"}, ${node.leftExtent}, ${node.rightExtent}, Weight: ${node.weight}\", shape = ellipse, color = ${getColor(node.weight)}]"
         }
         is SymbolSPPFNode<*> -> {

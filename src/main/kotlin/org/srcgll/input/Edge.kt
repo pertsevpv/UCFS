@@ -1,6 +1,6 @@
 package org.srcgll.input
 
-class Edge <LabelType : ILabel, VertexType>
+data class Edge <VertexType, TerminalType, LabelType : ILabel<TerminalType>>
 (
     val label : LabelType,
     val head  : VertexType,

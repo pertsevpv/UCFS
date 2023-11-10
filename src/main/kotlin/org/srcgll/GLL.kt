@@ -5,25 +5,25 @@ import org.srcgll.grammar.RSMTerminalEdge
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.descriptors.*
 import org.srcgll.grammar.RSMNonterminalEdge
-import org.srcgll.grammar.symbol.ITerminal
+import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.gss.*
 import org.srcgll.input.ILabel
 import org.srcgll.input.InputGraph
 import org.srcgll.sppf.node.*
 import org.srcgll.sppf.*
 
-class GLL <VertexType, LabelType : ILabel>
+class GLL <VertexType, TerminalType, LabelType : ILabel<TerminalType>>
 (
-    private val startState : RSMState,
-    private val input      : InputGraph<VertexType, LabelType>,
-    private val recovery   : Boolean,
+    private val startState : RSMState<TerminalType>,
+    private val input      : InputGraph<VertexType, TerminalType, LabelType>,
+    private val recovery   : RecoveryMode,
 )
 {
-    private val stack            : IDescriptorsStack<VertexType>                                = ErrorRecoveringDescriptorsStack()
-    private val sppf             : SPPF<VertexType>                                             = SPPF()
-    private val poppedGSSNodes   : HashMap<GSSNode<VertexType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
-    private val createdGSSNodes  : HashMap<GSSNode<VertexType>, GSSNode<VertexType>>            = HashMap()
-    private var parseResult      : SPPFNode<VertexType>?                                        = null
+    private val stack            : IDescriptorsStack<VertexType, TerminalType> = ErrorRecoveringDescriptorsStack()
+    private val sppf             : SPPF<VertexType> = SPPF()
+    private val poppedGSSNodes   : HashMap<GSSNode<VertexType, TerminalType>, HashSet<SPPFNode<VertexType>?>> = HashMap()
+    private val createdGSSNodes  : HashMap<GSSNode<VertexType, TerminalType>, GSSNode<VertexType, TerminalType>> = HashMap()
+    private var parseResult      : SPPFNode<VertexType>? = null
 
     fun parse() : SPPFNode<VertexType>?
     {
@@ -31,8 +31,8 @@ class GLL <VertexType, LabelType : ILabel>
             val descriptor =
                     Descriptor(
                         startState,
-                        getOrCreateGSSNode(startState.nonterminal, startVertex, 0),
-                        null,
+                        getOrCreateGSSNode(startState.nonterminal, startVertex, weight = 0),
+                        sppfNode = null,
                         startVertex
                     )
             stack.add(descriptor)
@@ -46,7 +46,7 @@ class GLL <VertexType, LabelType : ILabel>
 
         // If string was not parsed - process recovery descriptors until first valid parse tree is found
         // Due to the Error Recovery algorithm used it will be parse tree of the string with min editing cost
-        while (recovery && parseResult == null) {
+        while (recovery == RecoveryMode.ON && parseResult == null) {
             val curRecoveryDescriptor = stack.next()
 
             parse(curRecoveryDescriptor)
@@ -55,7 +55,7 @@ class GLL <VertexType, LabelType : ILabel>
         return parseResult
     }
 
-    private fun parse(curDescriptor : Descriptor<VertexType>)
+    private fun parse(curDescriptor : Descriptor<VertexType, TerminalType>)
     {
         val state       = curDescriptor.rsmState
         val pos         = curDescriptor.inputPosition
@@ -64,7 +64,7 @@ class GLL <VertexType, LabelType : ILabel>
         var leftExtent  = curSPPFNode?.leftExtent
         var rightExtent = curSPPFNode?.rightExtent
 
-//        stack.addToHandled(curDescriptor)
+        stack.addToHandled(curDescriptor)
 
         if (state.isStart && state.isFinal) {
             curSPPFNode = sppf.getNodeP(
@@ -74,7 +74,7 @@ class GLL <VertexType, LabelType : ILabel>
                                   state,
                                   pos,
                                   pos,
-                                  0
+                                  weight = 0
                                   )
                               )
             leftExtent = curSPPFNode.leftExtent
@@ -82,12 +82,12 @@ class GLL <VertexType, LabelType : ILabel>
         }
 
         if (curSPPFNode is SymbolSPPFNode<VertexType> && (parseResult == null || parseResult!!.weight > curSPPFNode.weight)
-            && state.nonterminal == startState.nonterminal && input.isStart(leftExtent) && input.isFinal(rightExtent)) {
+            && state.nonterminal == startState.nonterminal && input.isStart(leftExtent!!) && input.isFinal(rightExtent!!)) {
             parseResult = curSPPFNode
         }
 
-        for (kvp in state.outgoingTerminalEdges) {
-            for (inputEdge in input.getEdges(pos)) {
+        for (inputEdge in input.getEdges(pos)) {
+            for (kvp in state.outgoingTerminalEdges) {
                 if (inputEdge.label.terminal == kvp.key) {
                     for (target in kvp.value) {
                         val rsmEdge = RSMTerminalEdge(kvp.key, target)
@@ -103,7 +103,7 @@ class GLL <VertexType, LabelType : ILabel>
                                             rsmEdge.terminal,
                                             pos,
                                             inputEdge.head,
-                                            0
+                                            weight = 0
                                         )
                                     ),
                                     inputEdge.head
@@ -122,44 +122,44 @@ class GLL <VertexType, LabelType : ILabel>
                         Descriptor(
                             rsmEdge.nonterminal.startState,
                             createGSSNode(rsmEdge.nonterminal, rsmEdge.head, gssNode, curSPPFNode, pos),
-                            null,
+                            sppfNode = null,
                             pos
                         )
                 stack.add(descriptor)
             }
         }
 
-        if (recovery) {
-            val errorRecoveryEdges = HashMap<ITerminal?, TerminalRecoveryEdge<VertexType>>()
-            val currentEdges = input.getEdges(pos)
+        if (recovery == RecoveryMode.ON) {
+            val errorRecoveryEdges = HashMap<Terminal<TerminalType>?, TerminalRecoveryEdge<VertexType>>()
+            val currentEdges       = input.getEdges(pos)
 
             if (currentEdges.isNotEmpty()) {
                 for (currentEdge in currentEdges) {
                     val currentTerminal = currentEdge.label.terminal
 
-                    val coveredByCurrentTerminal : HashSet<RSMState> =
+                    val coveredByCurrentTerminal : HashSet<RSMState<TerminalType>> =
                         if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
                             state.outgoingTerminalEdges.getValue(currentTerminal)
                         } else {
                             HashSet()
                         }
                     for (terminal in state.errorRecoveryLabels) {
-                        val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState>)
+                        val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState<TerminalType>>)
 
                         coveredByCurrentTerminal.forEach { coveredByTerminal.remove(it) }
 
                         if (terminal != currentTerminal && coveredByTerminal.isNotEmpty()) {
-                            errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, 1)
+                            errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
                         }
                     }
-                    errorRecoveryEdges[null] = TerminalRecoveryEdge(currentEdge.head, 1)
+                    errorRecoveryEdges[null] = TerminalRecoveryEdge(currentEdge.head, weight = 1)
                 }
             } else {
                 for (terminal in state.errorRecoveryLabels) {
-                    val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState>)
+                    val coveredByTerminal = HashSet(state.outgoingTerminalEdges[terminal] as HashSet<RSMState<TerminalType>>)
 
                     if (coveredByTerminal.isNotEmpty()) {
-                        errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, 1)
+                        errorRecoveryEdges[terminal] = TerminalRecoveryEdge(pos, weight = 1)
                     }
                 }
             }
@@ -169,7 +169,7 @@ class GLL <VertexType, LabelType : ILabel>
                 val terminal          = kvp.key
 
                 if (terminal == null) {
-                    handleTerminalOrEpsilonEdge(curDescriptor, null, errorRecoveryEdge, curDescriptor.rsmState)
+                    handleTerminalOrEpsilonEdge(curDescriptor, terminal = null, errorRecoveryEdge, curDescriptor.rsmState)
                 } else {
                     if (state.outgoingTerminalEdges.containsKey(terminal)) {
                         for (targetState in state.outgoingTerminalEdges.getValue(terminal)) {
@@ -185,10 +185,10 @@ class GLL <VertexType, LabelType : ILabel>
 
     private fun handleTerminalOrEpsilonEdge
     (
-        curDescriptor : Descriptor<VertexType>,
-        terminal      : ITerminal?,
+        curDescriptor : Descriptor<VertexType, TerminalType>,
+        terminal      : Terminal<TerminalType>?,
         targetEdge    : TerminalRecoveryEdge<VertexType>,
-        targetState   : RSMState
+        targetState   : RSMState<TerminalType>
     )
     {
         val descriptor =
@@ -210,7 +210,8 @@ class GLL <VertexType, LabelType : ILabel>
         stack.add(descriptor)
     }
 
-    private fun getOrCreateGSSNode(nonterminal : Nonterminal, inputPosition : VertexType, weight : Int) : GSSNode<VertexType>
+    private fun getOrCreateGSSNode(nonterminal : Nonterminal<TerminalType>, inputPosition : VertexType, weight : Int)
+        : GSSNode<VertexType, TerminalType>
     {
         val gssNode = GSSNode(nonterminal, inputPosition, weight)
 
@@ -226,15 +227,15 @@ class GLL <VertexType, LabelType : ILabel>
 
     private fun createGSSNode
     (
-        nonterminal  : Nonterminal,
-        state        : RSMState,
-        gssNode      : GSSNode<VertexType>,
+        nonterminal  : Nonterminal<TerminalType>,
+        state        : RSMState<TerminalType>,
+        gssNode      : GSSNode<VertexType, TerminalType>,
         sppfNode     : SPPFNode<VertexType>?,
         pos          : VertexType,
     )
-        : GSSNode<VertexType>
+        : GSSNode<VertexType, TerminalType>
     {
-        val newNode : GSSNode<VertexType> = getOrCreateGSSNode(nonterminal, pos, gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0))
+        val newNode= getOrCreateGSSNode(nonterminal, pos, weight = gssNode.minWeightOfLeftPart + (sppfNode?.weight ?: 0))
 
         if (newNode.addEdge(state, sppfNode, gssNode)) {
             if (poppedGSSNodes.containsKey(newNode)) {
@@ -254,7 +255,7 @@ class GLL <VertexType, LabelType : ILabel>
         return newNode
     }
 
-    private fun pop(gssNode : GSSNode<VertexType>, sppfNode : SPPFNode<VertexType>?, pos : VertexType)
+    private fun pop(gssNode : GSSNode<VertexType, TerminalType>, sppfNode : SPPFNode<VertexType>?, pos : VertexType)
     {
         if (!poppedGSSNodes.containsKey(gssNode)) poppedGSSNodes[gssNode] = HashSet()
 

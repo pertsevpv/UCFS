@@ -5,8 +5,8 @@ import kotlinx.cli.ArgType
 import kotlinx.cli.default
 import kotlinx.cli.required
 import org.srcgll.grammar.readRSMFromTXT
-import org.srcgll.grammar.WriteRSMToDOT
 import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.grammar.writeRSMToDOT
 import org.srcgll.input.InputGraph
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
@@ -14,15 +14,17 @@ import java.io.*
 import org.srcgll.lexer.GeneratedLexer
 import org.srcgll.lexer.SymbolCode
 import org.srcgll.lexer.Token
-import org.srcgll.sppf.WriteSPPFToDOT
+import org.srcgll.sppf.writeSPPFToDOT
 import org.srcgll.sppf.buildStringFromSPPF
 
-enum class RecoveryMode {
+enum class RecoveryMode
+{
     ON,
     OFF,
 }
 
-enum class Mode {
+enum class Mode
+{
     Reachability,
     AllPairs,
 }
@@ -31,7 +33,7 @@ fun main(args : Array<String>)
 {
     val parser = ArgParser("srcgll")
 
-    val recovery by
+    val recoveryMode by
     parser
         .option(ArgType.Choice<RecoveryMode>(), fullName = "recovery", description = "Recovery mode")
         .default(RecoveryMode.ON)
@@ -65,29 +67,27 @@ fun main(args : Array<String>)
     var token : Token<SymbolCode>
     var vertexId = 0
 
-    val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+    val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
 
     inputGraph.addVertex(vertexId)
     inputGraph.addStartVertex(vertexId)
 
-    while (!lexer.yyatEOF()) {
-        token = lexer.yylex() as Token<SymbolCode>
-        println("(" + token.value + ")" + token.type.toString())
-        inputGraph.addEdge(vertexId, LinearInputLabel(token), ++vertexId)
-        inputGraph.addVertex(vertexId)
-    }
-    inputGraph.finalVertex = vertexId - 1
-
-//    for (x in input) {
-//        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(x.toString())), ++vertexId)
+//    while (!lexer.yyatEOF()) {
+//        token = lexer.yylex() as Token<SymbolCode>
+//        println("(" + token.value + ")" + token.type.toString())
+//        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(token)), ++vertexId)
 //        inputGraph.addVertex(vertexId)
 //    }
-//    inputGraph.finalVertex = vertexId
 
-    val result  = GLL(grammar, inputGraph, recovery = (recovery == RecoveryMode.ON)).parse()
+    for (x in input) {
+        inputGraph.addEdge(vertexId, LinearInputLabel(Terminal(x.toString())), ++vertexId)
+        inputGraph.addVertex(vertexId)
+    }
 
-    WriteSPPFToDOT(result!!, "./result_sppf.dot")
-    WriteRSMToDOT(grammar, "./rsm.dot")
+    val result  = GLL(grammar, inputGraph, recoveryMode).parse()
+
+    writeSPPFToDOT(result!!, "./result_sppf.dot")
+    writeRSMToDOT(grammar, "./rsm.dot")
 
     File(pathToOutputString).printWriter().use {
         out -> out.println(buildStringFromSPPF(result!!))

@@ -6,17 +6,17 @@ import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.sppf.node.SPPFNode
 import java.util.*
 
-class GSSNode <VertexType>
+class GSSNode <VertexType, TerminalType>
 (
-    val nonterminal         : Nonterminal,
+    val nonterminal         : Nonterminal<TerminalType>,
     val inputPosition       : VertexType,
     var minWeightOfLeftPart : Int,
 )
 {
-    val edges : HashMap<Pair<RSMState, SPPFNode<VertexType>?>, HashSet<GSSNode<VertexType>>> = HashMap()
-    val handledDescriptors : HashSet<Descriptor<VertexType>> = HashSet()
+    val edges : HashMap<Pair<RSMState<TerminalType>, SPPFNode<VertexType>?>, HashSet<GSSNode<VertexType, TerminalType>>> = HashMap()
+    val handledDescriptors : HashSet<Descriptor<VertexType, TerminalType>> = HashSet()
     
-    fun addEdge(rsmState : RSMState, sppfNode : SPPFNode<VertexType>?, gssNode : GSSNode<VertexType>) : Boolean
+    fun addEdge(rsmState : RSMState<TerminalType>, sppfNode : SPPFNode<VertexType>?, gssNode : GSSNode<VertexType, TerminalType>) : Boolean
     {
         val label = Pair(rsmState, sppfNode)
         
@@ -30,7 +30,7 @@ class GSSNode <VertexType>
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                       return true
-        if (other !is GSSNode<*>)                 return false
+        if (other !is GSSNode<*,*>)                 return false
         if (nonterminal != other.nonterminal)     return false
         if (inputPosition != other.inputPosition) return false
 

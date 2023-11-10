@@ -1,7 +1,6 @@
 package org.srcgll.sppf
 
 import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.symbol.ITerminal
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.sppf.node.*
@@ -11,7 +10,7 @@ class SPPF <VertexType>
 {
     private val createdSPPFNodes : HashMap<SPPFNode<VertexType>, SPPFNode<VertexType>> = HashMap()
 
-    fun getNodeP(state : RSMState, sppfNode : SPPFNode<VertexType>?, nextSPPFNode : SPPFNode<VertexType>) : SPPFNode<VertexType>
+    fun getNodeP(state : RSMState<*>, sppfNode : SPPFNode<VertexType>?, nextSPPFNode : SPPFNode<VertexType>) : SPPFNode<VertexType>
     {
         val leftExtent  = sppfNode?.leftExtent ?: nextSPPFNode.leftExtent
         val rightExtent = nextSPPFNode.rightExtent
@@ -34,9 +33,9 @@ class SPPF <VertexType>
         return parent
     }
 
-    fun getOrCreateTerminalSPPFNode
+    fun <TerminalType> getOrCreateTerminalSPPFNode
     (
-        terminal    : ITerminal?,
+        terminal    : Terminal<TerminalType>?,
         leftExtent  : VertexType,
         rightExtent : VertexType,
         weight      : Int
@@ -53,8 +52,8 @@ class SPPF <VertexType>
     }
 
     fun getOrCreateItemSPPFNode
-                (
-        state       : RSMState,
+    (
+        state       : RSMState<*>,
         leftExtent  : VertexType,
         rightExtent : VertexType,
         weight      : Int
@@ -73,7 +72,7 @@ class SPPF <VertexType>
 
     fun getOrCreateSymbolSPPFNode
     (
-        nonterminal : Nonterminal,
+        nonterminal : Nonterminal<*>,
         leftExtent  : VertexType,
         rightExtent : VertexType,
         weight      : Int

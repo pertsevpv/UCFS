@@ -1,13 +1,10 @@
 package org.srcgll.lexer
 
-import org.srcgll.grammar.symbol.ITerminal
-
 class Token <TokenType>
 (
-    val type           : TokenType,
-    override val value : String,
+    val type  : TokenType,
+    val value : String,
 )
-    : ITerminal
 {
     override fun toString() : String
     {

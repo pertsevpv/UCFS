@@ -1,12 +1,11 @@
 package org.srcgll.sppf.node
 
-import org.srcgll.grammar.symbol.ITerminal
 import org.srcgll.grammar.symbol.Terminal
 import java.util.*
 
-class TerminalSPPFNode <VertexType>
+class TerminalSPPFNode <VertexType, TerminalType>
 (
-    val terminal : ITerminal?,
+    val terminal : Terminal<TerminalType>?,
     leftExtent   : VertexType,
     rightExtent  : VertexType,
     weight       : Int,
@@ -19,7 +18,7 @@ class TerminalSPPFNode <VertexType>
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                return true
-        if (other !is TerminalSPPFNode<*>) return false
+        if (other !is TerminalSPPFNode<*,*>) return false
         if (!super.equals(other))          return false
         if (terminal != other.terminal)    return false
 

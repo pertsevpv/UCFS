@@ -26,13 +26,9 @@ open class SPPFNode <VertexType>
     override fun equals(other : Any?) : Boolean
     {
         if (this === other)                   return true
-
-        if (other !is SPPFNode<*>)               return false
-
+        if (other !is SPPFNode<*>)            return false
         if (leftExtent != other.leftExtent)   return false
-
         if (rightExtent != other.rightExtent) return false
-
         if (weight != other.weight)           return false
 
         return true

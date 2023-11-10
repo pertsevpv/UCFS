@@ -24,8 +24,6 @@ Bool       = "true" | "false"
 Id         = [:letter:]+
 TextLimit  = "\""
 
-Keyword = "if" | "then" | "else" | "skip" | "while" | "print" | "read" | "do"
-
 %%
 
 "if"        { return token(SymbolCode.IF); }

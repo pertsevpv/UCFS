@@ -1,13 +1,12 @@
 package org.srcgll.input
 
-class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, LabelType>()
+class LinearInput<VertexType, TerminalType, LabelType : ILabel<TerminalType>>
+    : InputGraph<VertexType, TerminalType, LabelType>()
 {
     override val vertices : MutableMap<VertexType, VertexType> = HashMap()
-    override val edges    : MutableMap<VertexType, MutableList<Edge<LabelType, VertexType>>> = HashMap()
+    override val edges    : MutableMap<VertexType, MutableList<Edge<VertexType, TerminalType, LabelType>>> = HashMap()
 
     override val startVertices : MutableSet<VertexType> = HashSet()
-
-    override var finalVertex : VertexType? = null
 
     override fun getInputStartVertices() : MutableSet<VertexType>
     {
@@ -22,7 +21,6 @@ class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, Label
     override fun addStartVertex(vertex : VertexType)
     {
         startVertices.add(vertex)
-        vertices[vertex] = vertex
     }
 
     override fun addVertex(vertex : VertexType)
@@ -36,7 +34,7 @@ class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, Label
         vertices.remove(vertex)
     }
 
-    override fun getEdges(from : VertexType) : MutableList<Edge<LabelType, VertexType>>
+    override fun getEdges(from : VertexType) : MutableList<Edge<VertexType, TerminalType, LabelType>>
     {
         return edges.getOrDefault(from, ArrayList())
     }
@@ -56,6 +54,6 @@ class LinearInput<VertexType, LabelType : ILabel> : InputGraph<VertexType, Label
         edges.getValue(from).remove(edge)
     }
 
-    override fun isStart(vertex : VertexType?) = startVertices.contains(vertex)
-    override fun isFinal(vertex : VertexType?) = (vertex == finalVertex)
+    override fun isStart(vertex : VertexType) = startVertices.contains(vertex)
+    override fun isFinal(vertex : VertexType) = getEdges(vertex).isEmpty()
 }

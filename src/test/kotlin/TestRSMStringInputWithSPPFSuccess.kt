@@ -7,6 +7,7 @@ import org.srcgll.grammar.RSMTerminalEdge
 import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import org.srcgll.GLL
+import org.srcgll.RecoveryMode
 import org.srcgll.input.InputGraph
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
@@ -15,7 +16,7 @@ import kotlin.test.assertNotNull
 class TestRSMStringInputWithSPPFSuccess {
     @Test
     fun `test 'empty' hand-crafted grammar`() {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val input = ""
         val rsmState0 =
             RSMState(
@@ -26,7 +27,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         nonterminalS.startState = rsmState0
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -35,14 +36,13 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @Test
     fun `test 'a' hand-crafted grammar`() {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val input = "a"
         val rsmState0 =
             RSMState(
@@ -63,7 +63,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -72,14 +72,13 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @Test
     fun `test 'ab' hand-crafted grammar`() {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val input = "ab"
         val rsmState0 =
             RSMState(
@@ -111,7 +110,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -120,15 +119,14 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["", "a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa"])
     fun `test 'a-star' hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val rsmState0 =
             RSMState(
                 id = 0,
@@ -156,7 +154,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -165,15 +163,14 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["a", "aa", "aaa", "aaaa", "aaaaa", "aaaaaa", "aaaaaaa"])
     fun `test 'a-plus' hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val rsmState0 =
             RSMState(
                 id = 0,
@@ -200,7 +197,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -209,15 +206,14 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["", "ab", "abab", "ababab", "abababab", "ababababab"])
     fun `test '(ab)-star' hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val rsmState0 =
             RSMState(
                 id = 0,
@@ -245,18 +241,26 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
+        var pos = 0
 
         inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+        while (pos < input.length) {
+            var label : String
+            if (input.startsWith("ab", pos)) {
+                pos += 2
+                label = "ab"
+            } else {
+                pos += 1
+                label = input[pos].toString()
+            }
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(label)), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
@@ -282,7 +286,7 @@ class TestRSMStringInputWithSPPFSuccess {
         ]
     )
     fun `test 'dyck' hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val rsmState0 =
             RSMState(
                 id = 0,
@@ -338,7 +342,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -347,15 +351,14 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["ab", "cd"])
     fun `test 'ab or cd' hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val rsmState0 =
             RSMState(
                 id = 0,
@@ -374,24 +377,35 @@ class TestRSMStringInputWithSPPFSuccess {
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("ab"), head = rsmState1))
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("cd"), head = rsmState1))
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
+        var pos = 0
 
         inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+        while (pos < input.length) {
+            var label : String
+            if (input.startsWith("ab", pos)) {
+                pos += 2
+                label = "ab"
+            } else if (input.startsWith("cd", pos)) {
+                pos += 2
+                label = "cd"
+            } else {
+                pos += 1
+                label = input[pos].toString()
+            }
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(label)), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["", "a"])
     fun `test 'a-optional' hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
+        val nonterminalS = Nonterminal<String>("S")
         val rsmState0 =
             RSMState(
                 id = 0,
@@ -410,7 +424,7 @@ class TestRSMStringInputWithSPPFSuccess {
 
         rsmState0.addTerminalEdge(RSMTerminalEdge(terminal = Terminal("a"), head = rsmState1))
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -419,17 +433,16 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["abc"])
     fun `test 'abc' ambiguous hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
-        val nonterminalA = Nonterminal("A")
-        val nonterminalB = Nonterminal("B")
+        val nonterminalS = Nonterminal<String>("S")
+        val nonterminalA = Nonterminal<String>("A")
+        val nonterminalB = Nonterminal<String>("B")
         val rsmState0 =
             RSMState(
                 id = 0,
@@ -547,7 +560,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -556,17 +569,16 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["ab", "cd"])
     fun `test 'ab or cd' ambiguous hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
-        val nonterminalA = Nonterminal("A")
-        val nonterminalB = Nonterminal("B")
+        val nonterminalS = Nonterminal<String>("S")
+        val nonterminalA = Nonterminal<String>("A")
+        val nonterminalB = Nonterminal<String>("B")
 
         val rsmState0 =
             RSMState(
@@ -658,25 +670,38 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
+        var pos = 0
 
         inputGraph.addVertex(curVertexId)
-        for (x in input) {
-            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(x.toString())), ++curVertexId)
+
+        while (pos < input.length) {
+            var label : String
+            if (input.startsWith("ab", pos)) {
+                pos += 2
+                label = "ab"
+            } else if (input.startsWith("cd", pos)) {
+                pos += 2
+                label = "cd"
+            } else {
+                pos += 1
+                label = input[pos].toString()
+            }
+            inputGraph.addEdge(curVertexId, LinearInputLabel(Terminal(label)), ++curVertexId)
             inputGraph.addVertex(curVertexId)
         }
-        inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        inputGraph.addStartVertex(0)
+
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 
     @ParameterizedTest(name = "Should be NotNull for {0}")
     @ValueSource(strings = ["a", "ab", "abb", "abbb", "abbbb", "abbbbb"])
     fun `test 'a(b)-star' left recursive hand-crafted grammar`(input : String) {
-        val nonterminalS = Nonterminal("S")
-        val nonterminalA = Nonterminal("A")
+        val nonterminalS = Nonterminal<String>("S")
+        val nonterminalA = Nonterminal<String>("A")
 
         val rsmState0 =
             RSMState(
@@ -739,7 +764,7 @@ class TestRSMStringInputWithSPPFSuccess {
             )
         )
 
-        val inputGraph : InputGraph<Int, LinearInputLabel> = LinearInput()
+        val inputGraph = LinearInput<Int, String, LinearInputLabel<String>>()
         var curVertexId = 0
 
         inputGraph.addVertex(curVertexId)
@@ -748,9 +773,8 @@ class TestRSMStringInputWithSPPFSuccess {
             inputGraph.addVertex(curVertexId)
         }
         inputGraph.addStartVertex(0)
-        inputGraph.finalVertex = curVertexId
 
-        assertNotNull(GLL(rsmState0, inputGraph, recovery = false).parse())
+        assertNotNull(GLL(rsmState0, inputGraph, recovery = RecoveryMode.OFF).parse())
     }
 }
 

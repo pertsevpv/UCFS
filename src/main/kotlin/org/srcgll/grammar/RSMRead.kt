@@ -4,18 +4,19 @@ import org.srcgll.grammar.symbol.Nonterminal
 import org.srcgll.grammar.symbol.Terminal
 import java.io.File
 
-fun readRSMFromTXT(pathToTXT : String) : RSMState
+
+fun readRSMFromTXT(pathToTXT : String) : RSMState<String>
 {
-    val rsmStates     : HashMap<Int, RSMState> = HashMap()
-    var startRSMState : RSMState?              = null
+    val rsmStates     : HashMap<Int, RSMState<String>> = HashMap()
+    var startRSMState : RSMState<String>?              = null
 
     fun makeRSMState
     (
         id          : Int,
-        nonterminal : Nonterminal,
+        nonterminal : Nonterminal<String>,
         isStart     : Boolean = false,
         isFinal     : Boolean = false
-    ) : RSMState
+    ) : RSMState<String>
     {
         val y = RSMState(id, nonterminal, isStart, isFinal)
 
@@ -24,11 +25,11 @@ fun readRSMFromTXT(pathToTXT : String) : RSMState
         return rsmStates[y.hashCode]!!
     }
 
-    val nonterminals : HashMap<Nonterminal, Nonterminal> = HashMap()
+    val nonterminals : HashMap<Nonterminal<String>, Nonterminal<String>> = HashMap()
 
-    fun makeNonterminal(name : String) : Nonterminal
+    fun makeNonterminal(name : String) : Nonterminal<String>
     {
-        val y = Nonterminal(name)
+        val y = Nonterminal<String>(name)
 
         if (!nonterminals.contains(y)) nonterminals[y] = y
 

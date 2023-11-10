@@ -1,18 +1,17 @@
 package org.srcgll.grammar.symbol
 
-class Terminal
+class Terminal <TerminalType>
 (
-    override val value : String
+    val value : TerminalType
 )
-    : ITerminal
 {
     override fun toString() = "Literal($value)"
 
     override fun equals(other : Any?) : Boolean
     {
-        if (this === other)       return true
-        if (other !is Terminal)   return false
-        if (value != other.value) return false
+        if (this === other)        return true
+        if (other !is Terminal<*>) return false
+        if (value != other.value)  return false
 
         return true
     }
