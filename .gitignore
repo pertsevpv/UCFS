@@ -19,6 +19,7 @@ output.txt
 
 # Lexer
 /src/main/kotlin/org/srcgll/lexer/*.java
+/src/main/kotlin/org/srcgll/lexer/*.java~
 
 # No idea wtf is this
 *.attach*
