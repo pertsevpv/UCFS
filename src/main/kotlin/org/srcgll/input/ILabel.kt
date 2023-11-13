@@ -4,7 +4,7 @@ import org.srcgll.grammar.symbol.Terminal
 
 interface ILabel
 {
-    val terminal : Terminal<*>
+    val terminal : Terminal<*>?
 
     override fun equals(other : Any?) : Boolean
 }

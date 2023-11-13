@@ -93,6 +93,26 @@ class GLL <VertexType, LabelType : ILabel>
         }
 
         for (inputEdge in input.getEdges(pos)) {
+            if (inputEdge.label.terminal == null) {
+                val descriptor =
+                        Descriptor(
+                            state,
+                            gssNode,
+                            sppf.getNodeP(
+                                state,
+                                curSPPFNode,
+                                sppf.getOrCreateTerminalSPPFNode(
+                                    terminal = null,
+                                    pos,
+                                    inputEdge.head,
+                                    weight = 0
+                                )
+                            ),
+                            inputEdge.head
+                        )
+                stack.add(descriptor)
+                continue
+            }
             for (kvp in state.outgoingTerminalEdges) {
                 if (inputEdge.label.terminal == kvp.key) {
                     for (target in kvp.value) {
@@ -141,7 +161,9 @@ class GLL <VertexType, LabelType : ILabel>
 
             if (currentEdges.isNotEmpty()) {
                 for (currentEdge in currentEdges) {
-                    val currentTerminal = currentEdge.label.terminal
+                    if (currentEdge.label.terminal == null) continue
+
+                    val currentTerminal = currentEdge.label.terminal!!
 
                     val coveredByCurrentTerminal : HashSet<RSMState> =
                         if (state.outgoingTerminalEdges.containsKey(currentTerminal)) {
