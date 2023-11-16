@@ -1,6 +1,6 @@
 package org.srcgll.descriptors
 
-import org.srcgll.grammar.RSMState
+import org.srcgll.rsm.RSMState
 import org.srcgll.gss.GSSNode
 import org.srcgll.sppf.node.SPPFNode
 

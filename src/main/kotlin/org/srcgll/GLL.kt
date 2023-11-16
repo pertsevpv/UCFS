@@ -1,11 +1,11 @@
 package org.srcgll
 
-import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.RSMTerminalEdge
-import org.srcgll.grammar.symbol.Nonterminal
+import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.RSMTerminalEdge
+import org.srcgll.rsm.symbol.Nonterminal
 import org.srcgll.descriptors.*
-import org.srcgll.grammar.RSMNonterminalEdge
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.RSMNonterminalEdge
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.gss.*
 import org.srcgll.input.ILabel
 import org.srcgll.input.IGraph
