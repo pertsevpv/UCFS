@@ -5,7 +5,6 @@ import org.srcgll.GLL
 import org.srcgll.RecoveryMode
 import org.srcgll.sppf.buildStringFromSPPF
 import org.srcgll.rsm.readRSMFromTXT
-import org.srcgll.grammar.symbol.*
 import org.srcgll.input.LinearInput
 import org.srcgll.input.LinearInputLabel
 import org.srcgll.rsm.symbol.Terminal
