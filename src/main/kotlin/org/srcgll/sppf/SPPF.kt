@@ -1,10 +1,9 @@
 package org.srcgll.sppf
 
-import org.srcgll.grammar.RSMState
-import org.srcgll.grammar.symbol.Nonterminal
-import org.srcgll.grammar.symbol.Terminal
+import org.srcgll.rsm.RSMState
+import org.srcgll.rsm.symbol.Nonterminal
+import org.srcgll.rsm.symbol.Terminal
 import org.srcgll.sppf.node.*
-import java.io.File
 
 class SPPF <VertexType>
 {
