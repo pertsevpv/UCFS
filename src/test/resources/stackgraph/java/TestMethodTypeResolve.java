@@ -1,3 +1,4 @@
+// s0
 public class TestMethodTypeResolve {
 
   // s16, def_fun(39), def_a(40)
