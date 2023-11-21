@@ -138,6 +138,17 @@ class SimpleGraph : IGraph<Int, SimpleInputLabel>
     {
         return vertices.getOrDefault(vertex, null)
     }
+
+    fun toDot(): String {
+        val sb = StringBuilder("digraph StackGraph {\n")
+        for (edge in edges) {
+            val from = edge.key
+            for (to in edge.value) {
+                sb.append("\t${from}->${to.head}[label=\"${to.label.terminal?.value ?: ""}\"]\n")
+            }
+        }
+        return sb.append("}").toString()
+    }
 }
 
 fun createAnBnExampleGraph(startVertex : Int) : SimpleGraph
@@ -307,4 +318,5 @@ fun main() {
     for (reachable in resultFunOverloadStack.second) {
         println("Vertex: $reachable")
     }
+    println(inputFunOverloadStackGraph.toDot())
 }
